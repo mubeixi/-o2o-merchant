@@ -241,7 +241,7 @@ function noop() {
       this.loading = true;
       const self = this;
       // 构造请求
-      const postData:any = JSON.parse(JSON.stringify(this.paginate));
+      let postData = JSON.parse(JSON.stringify(this.paginate));
       postData.status = 1;
       postData.store_id = '';
       // 搜索
@@ -251,7 +251,7 @@ function noop() {
           postData.pro_name = this.search.filter.name_area;
         }
         if (this.search.filter.price_area) {
-          const arr:any[] = this.search.filter.price_area.split(',');
+          let arr = this.search.filter.price_area.split(',');
           if (arr[0])postData.min_price = arr[0];
           if (arr[1])postData.max_price = arr[1];
         }

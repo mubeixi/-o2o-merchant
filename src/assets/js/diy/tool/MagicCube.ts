@@ -49,22 +49,18 @@ import { arrayUnique } from '@/common/utils';
  * @param plane
  * @param full 是否要求所有点都在面里面（检测新建区域在画布内用full=1,其他的只要有一个点在就行了)
  */
-const plane_in_plane = (check: { x: number; y: number, x1: number, y1: number }, plane: Object, full: Boolean = false): boolean => {
-  console.log(check, plane);
+const plane_in_plane = (check: any, plane: any, full: Boolean = false): boolean => {
+
   // @ts-ignore
-  let {
-    x: left, y1: bottom, x1: right, y: top,
-  } = check;
+  let {x: left, y1: bottom, x1: right, y: top} = check;
   const domA = {
     left, bottom, right, top,
   };
 
   // @ts-ignore
-  let {
-    x: left, y1: bottom, x1: right, y: top,
-  } = plane;
+  let {x: left1, y1: bottom1, x1: right1, y: top1} = plane;
   const domB = {
-    left, bottom, right, top,
+    left1, bottom1, right1, top1,
   };
 
 

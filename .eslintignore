@@ -4,4 +4,4 @@ src/common/**
 src/components/editor/*
 src/components/diy/*
 src/components/**
-src/assets/js/diy/*
+src/assets/js/diy/**
