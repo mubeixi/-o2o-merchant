@@ -47,8 +47,8 @@ const routerInstance = new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home,
+      name: 'Tmpl',
+      component: Tmpl,
     },
     {
       path:'/StorePurchaseApply',

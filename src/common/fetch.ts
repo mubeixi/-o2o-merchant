@@ -16,6 +16,8 @@ export const fetch = function (act: String, param: Object = {}, options = false,
   // console.log(param)
   if (!act) Vue.$fun.warning('获取信息失败');
 
+  url = `/api/v1/${act}.html` // 替换url
+
   // @ts-ignore
   param.act = act;
   param.env = 'system';
@@ -61,12 +63,17 @@ export const fetch = function (act: String, param: Object = {}, options = false,
     window.funLoading = Loading.service(options)
   }
 
+  let {
+    onlyData = false// 是否直接返回data，方便结构赋值
+  } = options
+
 
   return new Promise(((resolve, reject) => {
 
     Vue.http[method](url, data, options).then(res=>{
       if(res.data.errorCode === 0){
-        resolve(res.data)
+        //resolve(res.data)
+        resolve(onlyData ? res.data.data : res.data)
       }else{
         reject(res.data)
       }
@@ -112,6 +119,7 @@ export const getProductDetail = (data:object={},options:any=false) => fetch('pro
 
 export const getProductList = (data:object={},options:any=false) => fetch('get_prod', data, options)
 
+export const bizProdCateList = (data:object={},options:any=false) => fetch('bizProdCateList', data, options)
 
 export const getPifaProductList = (data:object={},options:any=false) => fetch('get_pifa_store_prod', data, options)
 

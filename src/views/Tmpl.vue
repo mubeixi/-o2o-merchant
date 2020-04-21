@@ -76,7 +76,7 @@
     })
 
 
-    export default class Home extends Vue {
+    export default class Tmpl extends Vue {
 
         is_dev = isDev
         preUrl = ''
