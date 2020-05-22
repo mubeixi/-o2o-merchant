@@ -15,9 +15,9 @@
         <el-button size="mini" class="" type="primary" @click="batch(3)">批量重生二维码</el-button>
         <el-button size="mini" class="" type="primary" @click="batch(2)">批量上架</el-button>
         <el-button size="mini" class="" type="primary" @click="batch(1)">批量下架</el-button>
-        <el-button size="mini" class="" type="primary" @click="batch(5)">审核</el-button>
-        <el-button size="mini" class="" type="primary" @click="batch(6)">禁售</el-button>
-        <el-button size="mini" class="" type="primary" @click="batch(7)">删除</el-button>
+        <el-button size="mini" class="" type="primary" @click="batch(5)">批量审核</el-button>
+        <el-button size="mini" class="" type="primary" @click="batch(6)">批量禁售</el-button>
+        <el-button size="mini" class="" type="primary" @click="batch(7)">批量删除</el-button>
       </div>
       <fun-table
         :columns="dataTableOpt.columns"
@@ -433,14 +433,19 @@ export default class ProductList extends Vue {
   }
 
   agreePro(props){
-    let id =[]
-    id.push(props.row.Products_ID)
+    let pid =props.row.Products_ID
+
+    let data={
+      type:5,
+      ids:JSON.stringify([pid])
+    }
+
     this.$confirm('此操作将会审核，您确定吗？', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      batchSetting({ids:id,type:5}).then(res=>{
+      batchSetting(data).then(res=>{
         if(res.errorCode==0){
           this.$message({
             message: res.msg,
