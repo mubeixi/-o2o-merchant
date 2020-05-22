@@ -253,7 +253,10 @@
     async created(){
 
       const industry_id = this.$route.query.id
-      if(!industry_id)return;
+      if(!industry_id){
+        this.ready = true
+        return;
+      }
       this.id = industry_id
       getBizIndustryDetail({industry_id}).then(res => {
         const {pid, industry_name="顶级目录", industry_img= '', industry_form,weight=0,parent={}} =res.data
