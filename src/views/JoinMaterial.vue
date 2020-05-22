@@ -154,14 +154,16 @@
 
     async created(){
 
-      getBizConfig().then(res => {
+      await getBizConfig().then(res => {
         const {company=[],person=[]} =res.data.industry_form
         this.personData = person
         this.companyData = company
-        this.ready = true
+        
       }).catch(err => {
 
       })
+
+      this.ready = true
 
     }
 
