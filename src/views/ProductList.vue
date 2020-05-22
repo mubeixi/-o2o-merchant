@@ -67,7 +67,7 @@
         <template slot="operate-column" slot-scope="props">
 <!--          <span class="spans" @click="goEdit(props)">编辑</span>-->
           <span class="spans" @click="delProduct(props)">删除</span>
-          <span class="spans" @click="agreePro(props)">审核</span>
+          <span class="spans" @click="agreePro(props)" v-if="Number(activeName)===4">审核</span>
         </template>
       </fun-table>
     </div>
