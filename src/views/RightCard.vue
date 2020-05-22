@@ -1,193 +1,215 @@
 <template>
   <div class="labelManagement">
-      <fun-table
-        ref="funTableComp"
-        vkey="Products_ID"
-        :has="selectValue"
-        :showSave=true
-        :columns="dataTableOpt.columns"
-        :dataList="dataTableOpt.dataList"
-        :act="dataTableOpt.act"
-        :_totalCount="dataTableOpt.totalCount"
-        :_pageSize="dataTableOpt.pageSize"
-        :is_paginate="dataTableOpt.is_paginate"
-        :formSize="'small'"
-        :isRow="false"
-        @closeDialog="closeDialog"
-        @handleSizeChange="handleSizeChange"
-        @currentChange="currentChanges"
-        @selectVal="selectVal"
-        @submit="submit"
-        @reset="reset"
-      >
-        <template slot="coupons-column" slot-scope="props" >
-          <div v-for="(item,index) of props.row.coupons" :key="index">
-            优惠券名称：{{item.Coupon_Subject}}  满{{item.Coupon_Condition}}减{{item.Coupon_Cash}}元
-          </div>
-        </template>
-        <template slot="status-column"  slot-scope="props">
-          <span>{{props.row.status==1?'正常':'禁用'}}</span>
-        </template>
-      </fun-table>
+    <fun-table
+      ref="funTableComp"
+      vkey="Products_ID"
+      :has="selectValue"
+      :showSave=true
+      :columns="dataTableOpt.columns"
+      :dataList="dataTableOpt.dataList"
+      :act="dataTableOpt.act"
+      :_totalCount="dataTableOpt.totalCount"
+      :_pageSize="dataTableOpt.pageSize"
+      :is_paginate="dataTableOpt.is_paginate"
+      :formSize="'small'"
+      :isRow="false"
+      @closeDialog="closeDialog"
+      @handleSizeChange="handleSizeChange"
+      @currentChange="currentChanges"
+      @selectVal="selectVal"
+      @submit="submit"
+      @reset="reset"
+    >
+      <template slot="coupons-column" slot-scope="props" >
+        <div v-for="(item,index) of props.row.coupons" :key="index">
+          优惠券名称：{{item.Coupon_Subject}}  满{{item.Coupon_Condition}}减{{item.Coupon_Cash}}元
+        </div>
+      </template>
+      <template slot="status-column"  slot-scope="props">
+        <span>{{props.row.status==1?'正常':'禁用'}}</span>
+      </template>
+      <template slot="operate-column" slot-scope="props">
+        <span class="spans" @click="goEdit(props)">编辑</span>
+        <!--          <span class="spans" @click="delProduct(props)">删除</span>-->
+      </template>
+    </fun-table>
   </div>
 </template>
 
 <script lang="ts">
-  import {
-    Component,
-    Vue,
-    Watch
-  } from 'vue-property-decorator';
-  import UploadComponents from "@/components/comm/UploadComponents.vue";
-  import {findArrayIdx, plainArray, createTmplArray, objTranslate} from '@/common/utils';
-  import {
-    getRightsCard
-  } from '@/common/fetch'
-  @Component({
-    mixins:[],
-    components: {
-      UploadComponents
-    }
-  })
+import {
+  Component,
+  Vue,
+  Watch
+} from 'vue-property-decorator';
+import UploadComponents from "@/components/comm/UploadComponents.vue";
+import {findArrayIdx, plainArray, createTmplArray, objTranslate} from '@/common/utils';
+import {
+  getRightsCard
+} from '@/common/fetch'
+@Component({
+  mixins:[],
+  components: {
+    UploadComponents
+  }
+})
 
-  export default class RightCard extends Vue {
+export default class RightCard extends Vue {
 
-    closeDialog(){}
-    settingShow=false
-    cate=[]
-    dataTableOpt = {
-      act : 'get_self_store_prod',
-      dataList:[],
-      page:1,
-      totalCount:100,
-      pageSize:10,
-      is_paginate:true,//是否显示分页 默认显示
-      columns : [
-        {
-          prop: "card_name",
-          label: "名称",
-          value:'',
-          // width:120,
-          align:'center',
-          field: "card_name",
-          required: true,
-          search: {
-            type: 'input',
-            operate: 'like',
-          }
-        },
-        {
-          prop: "price",
-          label: "价格",
-          // width:120,
-          align:'center',
-          search: false
-        },
-        {
-          prop: "coupons",
-          label: "礼包",
-          // width:120,
-          align:'center',
-          search: false
-        },
-        {
-          prop: "created_at",
-          label: "创建时间",
-          align:'center',
-          // width:150,
-          search: false
-        },
-        {
-          prop: "status",
-          label: "状态",
-          align:'center',
-          value:'',
-          search: {
-            type: 'select',
-            operate: 'like',
-            option:[{label:'正常',value:1},{label:'禁用',value:0}]
-          }
+  goEdit(item){
+
+    this.$router.push({
+      name: 'RightCardDetail',
+      query: {
+        id:item.row.id
+      }
+    })
+  }
+
+
+  closeDialog(){}
+  settingShow=false
+  cate=[]
+  dataTableOpt = {
+    act : 'get_self_store_prod',
+    dataList:[],
+    page:1,
+    totalCount:100,
+    pageSize:10,
+    is_paginate:true,//是否显示分页 默认显示
+    columns : [
+      {
+        prop: "card_name",
+        label: "名称",
+        value:'',
+        // width:120,
+        align:'center',
+        field: "card_name",
+        required: true,
+        search: {
+          type: 'input',
+          operate: 'like',
         }
-      ]
+      },
+      {
+        prop: "price",
+        label: "价格",
+        // width:120,
+        align:'center',
+        search: false
+      },
+      {
+        prop: "coupons",
+        label: "礼包",
+        // width:120,
+        align:'center',
+        search: false
+      },
+      {
+        prop: "created_at",
+        label: "创建时间",
+        align:'center',
+        // width:150,
+        search: false
+      },
+      {
+        prop: "status",
+        label: "状态",
+        align:'center',
+        value:'',
+        search: {
+          type: 'select',
+          operate: 'like',
+          option:[{label:'正常',value:1},{label:'禁用',value:0}]
+        }
+      },
+      {
+        prop: "operate",
+        label: "操作",
+        align:'center',
+        width:150,
+        search: false
+      }
+    ]
+  }
+
+  selectValue=[]
+  productData=[]
+  //获取选中数据
+  selectVal(val,vals){
+    console.log(val,vals,"sssss")
+    this.selectValue=[]
+    this.productData=[]
+
+    for(let item of val){
+      this.productData.push(item)
+      if(this.selectValue.indexOf(item.Products_ID)==-1){
+        this.selectValue.push(item.Products_ID)
+        //this.productData.push(item)
+      }
     }
-
-    selectValue=[]
-    productData=[]
-    //获取选中数据
-    selectVal(val,vals){
-      console.log(val,vals,"sssss")
-      this.selectValue=[]
-      this.productData=[]
-
-      for(let item of val){
-        this.productData.push(item)
-        if(this.selectValue.indexOf(item.Products_ID)==-1){
-          this.selectValue.push(item.Products_ID)
-          //this.productData.push(item)
+    for(let it of  vals){
+      for(let i=0;i<this.selectValue.length;i++){
+        if(this.selectValue[i]==it.Products_ID){
+          this.selectValue.splice(i,1)
+          //this.productData.splice(i,1)
         }
       }
-      for(let it of  vals){
-        for(let i=0;i<this.selectValue.length;i++){
-          if(this.selectValue[i]==it.Products_ID){
-            this.selectValue.splice(i,1)
-            //this.productData.splice(i,1)
-          }
-        }
-      }
-
     }
-    //重置
-    reset(){
-      console.log("11111111")
-      for(let it in this.dataTableOpt.columns){
-        this.dataTableOpt.columns[it].value=''
-      }
-      this.selectValue=[]
-      this.getProduct()
-    }
-    //搜索
-    submit(){
-      this.getProduct()
-    }
-    //一页多少行
-    handleSizeChange(val){
-      this.dataTableOpt.pageSize=val
-      this.getProduct()
-    }
-    //当前页数
-    currentChanges(val){
-      this.dataTableOpt.page=val
-      this.getProduct()
-    }
-      getProduct(){
-      let nameIdx = findArrayIdx(this.dataTableOpt.columns,{prop:'card_name'})
-      let oattrIdx = findArrayIdx(this.dataTableOpt.columns,{prop:'status'})
-      let data={
-        pageSize: this.dataTableOpt.pageSize,
-        page:this.dataTableOpt.page,
-        card_name:this.dataTableOpt.columns[nameIdx].value,
-        //status:this.dataTableOpt.columns[oattrIdx].value,
-        store_id:''
-      }
-      if(this.dataTableOpt.columns[oattrIdx].value===1||this.dataTableOpt.columns[oattrIdx].value===0){
-        data.status=this.dataTableOpt.columns[oattrIdx].value
-      }
-
-
-      getRightsCard(data).then(res=>{
-        if(res.errorCode==0){
-          this.dataTableOpt.dataList=res.data
-          this.dataTableOpt.totalCount=res.totalCount
-        }
-      })
-    }
-
-    async created(){
-      this.getProduct()
-    }
-
 
   }
+  //重置
+  reset(){
+    console.log("11111111")
+    for(let it in this.dataTableOpt.columns){
+      this.dataTableOpt.columns[it].value=''
+    }
+    this.selectValue=[]
+    this.getProduct()
+  }
+  //搜索
+  submit(){
+    this.getProduct()
+  }
+  //一页多少行
+  handleSizeChange(val){
+    this.dataTableOpt.pageSize=val
+    this.getProduct()
+  }
+  //当前页数
+  currentChanges(val){
+    this.dataTableOpt.page=val
+    this.getProduct()
+  }
+  getProduct(){
+    let nameIdx = findArrayIdx(this.dataTableOpt.columns,{prop:'card_name'})
+    let oattrIdx = findArrayIdx(this.dataTableOpt.columns,{prop:'status'})
+    let data={
+      pageSize: this.dataTableOpt.pageSize,
+      page:this.dataTableOpt.page,
+      card_name:this.dataTableOpt.columns[nameIdx].value,
+      //status:this.dataTableOpt.columns[oattrIdx].value,
+      store_id:''
+    }
+    if(this.dataTableOpt.columns[oattrIdx].value===1||this.dataTableOpt.columns[oattrIdx].value===0){
+      data.status=this.dataTableOpt.columns[oattrIdx].value
+    }
+
+
+    getRightsCard(data).then(res=>{
+      if(res.errorCode==0){
+        this.dataTableOpt.dataList=res.data
+        this.dataTableOpt.totalCount=res.totalCount
+      }
+    })
+  }
+
+  async created(){
+    this.getProduct()
+  }
+
+
+}
 
 </script>
 
@@ -386,6 +408,11 @@
   .myProduct /deep/ .el-dialog{
     height: 600px;
     overflow: auto;
+  }
+  .spans{
+    color:#428CF7;
+    margin-right:4px;
+    cursor:pointer;
   }
 
 </style>
