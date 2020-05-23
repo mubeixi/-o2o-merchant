@@ -142,6 +142,11 @@
 
       updateBizConfig(postData).then(res => {
         fun.success({msg:'修改成功'})
+        setTimeout(function () {
+          window.location.href=window.parent.location.origin+'/member/biz/biz_industry.php'
+        },1000)
+
+
       }).catch(()=>{
 
       })
@@ -158,7 +163,7 @@
         const {company=[],person=[]} =res.data.industry_form
         this.personData = person
         this.companyData = company
-        
+
       }).catch(err => {
 
       })

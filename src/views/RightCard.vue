@@ -1,10 +1,14 @@
 <template>
   <div class="labelManagement">
+
+    <div class="padding10">
+              <el-button size="mini" class="" type="primary" @click="goProduct">添加权益卡</el-button>
+    </div>
     <fun-table
       ref="funTableComp"
       vkey="Products_ID"
       :has="selectValue"
-      :showSave=true
+      :isSelect="false"
       :columns="dataTableOpt.columns"
       :dataList="dataTableOpt.dataList"
       :act="dataTableOpt.act"
@@ -63,6 +67,11 @@ export default class RightCard extends Vue {
       query: {
         id:item.row.id
       }
+    })
+  }
+  goProduct(){
+    this.$router.push({
+      name: 'RightCardDetail'
     })
   }
 
@@ -214,6 +223,9 @@ export default class RightCard extends Vue {
 </script>
 
 <style scoped lang="less">
+  .labelManagement{
+    padding: 20px;
+  }
   .labelMain{
     padding: 20px 0px;
     .marginLR{
