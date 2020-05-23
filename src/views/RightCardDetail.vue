@@ -85,7 +85,6 @@
         ref="funTableComp"
         vkey="Coupon_ID"
         :has.sync="selectValue"
-        :showSave=true
         :columns="dataTableOpt.columns"
         :dataList="dataTableOpt.dataList"
         :_totalCount="dataTableOpt.totalCount"
@@ -101,6 +100,9 @@
         @reset="reset"
       >
       </fun-table>
+      <div class="myButton" >
+        <el-button size="small" type="primary" @click="closeDialog">保存</el-button>
+      </div>
     </el-dialog>
 
 
@@ -389,6 +391,7 @@
     border-radius:5px;
     font-size: 14px;
     color: #FFFFFF;
+    cursor: pointer;
   }
   .tui-btn{
     cursor: pointer;
@@ -491,5 +494,11 @@
     margin-left: 22px;
   }
 
+  .myButton{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
 
 </style>

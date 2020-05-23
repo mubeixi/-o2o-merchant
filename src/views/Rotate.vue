@@ -41,7 +41,7 @@
               <div class="rotateDiv" >
                 <el-form-item label="奖品设置：" >
                   <el-select :disabled="!editCan" v-model="item.type" placeholder="请选择奖品" @change="changeSelect(index)" style="width: 130px">
-                    <el-option label="赠品" value="gift"></el-option>
+<!--                    <el-option label="赠品" value="gift"></el-option>-->
                     <el-option label="优惠券" value="coupon"></el-option>
                     <el-option label="积分" value="score"></el-option>
                   </el-select>
@@ -226,7 +226,7 @@
     } from 'vuex-class'
     import fa from "element-ui/src/locale/lang/fa";
     import {
-        getGivingGifts,getGivingCoupons,addTurn,getTurn
+        getGivingGifts,getCouponLists,addTurn,getTurn,getCouponList
     } from '@/common/fetch';
     import {findArrayIdx, plainArray, createTmplArray, objTranslate} from '@/common/utils';
     @Component({
@@ -243,8 +243,8 @@
         day_count=''
         dateValue=[]
         describe='1、抽中积分，将直接赠送到您的积分账户，可在个人中心>积分中查看。\n' +
-            '2、抽中赠品，请点击个人中心>赠品中心进行领取\n' +
-            '3、抽中优惠券，将直接赠送到您的优惠券账户，可在个人中心>优惠券查看，也可直接购买商品抵扣'//活动描述
+            // '2、抽中赠品，请点击个人中心>赠品中心进行领取\n' +
+            '2、抽中优惠券，将直接赠送到您的优惠券账户，可在个人中心>优惠券查看，也可直接购买商品抵扣\n'//活动描述
 
         rotateList=[{
             type:'score',
@@ -329,11 +329,13 @@
         }
         searchLists(){
             let data={
+                status:1,
+                front_show:2,
                 page:this.pages,
                 pageSize:this.pageSizes,
                 cou_name:this.nameMbxs
             }
-            getGivingCoupons(data).then(res=>{
+            getCouponLists(data).then(res=>{
                 if(res.errorCode==0){
                     this.GivingGiftss=res.data;
                 }
