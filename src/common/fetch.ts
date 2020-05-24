@@ -86,7 +86,7 @@ export const fetch = function (act: String, param: Object = {}, options = false,
 
 };
 
-
+export const getActiveInfo = (data:object={},options:any=false)=> fetch('getActiveInfo', data, options)
 export const bizProdList = (data:object={},options:any=false)=> fetch('bizProdList', data, options)
 export const opRightsCard = (data:object={},options:any=false)=> fetch('opRightsCard', data, options)
 export const opActive = (data:object={},options:any=false)=> fetch('opActive', data, options)
