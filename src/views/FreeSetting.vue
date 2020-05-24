@@ -5,7 +5,7 @@
         <div>活动状态</div>
         <el-switch v-model="status"></el-switch>
       </div>
-      <el-form ref="form"  label-width="180px">
+      <el-form ref="form"  label-width="180px" v-if="status">
         <el-form-item label="活动时间：">
           <el-date-picker
             v-model="value2"
@@ -52,7 +52,7 @@
           <!--                </div>-->
           <!--              </div>-->
           <div>
-            <el-checkbox label=2 v-model="miss_free3" :disabled="miss_free1.length>0">送优惠卷</el-checkbox> <span  v-if="miss_free3.length>0" class="select" @click="openCoupon">选择优惠券</span>
+            <el-checkbox label=2 v-model="miss_free3" :disabled="miss_free1.length>0"  >送优惠卷</el-checkbox> <span  v-if="miss_free3.length>0" class="select" @click="openCoupon">选择优惠券</span>
             <div v-if="miss_free3.length>0">
               <div class="coupons"  v-for="(item,index) of productData" :key="index">
                 {{item.Coupon_Subject}}
@@ -93,7 +93,7 @@
       </el-form>
     </div>
 
-    <div class="submit-div">
+    <div class="submit-div" v-if="status">
       <div class="submit" @click="saveActive">保存</div>
     </div>
 
@@ -113,7 +113,6 @@
         ref="funTableComp"
         vkey="Coupon_ID"
         :has.sync="selectValue"
-        :showSave=true
         :columns="dataTableOpt.columns"
         :dataList="dataTableOpt.dataList"
         :_totalCount="dataTableOpt.totalCount"
@@ -129,6 +128,9 @@
         @reset="reset"
       >
       </fun-table>
+      <div class="myButton" >
+        <el-button size="small" type="primary" @click="isShow=false">保存</el-button>
+      </div>
     </el-dialog>
 
 
@@ -146,7 +148,6 @@
         ref="funTableComps"
         vkey="Products_ID"
         :has.sync="selectValues"
-        :showSave=true
         :columns="dataTableOpts.columns"
         :dataList="dataTableOpts.dataList"
         :_totalCount="dataTableOpts.totalCount"
@@ -162,6 +163,9 @@
         @reset="resets"
       >
       </fun-table>
+      <div class="myButton" >
+        <el-button size="small" type="primary" @click="isShows=false">保存</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -172,7 +176,7 @@ import {
   Vue,
   Watch
 } from 'vue-property-decorator';
-import  {getCouponLists,getProductList,opActive} from '@/common/fetch'
+import  {getCouponLists,getProductList,opActive,getActiveInfo} from '@/common/fetch'
 import {findArrayIdx, plainArray, createTmplArray, objTranslate} from '@/common/utils';
 @Component({
   mixins:[],
@@ -360,7 +364,7 @@ export default class FreeSetting extends Vue {
     this.dataTableOpt.page=val
     this.getProduct()
   }
-  getProduct(){
+  getProduct(item){
     let data={
       pageSize: this.dataTableOpt.pageSize,
       page:this.dataTableOpt.page,
@@ -370,6 +374,9 @@ export default class FreeSetting extends Vue {
     }
 
     getCouponLists(data).then(res=>{
+      if(item=='init'){
+        this.init()
+      }
       if(res.errorCode==0){
         this.dataTableOpt.dataList=res.data
         this.dataTableOpt.totalCount=res.totalCount
@@ -380,8 +387,14 @@ export default class FreeSetting extends Vue {
 
   isShows=false
   //商品选择
+
   changeStatus(index){
-    this.productDatas[index].checked=!this.productDatas[index].checked
+
+    //this.productDatas[index].checked=!this.productDatas[index].checked
+    this.$set(this.productDatas[index],'checked',!this.productDatas[index].checked)
+    this.productDatas.push({})
+    this.productDatas.pop()
+
   }
   openPro(){
     this.isShows=true;
@@ -498,7 +511,7 @@ export default class FreeSetting extends Vue {
     this.dataTableOpts.page=val
     this.getProducts()
   }
-  getProducts(){
+  getProducts(item){
     let nameIdx = findArrayIdx(this.dataTableOpts.columns,{prop:'Products_Name'})
     let data={
       pageSize: this.dataTableOpts.pageSize,
@@ -507,17 +520,108 @@ export default class FreeSetting extends Vue {
     }
 
     getProductList(data).then(res=>{
+      if(item=='init'){
+        this.init()
+      }
       if(res.errorCode==0){
         this.dataTableOpts.dataList=res.data
         this.dataTableOpts.totalCount=res.totalCount
       }
     })
   }
+  activeData={}
+  init(){
+
+    getActiveInfo({type:'freeorder'}).then(res=>{
+          this.activeData=res.data
+          let initData=this.activeData.active_info
+          if(initData){
+            this.first=initData.probability.first
+            this.after=initData.probability.after
+            this.top_free=initData.top_free
+            this.descr=this.activeData.descr
+            this.status=this.activeData.status==1?true:false
+
+            this.value2=[]
+            this.value2[0]=this.format(this.activeData.start_time*1000)
+            this.value2[1]=this.format(this.activeData.end_time*1000)
+
+            if(initData.miss_free.act==2){
+              this.miss_free3=['2']
+              if(initData.miss_free.value.length>1){
+                this.selectValue=initData.miss_free.value.split(',')
+              }else{
+                this.selectValue=[Number(initData.miss_free.value)]
+              }
+              this.productData=[]
+              for(let item of this.dataTableOpt.dataList){
+                for(let it of this.selectValue){
+                  if(item.Coupon_ID==it){
+                    this.productData.push(item)
+                  }
+                }
+              }
+
+            }else if(initData.miss_free.act==0){
+              this.miss_free1=['0']
+            }
+          }
+        let prod_id=[]
+        let checkId=[]
+         if( initData.prod_id!=''){
+           let arr=initData.prod_id.split(',')
+           prod_id=[...arr]
+         }
+         if(initData.recommend_prod_id!=''){
+           let arr=initData.recommend_prod_id.split(',')
+           checkId=[...arr]
+           prod_id=[...arr]
+         }
+      this.productDatas=[]
+      for(let item of this.dataTableOpts.dataList){
+        for(let it of prod_id){
+          if(item.Products_ID==it){
+            item.checked=false
+            this.productDatas.push(item)
+          }
+        }
+      }
+
+      for(let item of this.productDatas){
+        for(let it of checkId){
+          if(item.Products_ID==it){
+            item.checked=true
+          }
+        }
+      }
 
 
-  created(){
-    this.getProduct()
-    this.getProducts()
+
+
+    }).catch(e=>{
+      this.$notify.error({
+        title: '错误',
+        message: e.msg
+      })
+    })
+  }
+
+  addTime(m){return m<10?'0'+m:m }
+  format(shijianchuo) {
+    var time = new Date(shijianchuo);
+    var y = time.getFullYear();
+    var m = time.getMonth()+1;
+    var d = time.getDate();
+    var h = time.getHours();
+    var mm = time.getMinutes();
+    var s = time.getSeconds();
+    return y+'-'+this.addTime(m)+'-'+this.addTime(d)+' '+this.addTime(h)+':'+this.addTime(mm)+':'+this.addTime(s);
+  }
+
+  async created(){
+    await this.getProduct('init')
+    await this.getProducts('init')
+
   }
 
 
@@ -546,6 +650,7 @@ export default class FreeSetting extends Vue {
     border-radius:5px;
     font-size: 14px;
     color: #FFFFFF;
+    cursor: pointer;
   }
   .tui-btn{
     cursor: pointer;
@@ -599,8 +704,8 @@ export default class FreeSetting extends Vue {
   }
 
   .free-all{
-    background-color: #F8F8F8;
-    padding: 20px 0px 0px 20px;
+    background-color: #FFFFFF;
+    padding: 20px 0px 40px 20px;
     box-sizing: border-box;
   }
   .free-content{
@@ -648,5 +753,10 @@ export default class FreeSetting extends Vue {
     margin-left: 22px;
   }
 
-
+  .myButton{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
 </style>
