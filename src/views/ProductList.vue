@@ -65,9 +65,9 @@
           <span>{{props.row.Products_Sales}}/{{props.row.Products_Count}}</span>
         </template>
         <template slot="operate-column" slot-scope="props">
-<!--          <span class="spans" @click="goEdit(props)">编辑</span>-->
+          <span class="spans" @click="goEdit(props)">查看</span>
           <span class="spans" @click="delProduct(props)">删除</span>
-          <span class="spans" @click="agreePro(props)" v-if="Number(activeName)===4">审核</span>
+          <span class="spans" @click="agreePro(props)" v-if="Number(activeName)===4||Number(activeName)===5">审核</span>
         </template>
       </fun-table>
     </div>
@@ -432,33 +432,33 @@ export default class ProductList extends Vue {
 
   }
 
-  agreePro(props){
-    let pid =props.row.Products_ID
-
-    let data={
-      type:5,
-      ids:JSON.stringify([pid])
-    }
-
-    this.$confirm('此操作将会审核，您确定吗？', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }).then(() => {
-      batchSetting(data).then(res=>{
-        if(res.errorCode==0){
-          this.$message({
-            message: res.msg,
-            type: 'success'
-          });
-          this.getProduct()
-        }
-      })
-
-    }).catch(() => {
-
-    });
-  }
+  // agreePro(props){
+  //   let pid =props.row.Products_ID
+  //
+  //   let data={
+  //     type:5,
+  //     ids:JSON.stringify([pid])
+  //   }
+  //
+  //   this.$confirm('此操作将会审核，您确定吗？', '提示', {
+  //     confirmButtonText: '确定',
+  //     cancelButtonText: '取消',
+  //     type: 'warning'
+  //   }).then(() => {
+  //     batchSetting(data).then(res=>{
+  //       if(res.errorCode==0){
+  //         this.$message({
+  //           message: res.msg,
+  //           type: 'success'
+  //         });
+  //         this.getProduct()
+  //       }
+  //     })
+  //
+  //   }).catch(() => {
+  //
+  //   });
+  // }
 
   //删除
   delProduct(props) {
@@ -488,7 +488,18 @@ export default class ProductList extends Vue {
     this.$router.push({
       name: 'product',
       query: {
-        prod_id: props.row.Products_ID
+        prod_id: props.row.Products_ID,
+        biz_id: props.row.biz_id,
+        isLook:1
+      }
+    })
+  }
+  agreePro(props){
+    this.$router.push({
+      name: 'product',
+      query: {
+        prod_id: props.row.Products_ID,
+        biz_id: props.row.biz_id
       }
     })
   }

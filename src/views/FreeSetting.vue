@@ -68,7 +68,7 @@
           <div class="give-div" style="margin-left: -90px" v-if="productDatas.length>0">
             <div class="give-div-item flex flex-align-c" style="width: 660px"   v-for="(item,index) of productDatas" :key="index">
               <img class="imgs" :src="item.ImgPath" >
-              <span style="width: 400px;overflow-x: hidden">{{item.Coupon_Subject}}</span>
+              <span style="width: 400px;overflow-x: hidden">{{item.Products_Name}}</span>
               <div class="tui-btn disableds" v-if="item.checked" @click="changeStatus(index)">取消推荐</div>
               <div class="tui-btn " v-else  @click="changeStatus(index)">推荐</div>
               <el-tooltip class="item" effect="dark" content="Top Left 提示文字" placement="top-start"  v-if="!item.checked">
@@ -253,6 +253,9 @@ export default class FreeSetting extends Vue {
         message: res.msg,
         type: 'success'
       })
+      setTimeout(function () {
+        this.init()
+      },1000)
     }).catch(e=>{
       console.log(e,"ss")
     })
@@ -570,13 +573,18 @@ export default class FreeSetting extends Vue {
         let checkId=[]
          if( initData.prod_id!=''){
            let arr=initData.prod_id.split(',')
-           prod_id=[...arr]
+           for(let item of arr){
+             prod_id.push(item)
+           }
          }
          if(initData.recommend_prod_id!=''){
            let arr=initData.recommend_prod_id.split(',')
            checkId=[...arr]
-           prod_id=[...arr]
+           for(let item of arr){
+             prod_id.push(item)
+           }
          }
+         console.log(prod_id,"sss")
       this.productDatas=[]
       for(let item of this.dataTableOpts.dataList){
         for(let it of prod_id){

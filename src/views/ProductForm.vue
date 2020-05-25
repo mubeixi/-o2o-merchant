@@ -4,7 +4,7 @@
         <span class="menusetText">发布商品</span>
     </div>
 
-    <el-form size="small" :model="ruleForm" :rules="rules" ref="ruleForm" :inline-message="true" label-width="120px"   class="ruleForm">
+    <el-form size="small" :model="ruleForm" :rules="rules" ref="ruleForm" :inline-message="true" label-width="120px"   class="ruleForm" :disabled="onlyLook">
       <el-alert
         v-if="textTitle"
         style="margin-bottom: 10px"
@@ -23,7 +23,8 @@
       </el-form-item>
 
       <el-form-item label="商品分类">
-          <span class="classificationSpan" @click="bindCateDialogShow=true">选择分类</span>
+<!--        @click="bindCateDialogShow=true"-->
+          <span class="classificationSpan" >选择分类</span>
       </el-form-item>
       <div class="group cate_list" style="margin-left: 120px;margin-bottom: 22px;" v-if="cate_list.length>0">
         <span class="cate_item" v-for="(cate,idx) in show_cate_list">{{cate.Category_Name}}</span>
@@ -46,37 +47,51 @@
         </el-form-item>
       </el-form-item>
 
-      <el-form-item label="拼团" prop="type" style="margin-bottom: 10px">
-        <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.pintuan_flag">
-          <el-checkbox v-model="ruleForm.pintuan_flag" :disabled="noEditField.pintuan_flag"  name="group">是否参与拼团</el-checkbox>
+<!--      <el-form-item label="拼团" prop="type" style="margin-bottom: 10px">-->
+<!--        <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.pintuan_flag">-->
+<!--          <el-checkbox v-model="ruleForm.pintuan_flag" :disabled="noEditField.pintuan_flag"  name="group">是否参与拼团</el-checkbox>-->
+<!--        </el-tooltip>-->
+<!--      </el-form-item>v-if="ruleForm.pintuan_flag"-->
+
+
+      <el-form-item label="拼团人数" >
+        <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.pintuan_people">
+          <el-input v-model.number="ruleForm.pintuan_people" :disabled="noEditField.pintuan_people"   class="sortInput"></el-input>
+        </el-tooltip>
+      </el-form-item>
+      <el-form-item label="拼团价格" >
+        <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.pintuan_pricex">
+          <el-input v-model="ruleForm.pintuan_pricex" :disabled="noEditField.pintuan_pricex"   class="sortInput"></el-input>
         </el-tooltip>
       </el-form-item>
 
 
 
-      <div class="group" style="margin-left: 120px;margin-bottom: 22px;" v-if="ruleForm.pintuan_flag">
-        <el-form-item label="拼团人数" prop="pintuan_people" style="margin-bottom: 0px">
-          <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.pintuan_people">
-            <el-input v-model.number="ruleForm.pintuan_people" :disabled="noEditField.pintuan_people"   class="sortInput"></el-input>
-          </el-tooltip>
-        </el-form-item>
-        <el-form-item label="拼团价格" prop="pintuan_pricex"  style="margin-left: 43px;margin-bottom: 0px">
-          <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.pintuan_pricex">
-            <el-input v-model="ruleForm.pintuan_pricex" :disabled="noEditField.pintuan_pricex"   class="sortInput"></el-input>
-          </el-tooltip>
-        </el-form-item>
-        <el-form-item label="截止时间" prop="pintuan_end_time" style="margin-left: 43px;margin-bottom: 0px">
-          <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.pintuan_end_time">
-            <el-date-picker
-              v-model="ruleForm.pintuan_end_time"
-              :disabled="noEditField.pintuan_end_time"
-              type="datetime"
-              placeholder="选择日期时间"
-              style="width: 200px" >
-            </el-date-picker>
-          </el-tooltip>
-        </el-form-item>
-      </div>
+
+
+<!--      <div class="group" style="margin-bottom: 22px;" >-->
+<!--        <el-form-item label="拼团人数" prop="pintuan_people" style="margin-bottom: 0px">-->
+<!--          <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.pintuan_people">-->
+<!--            <el-input v-model.number="ruleForm.pintuan_people" :disabled="noEditField.pintuan_people"   class="sortInput"></el-input>-->
+<!--          </el-tooltip>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="拼团价格" prop="pintuan_pricex"  style="margin-left: 43px;margin-bottom: 0px">-->
+<!--          <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.pintuan_pricex">-->
+<!--            <el-input v-model="ruleForm.pintuan_pricex" :disabled="noEditField.pintuan_pricex"   class="sortInput"></el-input>-->
+<!--          </el-tooltip>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="截止时间" prop="pintuan_end_time" style="margin-left: 43px;margin-bottom: 0px">-->
+<!--          <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.pintuan_end_time">-->
+<!--            <el-date-picker-->
+<!--              v-model="ruleForm.pintuan_end_time"-->
+<!--              :disabled="noEditField.pintuan_end_time"-->
+<!--              type="datetime"-->
+<!--              placeholder="选择日期时间"-->
+<!--              style="width: 200px" >-->
+<!--            </el-date-picker>-->
+<!--          </el-tooltip>-->
+<!--        </el-form-item>-->
+<!--      </div>-->
 
       <el-form-item label="商品利润" prop="Products_Profit">
         <el-input v-model="ruleForm.Products_Profit" :disabled="noEditField.Products_Profit"   class="sortInput sortInputs" ></el-input>
@@ -98,18 +113,18 @@
 
               <div class="row">
                 <span title="查看图片" class="icon __item-preview" @click="onPreviewFn(img)"><i class="el-icon-zoom-in"></i></span>
-                <span title="删除图片" class="icon __item-delete" @click="doRemoveThumb(idx)"><i class="el-icon-delete"></i></span>
+<!--                <span title="删除图片" class="icon __item-delete" @click="doRemoveThumb(idx)"><i class="el-icon-delete"></i></span>-->
               </div>
-              <div class="row">
-                <span title="向右移动图片" class="icon __item-pre" v-if="idx!=0" @click="prevFn(img,idx)"><i class="el-icon-back"></i></span>
-                <span title="向左移动图片" class="icon __item-next" v-if="idx!=(thumb.length-1)" @click="nextFn(img,idx)"><i class="el-icon-right"></i></span>
-              </div>
+<!--              <div class="row">-->
+<!--                <span title="向右移动图片" class="icon __item-pre" v-if="idx!=0" @click="prevFn(img,idx)"><i class="el-icon-back"></i></span>-->
+<!--                <span title="向左移动图片" class="icon __item-next" v-if="idx!=(thumb.length-1)" @click="nextFn(img,idx)"><i class="el-icon-right"></i></span>-->
+<!--              </div>-->
             </div>
           </div>
         </div>
-        <div class="js-finder-label" v-if="thumb.length<5" @click="openFinderByThumb">
-          <i class="el-icon-plus" ></i>
-        </div>
+<!--        <div class="js-finder-label" v-if="thumb.length<5" @click="openFinderByThumb">-->
+<!--          <i class="el-icon-plus" ></i>-->
+<!--        </div>-->
 <!--        <upload-components-->
 <!--          size="mini"-->
 <!--          ref="thumb"-->
@@ -127,13 +142,13 @@
                 <video class="img" :src="video" ></video>
                 <div class="actions">
                   <span class="__item-preview" @click="onPreviewFn(video,'video')"><i class="el-icon-zoom-in"></i></span>
-                  <span class="__item-delete" @click="video=''"><i class="el-icon-delete"></i></span>
+<!--                  <span class="__item-delete" @click="video=''"><i class="el-icon-delete"></i></span>-->
                 </div>
               </div>
             </div>
-            <div class="js-finder-label" v-if="!video" @click="openFinderByVideo">
-              <i class="el-icon-plus" ></i>
-            </div>
+<!--            <div class="js-finder-label" v-if="!video" @click="openFinderByVideo">-->
+<!--              <i class="el-icon-plus" ></i>-->
+<!--            </div>-->
 <!--            <upload-components-->
 <!--              type="video"-->
 <!--              ref="video"-->
@@ -154,7 +169,8 @@
                 </div>
               </div>
             </div>
-            <div class="js-finder-label" v-if="!imgs" @click="openFinderByVideoCover">
+<!--             @click="openFinderByVideoCover"-->
+            <div class="js-finder-label" v-if="!imgs">
               <i class="el-icon-plus" ></i>
             </div>
 <!--            <upload-components-->
@@ -309,7 +325,7 @@
                 <i class="el-icon-error"></i>
               </div>
         </div>
-        <span class="margin15-c" style="cursor: pointer;color: #428CF7" @click="committedAdd">添加承诺</span>
+<!--        <span class="margin15-c" style="cursor: pointer;color: #428CF7" @click="committedAdd">添加承诺</span>-->
       </el-form-item>
 
       <el-form-item label="商品重量" prop="Products_Weight">
@@ -414,7 +430,7 @@
             </span>
 
           </template>
-          <span @click="selectCoupon"  class="lst-q">选择优惠券</span>
+<!--          <span @click="selectCoupon"  class="lst-q">选择优惠券</span>-->
           <span class="sortMsg">注：订单支付成功后发放</span>
         </div>
       </el-form-item>
@@ -437,7 +453,7 @@
           </template>
         </el-select>
       </el-form-item>
-      <el-form-item label="商品详情">
+      <el-form-item label="商品详情" style="margin-bottom: 0">
         <div style="padding-right: 200px">
           <wzw-editor ref="richtext" :content.sync="editorText"    @on-content-change="onContentChange"></wzw-editor>
 <!--          <kind-editor id="container" height="400px" width="800px" :content.sync="editorText"-->
@@ -446,8 +462,25 @@
 <!--                      @on-content-change="onContentChange" />-->
         </div>
       </el-form-item>
+
+    </el-form>
+
+    <el-form size="small"  ref="ruleForms" :inline-message="true" label-width="120px" :disabled="isLook"   style="background-color: #FFFFFF;padding-left: 32px;padding-top: 10px">
+      <el-form-item label="审核状态:" prop="goods" >
+        <el-radio-group v-model="Products_Status">
+          <el-radio label="-1" style="display: inline-block"  >
+            驳回
+          </el-radio>
+          <el-radio label="1" style="display: inline-block"  >
+            审核通过
+          </el-radio>
+        </el-radio-group>
+      </el-form-item>
+
+
       <div style="height: 80px;width: 100%;background-color: #ffffff"></div>
     </el-form>
+
 
     <div class="bottomFixed">
       <el-button size="small" type="primary" :loading="isLoading" @click="submitForm('ruleForm')">提交保存</el-button>
@@ -741,7 +774,8 @@
         virtualCardType,
         virtualCardList,
         getShippingTemplate,
-        getGivingCoupons
+        getGivingCoupons,
+      getCouponLists
     } from '@/common/fetch'
     import _ from 'underscore';
     import {
@@ -896,6 +930,7 @@
             this.getProduct()
         }
         getProduct(){
+          return
             let id = this.$route.query.prod_id;
             let data={
                 pageSize: this.dataTableOpt.pageSize,
@@ -1498,6 +1533,7 @@
             // }
 
         }
+        Products_Status=''
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
@@ -1525,12 +1561,25 @@
                     if(this.ruleForm.Products_Type==''&&this.ruleForm.Products_Type!=0){
                         this.$message({
                             type: 'error',
-                            message: `请选择商品类型1`
+                            message: `请选择商品类型`
                         });
                         this.isLoading=false;
                         return
                     }
+                  let biz_id = this.$route.query.biz_id;
+                    if(this.Products_Status==0){
+                      this.$message({
+                        type: 'error',
+                        message: `请勾选商品审核状态`
+                      });
+                      this.isLoading=false;
+                      return
+                    }
                     let productInfo:object = {
+                        Products_Status:this.Products_Status,
+                        biz_id:biz_id,
+                        pintuan_pricex: this.ruleForm.pintuan_pricex,
+                        pintuan_people: this.ruleForm.pintuan_people,
                         Products_Index:this.ruleForm.Products_Index,//商品排序
                         Products_Name:this.ruleForm.Products_Name,//商品名称
                         Products_Category:this.cate_ids,//商品分类
@@ -1970,8 +2019,8 @@
             }
 
         }
-
-
+        onlyLook=true
+        isLook=false
         async created(){
 
             const loadingObj = this.$loading({
@@ -1981,7 +2030,13 @@
                 background: 'rgba(0, 0, 0, 0.3)'
             })
 
-            await systemProdConfig().then(res=>{
+          let biz_id = this.$route.query.biz_id;
+          let isLook = this.$route.query.isLook
+          if(isLook==1){
+            this.isLook=true
+          }
+
+            await systemProdConfig({biz_id:biz_id}).then(res=>{
                 this.prodConfig=res.data;
                 this.prodConfig.prod_type_list.unshift({Attr_ID: 0,
                     Attr_Name: [],
@@ -2066,7 +2121,7 @@
 
                 //优惠券
                 this.selectValue=productInfo.coupon_present.split(',')
-                getGivingCoupons({pageSize:9999,page:1}).then(res=>{
+              getCouponLists({pageSize:9999,page:1,front_show: 2, status:1}).then(res=>{
                     if(res.errorCode==0){
                         let data=res.data
                         this.productData=[]
@@ -2081,6 +2136,9 @@
                 })
 
               console.log(productInfo)
+              this.Products_Status=String(productInfo.Products_Status)
+              this.ruleForm.pintuan_pricex=productInfo.pintuan_pricex
+              this.ruleForm.pintuan_people=productInfo.pintuan_people
               this.parent_commi=String(productInfo.commi_type.parent_commi)
               this.self_commi=String(productInfo.commi_type.self_commi)
               this.manage_commi=String(productInfo.commi_type.manage_commi)
