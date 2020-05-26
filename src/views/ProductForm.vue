@@ -410,7 +410,7 @@
           <el-form-item label="全部会员" style="margin-left: -30px">
               <el-select  sizi="mini"  placeholder="请选择"  v-model="vipType"  style="width: 100px">
                 <template v-for="(shop,shopIn) in prodConfig.prod_limit_type">
-                  <el-option :label="shop" :value="shopIn"></el-option>
+                  <el-option :label="shop.name" :value="shop.id" :key="shopIn"></el-option>
                 </template>
               </el-select>
           </el-form-item>
