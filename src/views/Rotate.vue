@@ -333,7 +333,9 @@
                 front_show:2,
                 page:this.pages,
                 pageSize:this.pageSizes,
-                cou_name:this.nameMbxs
+                cou_name:this.nameMbxs,
+                biz_id:-1,
+                front_show:2
             }
             getCouponLists(data).then(res=>{
                 if(res.errorCode==0){

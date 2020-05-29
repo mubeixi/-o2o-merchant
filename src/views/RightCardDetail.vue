@@ -311,7 +311,8 @@
         page:this.dataTableOpt.page,
         User_ID:'',
         front_show: 2,
-        status:1
+        status:1,
+        biz_id:-1
       }
 
       getCouponLists(data).then(res=>{
