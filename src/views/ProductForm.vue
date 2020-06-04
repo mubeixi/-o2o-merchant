@@ -3,6 +3,19 @@
     <div class="menuset">
         <span class="menusetText">发布商品</span>
     </div>
+    <el-form size="small"  ref="ruleForms" :inline-message="true" label-width="120px" :disabled="isLook"   class="rule-top">
+      <el-form-item label="审核状态:" prop="goods"  style="margin-bottom: 0px;padding-top: 20px">
+        <el-radio-group v-model="Products_Status">
+          <el-radio label="-1" style="display: inline-block"  >
+            驳回
+          </el-radio>
+          <el-radio label="1" style="display: inline-block"  >
+            审核通过
+          </el-radio>
+        </el-radio-group>
+      </el-form-item>
+
+    </el-form>
 
     <el-form size="small" :model="ruleForm" :rules="rules" ref="ruleForm" :inline-message="true" label-width="120px"   class="ruleForm" :disabled="onlyLook">
       <el-alert
@@ -194,66 +207,72 @@
 
       <el-form-item label="商品类型" prop="Products_Type" title="请输入活动">
         <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" >
-          <el-select  v-model="ruleForm.Products_Type" placeholder="请选择类型" :disabled="noEditField.Products_Type"  style="width: 160px">
-            <template v-for="(it,ind_con) of prodConfig.prod_type_list">
-              <el-option :label="it.Type_Name" :value="it.Type_ID" ></el-option>
-            </template>
-          </el-select>
+<!--          <el-select  v-model="ruleForm.Products_Type" placeholder="请选择类型" :disabled="noEditField.Products_Type"  style="width: 160px">-->
+<!--            <template v-for="(it,ind_con) of prodConfig.prod_type_list">-->
+<!--              <el-option :label="it.Type_Name" :value="it.Type_ID" ></el-option>-->
+<!--            </template>-->
+<!--          </el-select>-->
+          <block v-if="!Array.isArray(prod_attrval.attrs)">
+            <block v-for="(item,index) in  prod_attrval.attrs" :key="index"   >
+              <el-input :value="index"   class="sortInput"></el-input>
+            </block>
+          </block>
+          <blcok v-else>
+            <el-input value="无规格"   class="sortInput"></el-input>
+          </blcok>
+
         </el-tooltip>
       </el-form-item>
 
       <el-form-item label="商品规格" v-if="ruleForm.Products_Type">
-       <div class="specs_box">
-         <div class="specs_row" v-for="(row,idx_row) in specs" :key="idx_row">
-           <span class="label">{{row.title}}</span>
-            <div class="specs-item-list">
-              <div v-for="(val,idx_val) in row.vals" class="spec-item-box">
-                <div class="input-wrap"   style="width: 110px;margin-left: 10px;display: inline-block;position: relative" >
-                  <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" >
-                    <el-autocomplete
-                      class="inline-input"
-                      :fetch-suggestions="querySearchAsync"
-                      v-model="specs[idx_row].vals[idx_val]"
-                      :disabled="noEditField.Products_Type"
-                      @focus="queryIndex(idx_row,specs[idx_row].vals[idx_val])"
-                    ></el-autocomplete>
-                  </el-tooltip>
-                  <div class="imgDel" @click="skuDel(idx_row,idx_val)">
-                    <i class="el-icon-error"></i>
-                  </div>
-                </div>
-                <!--ref用来初始化-->
-<!--                <upload-components-->
-<!--                  v-if="idx_row==0&&skuImg"-->
-<!--                  class="uploadThumb"-->
-<!--                  :disabled="noEditField.Products_Type"-->
-<!--                  :key="idx_val"-->
-<!--                  ref="specPic"-->
-<!--                  size="mini"-->
-<!--                  @click.native="saveCurrentSpecItem(idx_val)"-->
-<!--                  :onSuccess="upSpecPicSuccessCall"-->
-<!--                />-->
-                <template v-if="idx_row==0&&skuImg">
-                  <div class="preview-spec-box preview-box" style="display: block;margin: 10px auto;" v-if="specs[0].imgs[idx_val]">
-                    <div class="preview-thumb-item preview-item" style="display: block;margin: 10px auto;">
-                      <img class="img" :src="specs[0].imgs[idx_val]" />
-                      <div class="actions">
-                        <span class="__item-preview" @click="onPreviewFn(specs[0].imgs[idx_val])"><i class="el-icon-zoom-in"></i></span>
-                        <span class="__item-delete" @click="removeSpecPic(idx_val)"><i class="el-icon-delete"></i></span>
-                      </div>
-                    </div>
-                  </div>
-                  <div  style="display: block;margin: 10px auto;" class="js-finder-label" v-if="!specs[0].imgs[idx_val]" @click="openFinderBySpec(idx_val)">
-                    <i class="el-icon-plus" ></i>
-                  </div>
-                </template>
+        <block v-if="!Array.isArray(prod_attrval.attrs)">
+          <block v-for="(item,index) in  prod_attrval.attrs" :key="index"   >
+            <el-input :value="index"   class="sortInput"></el-input>
+          </block>
+        </block>
+        <blcok v-else>
+          <el-input value="无规格"   class="sortInput"></el-input>
+        </blcok>
+<!--       <div class="specs_box">-->
+<!--         <div class="specs_row" v-for="(row,idx_row) in prod_attrval.values" :key="idx_row">-->
+<!--           <span class="label">{{row.title}}</span>-->
+<!--            <div class="specs-item-list">-->
+<!--              <div v-for="(val,idx_val) in row.vals" class="spec-item-box">-->
+<!--                <div class="input-wrap"   style="width: 110px;margin-left: 10px;display: inline-block;position: relative" >-->
+<!--                  <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" >-->
+<!--                    <el-autocomplete-->
+<!--                      class="inline-input"-->
+<!--                      :fetch-suggestions="querySearchAsync"-->
+<!--                      v-model="specs[idx_row].vals[idx_val]"-->
+<!--                      :disabled="noEditField.Products_Type"-->
+<!--                      @focus="queryIndex(idx_row,specs[idx_row].vals[idx_val])"-->
+<!--                    ></el-autocomplete>-->
+<!--                  </el-tooltip>-->
+<!--                  <div class="imgDel" @click="skuDel(idx_row,idx_val)">-->
+<!--                    <i class="el-icon-error"></i>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <template v-if="idx_row==0&&skuImg">-->
+<!--                  <div class="preview-spec-box preview-box" style="display: block;margin: 10px auto;" v-if="specs[0].imgs[idx_val]">-->
+<!--                    <div class="preview-thumb-item preview-item" style="display: block;margin: 10px auto;">-->
+<!--                      <img class="img" :src="specs[0].imgs[idx_val]" />-->
+<!--                      <div class="actions">-->
+<!--                        <span class="__item-preview" @click="onPreviewFn(specs[0].imgs[idx_val])"><i class="el-icon-zoom-in"></i></span>-->
+<!--                        <span class="__item-delete" @click="removeSpecPic(idx_val)"><i class="el-icon-delete"></i></span>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div  style="display: block;margin: 10px auto;" class="js-finder-label" v-if="!specs[0].imgs[idx_val]" @click="openFinderBySpec(idx_val)">-->
+<!--                    <i class="el-icon-plus" ></i>-->
+<!--                  </div>-->
+<!--                </template>-->
 
-              </div>
+<!--              </div>-->
 
-              <span class="margin15-c" style="cursor: pointer;color: #428CF7" @click="skuAdd(idx_row)">添加规格值</span><el-checkbox style="margin-left: 5px" v-if="idx_row==0" v-model="skuImg"  name="sku">添加规格图片</el-checkbox>
-            </div>
-         </div>
-       </div>
+<!--              <span class="margin15-c" style="cursor: pointer;color: #428CF7" @click="skuAdd(idx_row)">添加规格值</span><el-checkbox style="margin-left: 5px" v-if="idx_row==0" v-model="skuImg"  name="sku">添加规格图片</el-checkbox>-->
+<!--            </div>-->
+<!--         </div>-->
+<!--       </div>-->
       </el-form-item>
 
       <el-form-item label="商品参数" v-show="skus.length>0">
@@ -261,58 +280,61 @@
 
           <table class="table" cellspacing="0" cellpadding="0" >
             <tr class="tr">
-              <th class="th" v-for="(spec,idx) in specs">{{spec.title}}</th>
+              <th class="th" >规格</th>
               <th class="th borderRight" >价格(元)</th>
               <th class="th borderRight" >库存</th>
               <th class="th borderRight" >成本价(元)</th>
-              <th class="th borderRight" v-if="ruleForm.pintuan_flag" >拼团价</th>
+              <th class="th borderRight"  >拼团价</th>
             </tr>
-            <template v-if="skus.length>1">
-              <template v-for="(sku,idx) in skus">
+            <template >
+              <template v-for="(sku,idx) of prod_attrval.values">
                 <tr class="tr">
-                  <template v-for="(i,index) in specs.length">
-                    <template v-if="idx%getRowsSpan(index)===0">
-                      <td class="td" :rowspan="getRowsSpan(index,idx)">{{sku[index]}}</td>
-                    </template>
-                  </template>
-                  <td class="td borderRight inputSku" ><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input  :disabled="noEditField.Products_Type"  style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].Attr_Price"/></el-tooltip></td>
-                  <td class="td borderRight inputSku" ><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].Property_count"/></el-tooltip></td>
-                  <td class="td borderRight inputSku" ><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].Supply_Price"/></el-tooltip></td>
-                  <td class="td borderRight inputSku"  v-if="ruleForm.pintuan_flag"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].pt_pricex"/></el-tooltip></td>
+
+                  <td class="td" >{{sku.Attr_Value}}</td>
+                  <td class="td" >{{sku.Attr_Price}}</td>
+                  <td class="td" >{{sku.Property_count}}</td>
+                  <td class="td" >{{sku.pt_pricex}}</td>
+                  <td class="td" >{{sku.Supply_Price}}</td>
+
+<!--                  <td class="td borderRight inputSku" ><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input  :disabled="noEditField.Products_Type"  style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].Attr_Price"/></el-tooltip></td>-->
+<!--                  <td class="td borderRight inputSku" ><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].Property_count"/></el-tooltip></td>-->
+<!--                  <td class="td borderRight inputSku" ><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].Supply_Price"/></el-tooltip></td>-->
+<!--                  <td class="td borderRight inputSku"  v-if="ruleForm.pintuan_flag"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].pt_pricex"/></el-tooltip></td>-->
+<!--               -->
                 </tr>
               </template>
             </template>
-            <template v-if="skus.length==1">
-                <tr class="tr"  v-if="specs.length>1">
-                  <template v-for="(item,idx) in skus[0]">
-                  <td class="td" >{{item}}</td>
-                  </template>
-                  <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px"  v-if="skuList[0]"  type="number" v-model="skuList[0].Attr_Price"/></el-tooltip></td>
-                  <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px" v-if="skuList[0]"  v-model="skuList[0].Property_count"/></el-tooltip></td>
-                  <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px" v-if="skuList[0]"  v-model="skuList[0].Supply_Price"/></el-tooltip></td>
-                  <td class="td borderRight inputSku" v-if="ruleForm.pintuan_flag"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input style="width: 160px" :disabled="noEditField.Products_Type"  v-if="skuList[0]"  v-model="skuList[0].pt_pricex"/></el-tooltip></td>
-                </tr>
-              <template v-if="specs.length==1">
-                <tr class="tr"  v-for="(item,idx) of skuList">
-                    <td class="td" >{{item.Attr_Value}}</td>
-                    <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px"   type="number" v-model="skuList[idx].Attr_Price"/></el-tooltip></td>
-                    <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px"  v-model="skuList[idx].Property_count"/></el-tooltip></td>
-                    <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px"  v-model="skuList[idx].Supply_Price"/></el-tooltip></td>
-                    <td class="td borderRight inputSku" v-if="ruleForm.pintuan_flag"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input style="width: 160px" :disabled="noEditField.Products_Type"    v-model="skuList[idx].pt_pricex"/></el-tooltip></td>
-                </tr>
-              </template>
-            </template>
-            <tr class="tr">
-               <td class="td divTd" colspan="9">
-                 <span>批量设置：</span>
-                 <template v-if="allPrice">
-                   <span  class="span" @click="changePrice('price')">价格</span><span class="span" @click="changePrice('count')">库存</span><span class="span" @click="changePrice('supply')">成本价</span><span v-if="ruleForm.pintuan_flag" class="span" @click="changePrice('pintuan')">拼团价</span>
-                 </template>
-                 <template v-else="!allPrice">
-                   <span ><el-input v-model="allValue"   style="width: 100px;"/><span class="spans" @click="saveAll">保存</span><span class="spans" @click="delAll">取消</span></span>
-                 </template>
-               </td>
-            </tr>
+<!--            <template v-if="skus.length==1">-->
+<!--                <tr class="tr"  v-if="specs.length>1">-->
+<!--                  <template v-for="(item,idx) in skus[0]">-->
+<!--                  <td class="td" >{{item}}</td>-->
+<!--                  </template>-->
+<!--                  <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px"  v-if="skuList[0]"  type="number" v-model="skuList[0].Attr_Price"/></el-tooltip></td>-->
+<!--                  <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px" v-if="skuList[0]"  v-model="skuList[0].Property_count"/></el-tooltip></td>-->
+<!--                  <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px" v-if="skuList[0]"  v-model="skuList[0].Supply_Price"/></el-tooltip></td>-->
+<!--                  <td class="td borderRight inputSku" v-if="ruleForm.pintuan_flag"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input style="width: 160px" :disabled="noEditField.Products_Type"  v-if="skuList[0]"  v-model="skuList[0].pt_pricex"/></el-tooltip></td>-->
+<!--                </tr>-->
+<!--              <template v-if="specs.length==1">-->
+<!--                <tr class="tr"  v-for="(item,idx) of skuList">-->
+<!--                    <td class="td" >{{item.Attr_Value}}</td>-->
+<!--                    <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px"   type="number" v-model="skuList[idx].Attr_Price"/></el-tooltip></td>-->
+<!--                    <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px"  v-model="skuList[idx].Property_count"/></el-tooltip></td>-->
+<!--                    <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px"  v-model="skuList[idx].Supply_Price"/></el-tooltip></td>-->
+<!--                    <td class="td borderRight inputSku" v-if="ruleForm.pintuan_flag"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input style="width: 160px" :disabled="noEditField.Products_Type"    v-model="skuList[idx].pt_pricex"/></el-tooltip></td>-->
+<!--                </tr>-->
+<!--              </template>-->
+<!--            </template>-->
+<!--            <tr class="tr">-->
+<!--               <td class="td divTd" colspan="9">-->
+<!--                 <span>批量设置：</span>-->
+<!--                 <template v-if="allPrice">-->
+<!--                   <span  class="span" @click="changePrice('price')">价格</span><span class="span" @click="changePrice('count')">库存</span><span class="span" @click="changePrice('supply')">成本价</span><span v-if="ruleForm.pintuan_flag" class="span" @click="changePrice('pintuan')">拼团价</span>-->
+<!--                 </template>-->
+<!--                 <template v-else="!allPrice">-->
+<!--                   <span ><el-input v-model="allValue"   style="width: 100px;"/><span class="spans" @click="saveAll">保存</span><span class="spans" @click="delAll">取消</span></span>-->
+<!--                 </template>-->
+<!--               </td>-->
+<!--            </tr>-->
           </table>
         </div>
       </el-form-item>
@@ -391,6 +413,9 @@
           <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_IsRecommend" >
             <el-checkbox  label="推荐" name="otherAttributes" :disabled="noEditField.Products_IsRecommend"></el-checkbox>
           </el-tooltip>
+          <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_IsRecommend" >
+            <el-checkbox  label="一小时达" name="otherAttributes" :disabled="noEditField.Products_IsRecommend"></el-checkbox>
+          </el-tooltip>
         </el-checkbox-group>
       </el-form-item>
 <!--      <el-form-item label="关联门店" >-->
@@ -465,21 +490,7 @@
 
     </el-form>
 
-    <el-form size="small"  ref="ruleForms" :inline-message="true" label-width="120px" :disabled="isLook"   style="background-color: #FFFFFF;padding-left: 32px;padding-top: 10px">
-      <el-form-item label="审核状态:" prop="goods" >
-        <el-radio-group v-model="Products_Status">
-          <el-radio label="-1" style="display: inline-block"  >
-            驳回
-          </el-radio>
-          <el-radio label="1" style="display: inline-block"  >
-            审核通过
-          </el-radio>
-        </el-radio-group>
-      </el-form-item>
 
-
-      <div style="height: 80px;width: 100%;background-color: #ffffff"></div>
-    </el-form>
 
 
     <div class="bottomFixed">
@@ -2013,6 +2024,7 @@
         }
         onlyLook=true
         isLook=false
+        prod_attrval={}
         async created(){
 
             const loadingObj = this.$loading({
@@ -2110,6 +2122,8 @@
                 const productRT = await systemProdDetail({prod_id:id})
               let productInfo = productRT.data
 
+
+              this.prod_attrval=productInfo.prod_attrval
 
                 //优惠券
                 this.selectValue=productInfo.coupon_present.split(',')
@@ -2242,6 +2256,9 @@
               }
               if(productInfo.Products_IsRecommend){
                 this.ruleForm.otherAttributes.push('推荐')
+              }
+              if(productInfo.one_hour_send){
+                this.ruleForm.otherAttributes.push('一小时达')
               }
               for(let item of productInfo.Products_Promise){
                 this.Products_Promise.push(item.name);
@@ -2531,8 +2548,7 @@
     background-color: #fff;
     margin: 0 auto;
     width: 98%;
-    margin-top: 15px;
-    padding: 26px 0px 0px 32px;
+    padding: 26px 0px 80px 32px;
     box-sizing: border-box;
     font-size: 14px;
     color: #666666;
@@ -2866,5 +2882,8 @@ table{
 
   .lst-q{
     cursor: pointer;color: #409eff;height: 30px;line-height: 30px; padding: 0px  8px; box-sizing: border-box; display: inline-block;
+  }
+  .rule-top{
+    background-color: #FFFFFF;width: 98%;margin: 0 auto;margin-top: 15px;margin-bottom: 0px;padding: 26px 0px 0px 32px;box-sizing: border-box;
   }
 </style>
