@@ -67,7 +67,7 @@
 
         <el-form-item>
           <el-checkbox label="lastTime" name="consumptionTimes" v-model="crowdData.user_level.checked">
-            会员等级
+            会员分销等级
           </el-checkbox>
           <el-select v-model="crowdData.user_level.value" multiple placeholder="请选择" style="margin-left: 10px;">
             <el-option

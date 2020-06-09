@@ -10,7 +10,7 @@
           每月 {{vipDate.act_time}}
         </el-form-item>
         <div class="title">权益</div>
-        <el-form-item label="会员等级规则：">
+        <el-form-item label="会员分销等级规则：">
               {{vipDate.right_rule}}
                 <el-table
                   class="wzw-table"
