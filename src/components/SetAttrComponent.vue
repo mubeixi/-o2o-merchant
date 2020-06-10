@@ -42,6 +42,7 @@
                     v-model="item.model" class="input"
                     @input='change(item)'
                     :type='item.inputType'></el-input>
+          <div class="font12 color-gray text-right" style="text-decoration: underline;">{{item.desc}}</div>
         </template>
 
        </template>
