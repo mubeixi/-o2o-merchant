@@ -2,7 +2,7 @@
   <div class="selectPage">
     <el-dialog
       :visible.sync="innerVisible"
-      title="商家类别"
+      title="上级类目"
       append-to-body
       @close="closeFun"
       class="innerDislog"
