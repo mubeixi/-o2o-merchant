@@ -2,7 +2,7 @@
   <div class="selectPage">
     <el-dialog
       :visible.sync="innerVisible"
-      title="上级类目"
+      :title="propTitle"
       append-to-body
       @close="closeFun"
       class="innerDislog"
@@ -65,6 +65,10 @@
   export default {
     name: 'BindBizCateComponents',
     props: {
+      propTitle:{
+        type:String,
+        default:'商家类别'
+      },
       has:{
         type:Array,
         default:()=>[],

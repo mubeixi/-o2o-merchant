@@ -3,6 +3,19 @@
     <div class="menuset">
         <span class="menusetText">发布商品</span>
     </div>
+    <el-form size="small"  ref="ruleForms" :inline-message="true" label-width="120px" :disabled="isLook"   class="rule-top">
+      <el-form-item label="审核状态:" prop="goods"  style="margin-bottom: 0px;padding-top: 20px">
+        <el-radio-group v-model="Products_Status">
+          <el-radio label="-1" style="display: inline-block"  >
+            驳回
+          </el-radio>
+          <el-radio label="1" style="display: inline-block"  >
+            审核通过
+          </el-radio>
+        </el-radio-group>
+      </el-form-item>
+
+    </el-form>
 
     <el-form size="small" :model="ruleForm" :rules="rules" ref="ruleForm" :inline-message="true" label-width="120px"   class="ruleForm" :disabled="onlyLook">
       <el-alert
@@ -194,66 +207,72 @@
 
       <el-form-item label="商品类型" prop="Products_Type" title="请输入活动">
         <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" >
-          <el-select  v-model="ruleForm.Products_Type" placeholder="请选择类型" :disabled="noEditField.Products_Type"  style="width: 160px">
-            <template v-for="(it,ind_con) of prodConfig.prod_type_list">
-              <el-option :label="it.Type_Name" :value="it.Type_ID" ></el-option>
-            </template>
-          </el-select>
+<!--          <el-select  v-model="ruleForm.Products_Type" placeholder="请选择类型" :disabled="noEditField.Products_Type"  style="width: 160px">-->
+<!--            <template v-for="(it,ind_con) of prodConfig.prod_type_list">-->
+<!--              <el-option :label="it.Type_Name" :value="it.Type_ID" ></el-option>-->
+<!--            </template>-->
+<!--          </el-select>-->
+          <block v-if="!Array.isArray(prod_attrval.attrs)">
+            <block v-for="(item,index) in  prod_attrval.attrs" :key="index"   >
+              <el-input :value="index"   class="sortInput"></el-input>
+            </block>
+          </block>
+          <blcok v-else>
+            <el-input value="无规格"   class="sortInput"></el-input>
+          </blcok>
+
         </el-tooltip>
       </el-form-item>
 
       <el-form-item label="商品规格" v-if="ruleForm.Products_Type">
-       <div class="specs_box">
-         <div class="specs_row" v-for="(row,idx_row) in specs" :key="idx_row">
-           <span class="label">{{row.title}}</span>
-            <div class="specs-item-list">
-              <div v-for="(val,idx_val) in row.vals" class="spec-item-box">
-                <div class="input-wrap"   style="width: 110px;margin-left: 10px;display: inline-block;position: relative" >
-                  <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" >
-                    <el-autocomplete
-                      class="inline-input"
-                      :fetch-suggestions="querySearchAsync"
-                      v-model="specs[idx_row].vals[idx_val]"
-                      :disabled="noEditField.Products_Type"
-                      @focus="queryIndex(idx_row,specs[idx_row].vals[idx_val])"
-                    ></el-autocomplete>
-                  </el-tooltip>
-                  <div class="imgDel" @click="skuDel(idx_row,idx_val)">
-                    <i class="el-icon-error"></i>
-                  </div>
-                </div>
-                <!--ref用来初始化-->
-<!--                <upload-components-->
-<!--                  v-if="idx_row==0&&skuImg"-->
-<!--                  class="uploadThumb"-->
-<!--                  :disabled="noEditField.Products_Type"-->
-<!--                  :key="idx_val"-->
-<!--                  ref="specPic"-->
-<!--                  size="mini"-->
-<!--                  @click.native="saveCurrentSpecItem(idx_val)"-->
-<!--                  :onSuccess="upSpecPicSuccessCall"-->
-<!--                />-->
-                <template v-if="idx_row==0&&skuImg">
-                  <div class="preview-spec-box preview-box" style="display: block;margin: 10px auto;" v-if="specs[0].imgs[idx_val]">
-                    <div class="preview-thumb-item preview-item" style="display: block;margin: 10px auto;">
-                      <img class="img" :src="specs[0].imgs[idx_val]" />
-                      <div class="actions">
-                        <span class="__item-preview" @click="onPreviewFn(specs[0].imgs[idx_val])"><i class="el-icon-zoom-in"></i></span>
-                        <span class="__item-delete" @click="removeSpecPic(idx_val)"><i class="el-icon-delete"></i></span>
-                      </div>
-                    </div>
-                  </div>
-                  <div  style="display: block;margin: 10px auto;" class="js-finder-label" v-if="!specs[0].imgs[idx_val]" @click="openFinderBySpec(idx_val)">
-                    <i class="el-icon-plus" ></i>
-                  </div>
-                </template>
+        <block v-if="!Array.isArray(prod_attrval.attrs)">
+          <block v-for="(item,index) in  prod_attrval.attrs" :key="index"   >
+            <el-input :value="index"   class="sortInput"></el-input>
+          </block>
+        </block>
+        <blcok v-else>
+          <el-input value="无规格"   class="sortInput"></el-input>
+        </blcok>
+<!--       <div class="specs_box">-->
+<!--         <div class="specs_row" v-for="(row,idx_row) in prod_attrval.values" :key="idx_row">-->
+<!--           <span class="label">{{row.title}}</span>-->
+<!--            <div class="specs-item-list">-->
+<!--              <div v-for="(val,idx_val) in row.vals" class="spec-item-box">-->
+<!--                <div class="input-wrap"   style="width: 110px;margin-left: 10px;display: inline-block;position: relative" >-->
+<!--                  <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" >-->
+<!--                    <el-autocomplete-->
+<!--                      class="inline-input"-->
+<!--                      :fetch-suggestions="querySearchAsync"-->
+<!--                      v-model="specs[idx_row].vals[idx_val]"-->
+<!--                      :disabled="noEditField.Products_Type"-->
+<!--                      @focus="queryIndex(idx_row,specs[idx_row].vals[idx_val])"-->
+<!--                    ></el-autocomplete>-->
+<!--                  </el-tooltip>-->
+<!--                  <div class="imgDel" @click="skuDel(idx_row,idx_val)">-->
+<!--                    <i class="el-icon-error"></i>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <template v-if="idx_row==0&&skuImg">-->
+<!--                  <div class="preview-spec-box preview-box" style="display: block;margin: 10px auto;" v-if="specs[0].imgs[idx_val]">-->
+<!--                    <div class="preview-thumb-item preview-item" style="display: block;margin: 10px auto;">-->
+<!--                      <img class="img" :src="specs[0].imgs[idx_val]" />-->
+<!--                      <div class="actions">-->
+<!--                        <span class="__item-preview" @click="onPreviewFn(specs[0].imgs[idx_val])"><i class="el-icon-zoom-in"></i></span>-->
+<!--                        <span class="__item-delete" @click="removeSpecPic(idx_val)"><i class="el-icon-delete"></i></span>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div  style="display: block;margin: 10px auto;" class="js-finder-label" v-if="!specs[0].imgs[idx_val]" @click="openFinderBySpec(idx_val)">-->
+<!--                    <i class="el-icon-plus" ></i>-->
+<!--                  </div>-->
+<!--                </template>-->
 
-              </div>
+<!--              </div>-->
 
-              <span class="margin15-c" style="cursor: pointer;color: #428CF7" @click="skuAdd(idx_row)">添加规格值</span><el-checkbox style="margin-left: 5px" v-if="idx_row==0" v-model="skuImg"  name="sku">添加规格图片</el-checkbox>
-            </div>
-         </div>
-       </div>
+<!--              <span class="margin15-c" style="cursor: pointer;color: #428CF7" @click="skuAdd(idx_row)">添加规格值</span><el-checkbox style="margin-left: 5px" v-if="idx_row==0" v-model="skuImg"  name="sku">添加规格图片</el-checkbox>-->
+<!--            </div>-->
+<!--         </div>-->
+<!--       </div>-->
       </el-form-item>
 
       <el-form-item label="商品参数" v-show="skus.length>0">
@@ -261,58 +280,61 @@
 
           <table class="table" cellspacing="0" cellpadding="0" >
             <tr class="tr">
-              <th class="th" v-for="(spec,idx) in specs">{{spec.title}}</th>
+              <th class="th" >规格</th>
               <th class="th borderRight" >价格(元)</th>
               <th class="th borderRight" >库存</th>
               <th class="th borderRight" >成本价(元)</th>
-              <th class="th borderRight" v-if="ruleForm.pintuan_flag" >拼团价</th>
+              <th class="th borderRight"  >拼团价</th>
             </tr>
-            <template v-if="skus.length>1">
-              <template v-for="(sku,idx) in skus">
+            <template >
+              <template v-for="(sku,idx) of prod_attrval.values">
                 <tr class="tr">
-                  <template v-for="(i,index) in specs.length">
-                    <template v-if="idx%getRowsSpan(index)===0">
-                      <td class="td" :rowspan="getRowsSpan(index,idx)">{{sku[index]}}</td>
-                    </template>
-                  </template>
-                  <td class="td borderRight inputSku" ><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input  :disabled="noEditField.Products_Type"  style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].Attr_Price"/></el-tooltip></td>
-                  <td class="td borderRight inputSku" ><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].Property_count"/></el-tooltip></td>
-                  <td class="td borderRight inputSku" ><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].Supply_Price"/></el-tooltip></td>
-                  <td class="td borderRight inputSku"  v-if="ruleForm.pintuan_flag"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].pt_pricex"/></el-tooltip></td>
+
+                  <td class="td" >{{sku.Attr_Value}}</td>
+                  <td class="td" >{{sku.Attr_Price}}</td>
+                  <td class="td" >{{sku.Property_count}}</td>
+                  <td class="td" >{{sku.pt_pricex}}</td>
+                  <td class="td" >{{sku.Supply_Price}}</td>
+
+<!--                  <td class="td borderRight inputSku" ><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input  :disabled="noEditField.Products_Type"  style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].Attr_Price"/></el-tooltip></td>-->
+<!--                  <td class="td borderRight inputSku" ><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].Property_count"/></el-tooltip></td>-->
+<!--                  <td class="td borderRight inputSku" ><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].Supply_Price"/></el-tooltip></td>-->
+<!--                  <td class="td borderRight inputSku"  v-if="ruleForm.pintuan_flag"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px" v-if="skuList[idx]"  v-model="skuList[idx].pt_pricex"/></el-tooltip></td>-->
+<!--               -->
                 </tr>
               </template>
             </template>
-            <template v-if="skus.length==1">
-                <tr class="tr"  v-if="specs.length>1">
-                  <template v-for="(item,idx) in skus[0]">
-                  <td class="td" >{{item}}</td>
-                  </template>
-                  <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px"  v-if="skuList[0]"  type="number" v-model="skuList[0].Attr_Price"/></el-tooltip></td>
-                  <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px" v-if="skuList[0]"  v-model="skuList[0].Property_count"/></el-tooltip></td>
-                  <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px" v-if="skuList[0]"  v-model="skuList[0].Supply_Price"/></el-tooltip></td>
-                  <td class="td borderRight inputSku" v-if="ruleForm.pintuan_flag"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input style="width: 160px" :disabled="noEditField.Products_Type"  v-if="skuList[0]"  v-model="skuList[0].pt_pricex"/></el-tooltip></td>
-                </tr>
-              <template v-if="specs.length==1">
-                <tr class="tr"  v-for="(item,idx) of skuList">
-                    <td class="td" >{{item.Attr_Value}}</td>
-                    <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px"   type="number" v-model="skuList[idx].Attr_Price"/></el-tooltip></td>
-                    <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px"  v-model="skuList[idx].Property_count"/></el-tooltip></td>
-                    <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px"  v-model="skuList[idx].Supply_Price"/></el-tooltip></td>
-                    <td class="td borderRight inputSku" v-if="ruleForm.pintuan_flag"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input style="width: 160px" :disabled="noEditField.Products_Type"    v-model="skuList[idx].pt_pricex"/></el-tooltip></td>
-                </tr>
-              </template>
-            </template>
-            <tr class="tr">
-               <td class="td divTd" colspan="9">
-                 <span>批量设置：</span>
-                 <template v-if="allPrice">
-                   <span  class="span" @click="changePrice('price')">价格</span><span class="span" @click="changePrice('count')">库存</span><span class="span" @click="changePrice('supply')">成本价</span><span v-if="ruleForm.pintuan_flag" class="span" @click="changePrice('pintuan')">拼团价</span>
-                 </template>
-                 <template v-else="!allPrice">
-                   <span ><el-input v-model="allValue"   style="width: 100px;"/><span class="spans" @click="saveAll">保存</span><span class="spans" @click="delAll">取消</span></span>
-                 </template>
-               </td>
-            </tr>
+<!--            <template v-if="skus.length==1">-->
+<!--                <tr class="tr"  v-if="specs.length>1">-->
+<!--                  <template v-for="(item,idx) in skus[0]">-->
+<!--                  <td class="td" >{{item}}</td>-->
+<!--                  </template>-->
+<!--                  <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px"  v-if="skuList[0]"  type="number" v-model="skuList[0].Attr_Price"/></el-tooltip></td>-->
+<!--                  <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px" v-if="skuList[0]"  v-model="skuList[0].Property_count"/></el-tooltip></td>-->
+<!--                  <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px" v-if="skuList[0]"  v-model="skuList[0].Supply_Price"/></el-tooltip></td>-->
+<!--                  <td class="td borderRight inputSku" v-if="ruleForm.pintuan_flag"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input style="width: 160px" :disabled="noEditField.Products_Type"  v-if="skuList[0]"  v-model="skuList[0].pt_pricex"/></el-tooltip></td>-->
+<!--                </tr>-->
+<!--              <template v-if="specs.length==1">-->
+<!--                <tr class="tr"  v-for="(item,idx) of skuList">-->
+<!--                    <td class="td" >{{item.Attr_Value}}</td>-->
+<!--                    <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px"   type="number" v-model="skuList[idx].Attr_Price"/></el-tooltip></td>-->
+<!--                    <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type" style="width: 160px"  v-model="skuList[idx].Property_count"/></el-tooltip></td>-->
+<!--                    <td class="td borderRight inputSku"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input :disabled="noEditField.Products_Type"  style="width: 160px"  v-model="skuList[idx].Supply_Price"/></el-tooltip></td>-->
+<!--                    <td class="td borderRight inputSku" v-if="ruleForm.pintuan_flag"><el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_Type" ><el-input style="width: 160px" :disabled="noEditField.Products_Type"    v-model="skuList[idx].pt_pricex"/></el-tooltip></td>-->
+<!--                </tr>-->
+<!--              </template>-->
+<!--            </template>-->
+<!--            <tr class="tr">-->
+<!--               <td class="td divTd" colspan="9">-->
+<!--                 <span>批量设置：</span>-->
+<!--                 <template v-if="allPrice">-->
+<!--                   <span  class="span" @click="changePrice('price')">价格</span><span class="span" @click="changePrice('count')">库存</span><span class="span" @click="changePrice('supply')">成本价</span><span v-if="ruleForm.pintuan_flag" class="span" @click="changePrice('pintuan')">拼团价</span>-->
+<!--                 </template>-->
+<!--                 <template v-else="!allPrice">-->
+<!--                   <span ><el-input v-model="allValue"   style="width: 100px;"/><span class="spans" @click="saveAll">保存</span><span class="spans" @click="delAll">取消</span></span>-->
+<!--                 </template>-->
+<!--               </td>-->
+<!--            </tr>-->
           </table>
         </div>
       </el-form-item>
@@ -391,6 +413,9 @@
           <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_IsRecommend" >
             <el-checkbox  label="推荐" name="otherAttributes" :disabled="noEditField.Products_IsRecommend"></el-checkbox>
           </el-tooltip>
+          <el-tooltip class="item" effect="light" :content="textTitle" placement="top-start" :disabled="!noEditField.Products_IsRecommend" >
+            <el-checkbox  label="一小时达" name="otherAttributes" :disabled="noEditField.Products_IsRecommend"></el-checkbox>
+          </el-tooltip>
         </el-checkbox-group>
       </el-form-item>
 <!--      <el-form-item label="关联门店" >-->
@@ -465,21 +490,7 @@
 
     </el-form>
 
-    <el-form size="small"  ref="ruleForms" :inline-message="true" label-width="120px" :disabled="isLook"   style="background-color: #FFFFFF;padding-left: 32px;padding-top: 10px">
-      <el-form-item label="审核状态:" prop="goods" >
-        <el-radio-group v-model="Products_Status">
-          <el-radio label="-1" style="display: inline-block"  >
-            驳回
-          </el-radio>
-          <el-radio label="1" style="display: inline-block"  >
-            审核通过
-          </el-radio>
-        </el-radio-group>
-      </el-form-item>
 
-
-      <div style="height: 80px;width: 100%;background-color: #ffffff"></div>
-    </el-form>
 
 
     <div class="bottomFixed">
@@ -1535,37 +1546,37 @@
         }
         Products_Status=''
         submitForm(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
+            //this.$refs[formName].validate((valid) => {
+                //if (valid) {
                     this.isLoading=true;
                     let id = this.$route.query.prod_id;
 
-                    if(this.ruleForm.orderType<=0){
-                        if(this.ruleForm.Products_Weight<=0){
-                            this.$message({
-                                type: 'error',
-                                message: `实体订单商品重量大于0`
-                            });
-                            this.isLoading=false;
-                            return
-                        }
-                    }
-                    if (this.cate_ids === ''){
-                        this.$message({
-                            type: 'error',
-                            message: `请选择商品分类`
-                        });
-                        this.isLoading=false;
-                        return
-                    }
-                    if(this.ruleForm.Products_Type==''&&this.ruleForm.Products_Type!=0){
-                        this.$message({
-                            type: 'error',
-                            message: `请选择商品类型`
-                        });
-                        this.isLoading=false;
-                        return
-                    }
+                  //   if(this.ruleForm.orderType<=0){
+                  //       if(this.ruleForm.Products_Weight<=0){
+                  //           this.$message({
+                  //               type: 'error',
+                  //               message: `实体订单商品重量大于0`
+                  //           });
+                  //           this.isLoading=false;
+                  //           return
+                  //       }
+                  //   }
+                  //   if (this.cate_ids === ''){
+                  //       this.$message({
+                  //           type: 'error',
+                  //           message: `请选择商品分类`
+                  //       });
+                  //       this.isLoading=false;
+                  //       return
+                  //   }
+                  //   if(this.ruleForm.Products_Type==''&&this.ruleForm.Products_Type!=0){
+                  //       this.$message({
+                  //           type: 'error',
+                  //           message: `请选择商品类型`
+                  //       });
+                  //       this.isLoading=false;
+                  //       return
+                  //   }
                   let biz_id = this.$route.query.biz_id;
                     if(this.Products_Status==0){
                       this.$message({
@@ -1578,24 +1589,24 @@
                     let productInfo:object = {
                         Products_Status:this.Products_Status,
                         biz_id:biz_id,
-                        pintuan_pricex: this.ruleForm.pintuan_pricex,
-                        pintuan_people: this.ruleForm.pintuan_people,
-                        Products_Index:this.ruleForm.Products_Index,//商品排序
-                        Products_Name:this.ruleForm.Products_Name,//商品名称
-                        Products_Category:this.cate_ids,//商品分类
-                         Products_Sales:this.ruleForm.Products_Sales,//虚拟销量
-                        Products_PriceY:this.ruleForm.Products_PriceY,//原价
-                        Products_PriceX:this.ruleForm.Products_PriceX,//现价
-                        pintuan_flag:this.ruleForm.pintuan_flag?'1':'0',//是否拼团
-                        Products_Profit:this.ruleForm.Products_Profit,//产品利润
-                        Products_BriefDescription:this.ruleForm.Products_BriefDescription,//产品简介
-                        Products_Count:this.ruleForm.Products_Count,//库存
-                        Products_Type:this.ruleForm.Products_Type,//商品类型id
-                        Products_Weight:this.ruleForm.Products_Weight,//商品重量
-                        fee_type:this.ruleForm.goods,//运费选择
-                        prod_order_type:this.ruleForm.orderType,//订单类型
-                        Products_Description:this.editorText,//富文本类型
-                        Product_backup:this.ruleForm.refund,//退货id
+                        // pintuan_pricex: this.ruleForm.pintuan_pricex,
+                        // pintuan_people: this.ruleForm.pintuan_people,
+                        // Products_Index:this.ruleForm.Products_Index,//商品排序
+                        // Products_Name:this.ruleForm.Products_Name,//商品名称
+                        // Products_Category:this.cate_ids,//商品分类
+                        //  Products_Sales:this.ruleForm.Products_Sales,//虚拟销量
+                        // Products_PriceY:this.ruleForm.Products_PriceY,//原价
+                        // Products_PriceX:this.ruleForm.Products_PriceX,//现价
+                        // pintuan_flag:this.ruleForm.pintuan_flag?'1':'0',//是否拼团
+                        // Products_Profit:this.ruleForm.Products_Profit,//产品利润
+                        // Products_BriefDescription:this.ruleForm.Products_BriefDescription,//产品简介
+                        // Products_Count:this.ruleForm.Products_Count,//库存
+                        // Products_Type:this.ruleForm.Products_Type,//商品类型id
+                        // Products_Weight:this.ruleForm.Products_Weight,//商品重量
+                        // fee_type:this.ruleForm.goods,//运费选择
+                        // prod_order_type:this.ruleForm.orderType,//订单类型
+                        // Products_Description:this.editorText,//富文本类型
+                        // Product_backup:this.ruleForm.refund,//退货id
                         platForm_Income_Reward:this.platForm_Income_Reward,
                         nobi_ratio:this.nobi_ratio,
                         area_Proxy_Reward:this.area_Proxy_Reward,
@@ -1603,162 +1614,154 @@
                         commission_ratio:this.commission_ratio,
                         manage_Reward:this.manage_Reward
                     };
-                    if(this.ruleForm.orderType==2){
-                        let arr=[];
-                        for(let item of this.multipleSelection){
-                            arr.push(item.Card_Id);
-                        }
-                        productInfo.virtual_card_ids=JSON.stringify(arr);
-                    }
+                    // if(this.ruleForm.orderType==2){
+                    //     let arr=[];
+                    //     for(let item of this.multipleSelection){
+                    //         arr.push(item.Card_Id);
+                    //     }
+                    //     productInfo.virtual_card_ids=JSON.stringify(arr);
+                    // }
                     if(id){
                       productInfo.prod_id=id;
                     }
-                    let arrPromise=[];
-                    for(let item of this.Products_Promise){
-                        arrPromise.push({'name':item});
-                    }
-                    productInfo.Products_Promise=JSON.stringify(arrPromise);
+                    // let arrPromise=[];
+                    // for(let item of this.Products_Promise){
+                    //     arrPromise.push({'name':item});
+                    // }
+                    // productInfo.Products_Promise=JSON.stringify(arrPromise);
 
-                    if(this.thumb.length<1){
-                        this.$message({
-                            type: 'error',
-                            message: `商品主图不能为空`
-                        });
-                        this.isLoading=false;
-                        return ;
-                    }else {
-                        productInfo.Products_JSON=JSON.stringify({"ImgPath":this.thumb})
-                    }
+                    // if(this.thumb.length<1){
+                    //     this.$message({
+                    //         type: 'error',
+                    //         message: `商品主图不能为空`
+                    //     });
+                    //     this.isLoading=false;
+                    //     return ;
+                    // }else {
+                    //     productInfo.Products_JSON=JSON.stringify({"ImgPath":this.thumb})
+                    // }
+                    //
+                    // //优惠券
+                    // if(this.selectValue.length>0){
+                    //     productInfo.coupon_present=this.selectValue.join(',')
+                    // }
+                    //
+                    // productInfo.video_url=this.video?this.video:'';
+                    // productInfo.cover_url=this.imgs?this.imgs:'';
 
-                    //优惠券
-                    if(this.selectValue.length>0){
-                        productInfo.coupon_present=this.selectValue.join(',')
-                    }
 
-                    productInfo.video_url=this.video?this.video:'';
-                    productInfo.cover_url=this.imgs?this.imgs:'';
 
-                    // if(this.store_list.length>0){
-                    //     let arr=[];
-                    //     for(let item of this.store_list){
-                    //         arr.push(item.Stores_ID);
+                    // for(let item of  this.ruleForm.otherAttributes){
+                    //     if(item=='下架') productInfo.Products_SoldOut=1;
+                    //     if(item=='新品')productInfo.Products_IsNew=1;
+                    //     if(item=='热卖')productInfo.Products_IsHot=1;
+                    //     if(item=='推荐')productInfo.Products_IsRecommend=1;
+                    // }
+                    //
+                    // if(this.ruleForm.goods==1){
+                    //     //如果是免运费的话
+                    //     productInfo.fix_fee=this.fix_fee;
+                    // }else if(this.ruleForm.goods==2&&this.yunfei.length>0){
+                    //     if(!this.shipping_temp){
+                    //         this.$message({
+                    //             type: 'error',
+                    //             message: `物流模板不能为空`
+                    //         });
+                    //         this.isLoading=false;
+                    //         return;
                     //     }
-                    //     if(arr.length>0){
-                    //         productInfo.Products_Stores=JSON.stringify(arr);
-                    //     }
+                    //     productInfo.shipping_temp=this.shipping_temp;
                     // }
 
-                    for(let item of  this.ruleForm.otherAttributes){
-                        if(item=='下架') productInfo.Products_SoldOut=1;
-                        if(item=='新品')productInfo.Products_IsNew=1;
-                        if(item=='热卖')productInfo.Products_IsHot=1;
-                        if(item=='推荐')productInfo.Products_IsRecommend=1;
-                    }
+                    // if(this.prodConfig.Payment_RmainderEnabled){
+                    //     //如果可以设置余额支付
+                    //     productInfo.Products_IsPaysBalance=this.ruleForm.Products_IsPaysBalance?'1':'0';
+                    // }
 
-                    if(this.ruleForm.goods==1){
-                        //如果是免运费的话
-                        productInfo.fix_fee=this.fix_fee;
-                    }else if(this.ruleForm.goods==2&&this.yunfei.length>0){
-                        if(!this.shipping_temp){
-                            this.$message({
-                                type: 'error',
-                                message: `物流模板不能为空`
-                            });
-                            this.isLoading=false;
-                            return;
-                        }
-                        productInfo.shipping_temp=this.shipping_temp;
-                    }
+                    // if(this.ruleForm.pintuan_flag){
+                    //     //是拼团商品
+                    //     //转化时间
+                    //     var d = new Date(this.ruleForm.pintuan_end_time);
+                    //     var date = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+                    //     productInfo.pintuan_people=this.ruleForm.pintuan_people;
+                    //     productInfo.pintuan_pricex=this.ruleForm.pintuan_pricex;
+                    //     productInfo.pintuan_end_time=date;
+                    // }
 
-                    if(this.prodConfig.Payment_RmainderEnabled){
-                        //如果可以设置余额支付
-                        productInfo.Products_IsPaysBalance=this.ruleForm.Products_IsPaysBalance?'1':'0';
-                    }
-
-                    if(this.ruleForm.pintuan_flag){
-                        //是拼团商品
-                        //转化时间
-                        var d = new Date(this.ruleForm.pintuan_end_time);
-                        var date = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
-                        productInfo.pintuan_people=this.ruleForm.pintuan_people;
-                        productInfo.pintuan_pricex=this.ruleForm.pintuan_pricex;
-                        productInfo.pintuan_end_time=date;
-                    }
-
-                    //商品规格
-                    if(this.specs.length>0){
-                        let attrs={};
-                        for(let item of this.specs){
-                            if(item.vals.length>0){
-                                let ar=[];
-                                for(let it of item.vals){
-                                    ar.push(it);
-                                }
-                                attrs[item.title]=ar;
-                            }
-                        }
-                        let arrM=this.skuList;
-                        for(let arrList of arrM){
-                            if(arrList.Property_count<=0){
-                                this.$message({
-                                    type: 'error',
-                                    message: `库存不能为空`
-                                });
-                                this.isLoading=false;
-                                return;
-                            }
-                        }
-                        let skuList= objTranslate(arrM);
-                        for(let idx in skuList){
-                            let mbx = skuList[idx]
-                            if(typeof mbx.Attr_Value=='object' ){
-
-                            }else{
-                                let splitArr=mbx.Attr_Value.split("|");
-                                let objSku={};
-                                for(let i=0;i<this.specs.length;i++){
-                                    objSku[this.specs[i].title]=splitArr[i];
-                                }
-                                mbx.Attr_Value=objSku;
-
-
-
-                            }
-
-
-                            //批量新增图片
-                            //利用对应的规格获取在第一个规格可选值的vals的索引
-                            if(this.skuImg){
-
-                              let specItemIdx = -1
-                              //当只有一个规格的时候，特殊情况
-                              if(this.specs.length===1){
-                                specItemIdx = this.specs[0].vals.indexOf(this.skus[0][idx])
-                              }else{
-                                specItemIdx = this.specs[0].vals.indexOf(this.skus[idx][0])
-                              }
-
-                              if(this.specs[0].imgs){
-                                  if(specItemIdx!=-1 && this.specs[0].imgs[specItemIdx]){
-                                      mbx.Attr_Image = this.specs[0].imgs[specItemIdx]
-                                  }else{
-                                      mbx.Attr_Image = ''
-                                  }
-                              }
-                            }else{
-
-                            }
-
-
-
-                        }
-
-                        // @ts-ignore
-                        productInfo.prod_attrval=JSON.stringify({
-                            'attrs':attrs,
-                            'values':skuList
-                        })
-                    }
+                    // //商品规格
+                    // if(this.specs.length>0){
+                    //     let attrs={};
+                    //     for(let item of this.specs){
+                    //         if(item.vals.length>0){
+                    //             let ar=[];
+                    //             for(let it of item.vals){
+                    //                 ar.push(it);
+                    //             }
+                    //             attrs[item.title]=ar;
+                    //         }
+                    //     }
+                    //     let arrM=this.skuList;
+                    //     for(let arrList of arrM){
+                    //         if(arrList.Property_count<=0){
+                    //             this.$message({
+                    //                 type: 'error',
+                    //                 message: `库存不能为空`
+                    //             });
+                    //             this.isLoading=false;
+                    //             return;
+                    //         }
+                    //     }
+                    //     let skuList= objTranslate(arrM);
+                    //     for(let idx in skuList){
+                    //         let mbx = skuList[idx]
+                    //         if(typeof mbx.Attr_Value=='object' ){
+                    //
+                    //         }else{
+                    //             let splitArr=mbx.Attr_Value.split("|");
+                    //             let objSku={};
+                    //             for(let i=0;i<this.specs.length;i++){
+                    //                 objSku[this.specs[i].title]=splitArr[i];
+                    //             }
+                    //             mbx.Attr_Value=objSku;
+                    //
+                    //
+                    //
+                    //         }
+                    //
+                    //
+                    //         //批量新增图片
+                    //         //利用对应的规格获取在第一个规格可选值的vals的索引
+                    //         if(this.skuImg){
+                    //
+                    //           let specItemIdx = -1
+                    //           //当只有一个规格的时候，特殊情况
+                    //           if(this.specs.length===1){
+                    //             specItemIdx = this.specs[0].vals.indexOf(this.skus[0][idx])
+                    //           }else{
+                    //             specItemIdx = this.specs[0].vals.indexOf(this.skus[idx][0])
+                    //           }
+                    //
+                    //           if(this.specs[0].imgs){
+                    //               if(specItemIdx!=-1 && this.specs[0].imgs[specItemIdx]){
+                    //                   mbx.Attr_Image = this.specs[0].imgs[specItemIdx]
+                    //               }else{
+                    //                   mbx.Attr_Image = ''
+                    //               }
+                    //           }
+                    //         }else{
+                    //
+                    //         }
+                    //
+                    //
+                    //
+                    //     }
+                    //
+                    //     // @ts-ignore
+                    //     productInfo.prod_attrval=JSON.stringify({
+                    //         'attrs':attrs,
+                    //         'values':skuList
+                    //     })
+                    // }
                     //const allowLevel = [1,2,3,4,110]
                     //分销商 价格
                     if(this.dis_level_list.length>0){
@@ -1778,14 +1781,14 @@
                     }
                     let prodObj={}
                     //限购prod_limit
-                    prodObj={
-                        switch:this.ruleForm.prod_limit?1:0,
-                        limit:{
-                            type:this.vipType,
-                            num:this.vipNum
-                        }
-                    }
-                    productInfo.prod_limit=JSON.stringify(prodObj)
+                    // prodObj={
+                    //     switch:this.ruleForm.prod_limit?1:0,
+                    //     limit:{
+                    //         type:this.vipType,
+                    //         num:this.vipNum
+                    //     }
+                    // }
+                    // productInfo.prod_limit=JSON.stringify(prodObj)
                     productInfo.self_commi=this.self_commi
                     productInfo.parent_commi=this.parent_commi
                     productInfo.manage_commi=this.manage_commi
@@ -1817,11 +1820,11 @@
                         console.log(e)
                     })
                     this.isLoading=false;
-                } else {
-                    this.isLoading=false;
-                    return false;
-                }
-            });
+               // } else {
+                   // this.isLoading=false;
+                    //return false;
+               // }
+           // });
         }
         resetForm(formName) {
             //@ts-ignore
@@ -2021,6 +2024,7 @@
         }
         onlyLook=true
         isLook=false
+        prod_attrval={}
         async created(){
 
             const loadingObj = this.$loading({
@@ -2118,6 +2122,8 @@
                 const productRT = await systemProdDetail({prod_id:id})
               let productInfo = productRT.data
 
+
+              this.prod_attrval=productInfo.prod_attrval
 
                 //优惠券
                 this.selectValue=productInfo.coupon_present.split(',')
@@ -2250,6 +2256,9 @@
               }
               if(productInfo.Products_IsRecommend){
                 this.ruleForm.otherAttributes.push('推荐')
+              }
+              if(productInfo.one_hour_send){
+                this.ruleForm.otherAttributes.push('一小时达')
               }
               for(let item of productInfo.Products_Promise){
                 this.Products_Promise.push(item.name);
@@ -2539,8 +2548,7 @@
     background-color: #fff;
     margin: 0 auto;
     width: 98%;
-    margin-top: 15px;
-    padding: 26px 0px 0px 32px;
+    padding: 26px 0px 80px 32px;
     box-sizing: border-box;
     font-size: 14px;
     color: #666666;
@@ -2874,5 +2882,8 @@ table{
 
   .lst-q{
     cursor: pointer;color: #409eff;height: 30px;line-height: 30px; padding: 0px  8px; box-sizing: border-box; display: inline-block;
+  }
+  .rule-top{
+    background-color: #FFFFFF;width: 98%;margin: 0 auto;margin-top: 15px;margin-bottom: 0px;padding: 26px 0px 0px 32px;box-sizing: border-box;
   }
 </style>

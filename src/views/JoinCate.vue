@@ -36,7 +36,7 @@
         </upload-img-components>
       </div>
     </div>
-
+<block v-if="pid>0">
     <div class="cate-div">
       <span class="select-cate">企业入驻资料设置:</span>
       <el-popover
@@ -90,14 +90,16 @@
       </el-popover>
     </div>
     <form-wrap v-if="ready" :_conf="personData" @change="upPersonData" ref="person"></form-wrap>
+
+</block>
     <div class="flex m-t-40">
       <el-button size="small" @click="sub" type="primary">提交</el-button>
       <el-button size="small" @click="cancel" type="info">取消</el-button>
     </div>
 
-
     <bind-biz-cate-components
       :multiple="false"
+      propTitle="上级类目"
       @cancel="bindCateCancel"
       :strictly="true"
       :has.sync="cate_list"

@@ -50,7 +50,7 @@
                     </template>
                 </el-form-item>
                 <div class="title">权益</div>
-                <el-form-item label="会员等级规则：">
+                <el-form-item label="会员分销等级规则：">
                     <el-radio-group v-model="form.rule_type" class="rule-radio">
                         <el-radio :label="0">所有等级会员，同一规则
                         <div v-if="form.rule_type==0">
