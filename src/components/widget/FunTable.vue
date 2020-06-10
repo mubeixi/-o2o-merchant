@@ -274,8 +274,8 @@
             //this.$refs.funTable.clearSelection();
             console.log('初始化选中的',objTranslate(this.has))
             if(!this.vkey || !this.has || !_.isArray(this.has) || this.has.length<1){
-                console.log('清空数据')
-                this.$refs.funTable.clearSelection();
+                console.log('清空数据',this,"ss")
+              this.$refs.funTable && this.$refs.funTable.clearSelection();
                 return;
             };
 
