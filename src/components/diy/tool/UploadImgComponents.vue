@@ -6,7 +6,7 @@
       class="upload avatar-uploader"
       :class="{mini:mini,small:small,isHas:imgUrl}"
       v-if="type === 'avatar'"
-      :multiple="multiple"
+      :multiple="multipleConf"
       :name="name"
       :data.sync='ajaxData'
       :action="baseURL+'/api/little_program/shopconfig.php'"
@@ -26,11 +26,10 @@
       <i v-else class="el-icon-plus"></i>
       <div slot="tip" class="el-upload__tip ">{{tip}} <i @click="remove" style="position: absolute;right: 0;top: 0;font-size: 22px;cursor: pointer;" v-if="showDelIcon && imgUrl" class="el-icon-circle-close del-icon"></i> </div>
     </el-upload>
-    <!--/api/frontend/ajax/upload-->
     <el-upload
       v-else
       ref="upload"
-      :multiple="multiple"
+      :multiple="multipleConf"
       :limit="limit"
       :name="name"
       class="upload avatar-uploader"
@@ -127,6 +126,7 @@
     },
     data() {
       return {
+        multipleConf:false,
         fileList: [],
         baseURL: baseApiUrl,
         // ajaxData: {
@@ -197,6 +197,9 @@
       },
     },
     created() {
+      console.log(this.limit>1 || this.multiple)
+      this.multipleConf = (this.limit>1 || this.multiple) ?true:false
+      console.log(this.multipleConf)
     },
   };
 </script>

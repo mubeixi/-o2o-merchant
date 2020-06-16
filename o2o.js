@@ -6,7 +6,7 @@ const shell = require('shelljs');
 // require('shelljs/global');
 
 shell.exec('git pull origin master');
-//
+
 if (shell.exec('npm run build').code !== 0) { // 执行npm run build 命令
   shell.echo('Error: Git commit failed');
   shell.exit(1);

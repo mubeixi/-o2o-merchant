@@ -1,4 +1,4 @@
-@for $i from 4 through 400 {
+@for $i from 0 through 40 {
   .m-#{$i} { margin: ($i)+px; }
   .m-t-#{$i} { margin-top: ($i)+px; }
   .m-b-#{$i} { margin-bottom: ($i)+px; }
@@ -11,9 +11,104 @@
   .p-l-#{$i} { padding-left: ($i)+px; }
   .p-r-#{$i} { padding-right: ($i)+px; }
 
+  .fz-#{$i} { font-size: ($i)+px; }
 
+}
+
+@for $i from 0 through 400 {
   .w#{$i} { width: ($i)+px; }
   .h#{$i} { height: ($i)+px; }
-
-  .fz-#{$i} { font-size: ($i)+px; }
 }
+
+.c0 {
+  color: #000;
+}
+
+.c1 {
+  color: #111;
+}
+
+.c2 {
+  color: #222;
+}
+
+.c3 {
+  color: #333;
+}
+
+.c4 {
+  color: #444;
+}
+
+.c5 {
+  color: #555;
+}
+
+.c6 {
+  color: #666;
+}
+
+.c7 {
+  color: #777;
+}
+
+.c8 {
+  color: #888;
+}
+
+.c9 {
+  color: #999;
+}
+
+
+.flex {
+  display: flex;
+
+  .flex1 {
+    flex: 1;
+  }
+
+  &-row {
+    flex-direction: row;
+  }
+
+  &-column {
+    flex-direction: column;
+  }
+
+  //水平
+  &-vertical-c {
+    align-items: center;
+  }
+
+  &-vertical-b {
+    align-items: flex-end;
+  }
+
+  &-vertical-t {
+    align-items: flex-end;
+  }
+
+  //内容分布
+  &-justify-c {
+    justify-content: center;
+  }
+
+  &-justify-l {
+    justify-content: flex-start;
+  }
+
+  &-justify-r {
+    justify-content: flex-end;
+  }
+
+  &-justify-between {
+    justify-content: space-between;
+  }
+  &-wrap{
+    flex-wrap: wrap;
+  }
+}
+
+
+

@@ -4,19 +4,15 @@
   </div>
 </template>
 
-<script  lang="ts">
-  import {
-    Vue,
-    Component,
-    Watch
-  } from 'vue-property-decorator';
+<script lang="ts">
+import {Component, Vue} from 'vue-property-decorator';
 
-  @Component
-  export default class DesignType extends Vue{
+@Component
+export default class DesignType extends Vue {
 
-  }
+}
 </script>
 
-<style scoped lang="less">
+<style lang="less" scoped>
 
 </style>
