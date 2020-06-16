@@ -420,7 +420,8 @@ export const getBizIndustryDetail =  (data: object={}, options: any=false) => fe
 //获取行业分类
 export const bizIndustryList =  (data: object={}, options: any=false) => fetch('bizIndustryList', data, options);
 
-
+// 系统配置
+export const operateShopConfig = (data: object={}, options: any=false) => fetch('operateShopConfig', data, options);
 
 
 

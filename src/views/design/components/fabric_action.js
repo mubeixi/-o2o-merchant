@@ -1,14 +1,14 @@
 const bindSeletUnSelectEvent = function (imgObj, _this) {
-  imgObj.on("selected", function (options) {
-    _this.$store.commit("setOptionSelect", true);
+  imgObj.on('selected', function (options) {
+    _this.$store.commit('setOptionSelect', true);
     if (_this.$store.state.fabricObj.canvas.getActiveObject().lockMovementX) {
-      _this.$store.commit("setUnclock", false);
+      _this.$store.commit('setUnclock', false);
       return
     }
-    _this.$store.commit("setUnclock", true);
+    _this.$store.commit('setUnclock', true);
   })
-    .on("deselected", function (options) {
-      _this.$store.commit("setOptionSelect", false);
+    .on('deselected', function (options) {
+      _this.$store.commit('setOptionSelect', false);
     });
 }
 const createCanvas = function (canvasId) {
@@ -17,7 +17,7 @@ const createCanvas = function (canvasId) {
 
 const Copy = function (_this) {
   _this.$store.state.fabricObj.canvas.getActiveObject().clone(function (cloned) {
-    _this.$store.commit("setClipboard", cloned);
+    _this.$store.commit('setClipboard', cloned);
   });
 }
 const Paste = function (_this) {
@@ -26,9 +26,9 @@ const Paste = function (_this) {
     clonedObj.set({
       left: clonedObj.left + 50,
       top: clonedObj.top + 50,
-      evented: true
+      evented: true,
     });
-    if (clonedObj.type === "activeSelection") {
+    if (clonedObj.type === 'activeSelection') {
       clonedObj.canvas = _this.$store.state.fabricObj.canvas;
       clonedObj.forEachObject(function (obj) {
         _this.$store.state.fabricObj.canvas.add(obj);
@@ -42,7 +42,7 @@ const Paste = function (_this) {
     _this.$store.state.fabricObj.canvas.setActiveObject(clonedObj);
     _this.$store.state.fabricObj.canvas.requestRenderAll();
     _this.fabricAction.bindSeletUnSelectEvent(clonedObj, _this);
-    _this.$store.commit("setOptionSelect", true);
+    _this.$store.commit('setOptionSelect', true);
 
   });
 }
@@ -57,17 +57,17 @@ const startCrop = function (_this) {
     }
 
     _this.cutRect.el = new fabric.Rect({
-      fill: "rgba(0,0,0,0.3)",
-      originX: "left",
-      originY: "top",
-      stroke: "#ccc",
+      fill: 'rgba(0,0,0,0.3)',
+      originX: 'left',
+      originY: 'top',
+      stroke: '#ccc',
       strokeDashArray: [2, 2],
       opacity: 1,
       width: 1,
       height: 1,
-      borderColor: "#36fd00",
-      cornerColor: "green",
-      hasRotatingPoint: false
+      borderColor: '#36fd00',
+      cornerColor: 'green',
+      hasRotatingPoint: false,
     });
     _this.cutRect.el.left = _this.$store.state.fabricObj.canvas.getActiveObject().left;
     _this.cutRect.selection_object_left = _this.$store.state.fabricObj.canvas.getActiveObject().left;
@@ -83,7 +83,7 @@ const startCrop = function (_this) {
     _this.$store.state.fabricObj.canvas.setActiveObject(_this.cutRect.el);
     return
   }
-  alert("Please select an object or layer");
+  alert('Please select an object or layer');
 
 }
 const crop = function (_this) {
@@ -107,7 +107,7 @@ const lockOption = function (_this) {
     _this.$store.state.fabricObj.canvas.getActiveObject().lockRotation = true;
     _this.$store.state.fabricObj.canvas.getActiveObject().lockScalingX = true;
     _this.$store.state.fabricObj.canvas.getActiveObject().lockScalingY = true;
-    _this.$store.commit("setUnclock", false);
+    _this.$store.commit('setUnclock', false);
     return;
   }
   _this.$store.state.fabricObj.canvas.getActiveObject().lockMovementX = false;
@@ -115,7 +115,7 @@ const lockOption = function (_this) {
   _this.$store.state.fabricObj.canvas.getActiveObject().lockRotation = false;
   _this.$store.state.fabricObj.canvas.getActiveObject().lockScalingX = false;
   _this.$store.state.fabricObj.canvas.getActiveObject().lockScalingY = false;
-  _this.$store.commit("setUnclock", true);
+  _this.$store.commit('setUnclock', true);
 
 }
 
@@ -142,7 +142,7 @@ const fabricObjUnGroup = function (_this) {
 }
 
 const fabricForward = function (_this, style) {
-  _this.$store.commit("setForwordBox", false);
+  _this.$store.commit('setForwordBox', false);
   debugger
   _this.$store.state.fabricObj.canvas.preserveObjectStacking = true;
   if (style == 'forWard') {
@@ -254,8 +254,7 @@ const undo = function (_this) {
   if (config.undoFinishedStatus) {
     if (config.currentStateIndex == -1) {
       config.undoStatus = false;
-    }
-    else {
+    } else {
       if (config.canvasState.length >= 1) {
         config.undoFinishedStatus = 0;
         if (config.currentStateIndex != 0) {
@@ -269,8 +268,7 @@ const undo = function (_this) {
             }
             config.undoFinishedStatus = 1;
           });
-        }
-        else if (config.currentStateIndex == 0) {
+        } else if (config.currentStateIndex == 0) {
           _self.canvas.clear();
           config.undoFinishedStatus = 1;
           config.currentStateIndex -= 1;
@@ -310,19 +308,18 @@ const redo = function (_this) {
 }
 
 export const fontList = [
-  {fontFamily:'arial',text:'Arial'},
-  {fontFamily: 'consola',text:'consola'},
-  {fontFamily: 'DENG',text: '等线'},
-  {fontFamily: 'DENGB',text:'等线粗体'},
-  {fontFamily: 'DENGL',text:'等线细体'},
-  {fontFamily: 'msyh',text:'微软雅黑'},
-  {fontFamily: 'msyhbd',text:'微软雅黑粗体'},
-  {fontFamily: 'simkai',text:'楷体'},
-  {fontFamily: 'simsun',text:'宋体'},
-  {fontFamily: 'SIMYOU',text:'幼圆'},
-  {fontFamily: 'STXIHEI',text:'华文细黑'}
+  {fontFamily: 'arial', text: 'Arial'},
+  {fontFamily: 'consola', text: 'consola'},
+  {fontFamily: 'DENG', text: '等线'},
+  {fontFamily: 'DENGB', text: '等线粗体'},
+  {fontFamily: 'DENGL', text: '等线细体'},
+  {fontFamily: 'msyh', text: '微软雅黑'},
+  {fontFamily: 'msyhbd', text: '微软雅黑粗体'},
+  {fontFamily: 'simkai', text: '楷体'},
+  {fontFamily: 'simsun', text: '宋体'},
+  {fontFamily: 'SIMYOU', text: '幼圆'},
+  {fontFamily: 'STXIHEI', text: '华文细黑'},
 ]
-
 
 
 export default {
@@ -341,5 +338,5 @@ export default {
   display,
   canvasDataChange,
   undo,
-  redo
+  redo,
 }
