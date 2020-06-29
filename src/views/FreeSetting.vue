@@ -30,7 +30,7 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="单笔订单最高面单金额：">
+        <el-form-item label="单笔订单最高免单金额：">
           <div class="flex flex-align-c c8">
             <el-input class="inputs" v-model="top_free" style="width: 150px !important;"></el-input> 元
 
