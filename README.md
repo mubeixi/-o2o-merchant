@@ -1,12 +1,10 @@
 ## 二开说明
 
 ### 项目运行方式
-```
 1.安装node和npm  
 2.换源或者安装cnpm(推荐cnpm,不然node-sass安装容易失败）,[换源和安装cnpm](https://www.jianshu.com/p/0deb70e6f395)  
 3.cnpm i  
 4.npm run dev  
-```
 ### 常见问题
 #### 依赖安装失败
 需要删除node_modules文件夹，然后重装。  
