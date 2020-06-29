@@ -122,23 +122,23 @@ function setAttrData() {
         model: this.config.paddingStr,
         inputCB: (item) => item.model
       },
-      // {
-      //   type: 'switch',
-      //   text: '循环播放',
-      //   editType: 'config',
-      //   editKey: 'loop',
-      //   model: this.config.loop,
-      //   value: [
-      //     {
-      //       label: '关闭',
-      //       value: false,
-      //     },
-      //     {
-      //       label: '开启',
-      //       value: true,
-      //     },
-      //   ],
-      // },
+      {
+        type: 'switch',
+        text: '循环播放',
+        editType: 'config',
+        editKey: 'loop',
+        model: this.config.loop,
+        value: [
+          {
+            label: '关闭',
+            value: false,
+          },
+          {
+            label: '开启',
+            value: true,
+          },
+        ],
+      },
       {
         type: 'radio',
         text: '知识点模式',

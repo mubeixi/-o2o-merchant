@@ -1,7 +1,12 @@
 module.exports = {
   root: true,
   env: {
-    node: true
+    node: true,
+    browser: true,
+    es6: true,
+  },
+  globals:{
+
   },
   extends: ["plugin:vue/essential", "standard", "@vue/typescript"],
   rules: {
