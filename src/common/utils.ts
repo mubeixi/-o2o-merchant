@@ -85,6 +85,17 @@ export const GetQueryByString = (str, name) => {
  */
 export const objTranslate = obj=>JSON.parse(JSON.stringify(obj))
 
+/**
+ * 合并任意个数组
+ */
+export function mergeArray(){
+  var rt = []
+  for(var i=0;i<arguments.length;i++){
+
+    if(Array.isArray(arguments[i]))rt = rt.concat(arguments[i])
+  }
+  return rt
+}
 
 /**
  * 限定覆盖指定的值
@@ -511,4 +522,13 @@ export const formatTime = (date,tmpl) => {
 const formatNumber = n => {
   n = n.toString()
   return n[1] ? n : '0' + n
+}
+
+
+export function checkValue (val, vals) {
+  let _val = val
+  if (Number.isNaN(val)) {
+    _val = 'NaN'
+  }
+  return vals.indexOf(_val) !== -1
 }

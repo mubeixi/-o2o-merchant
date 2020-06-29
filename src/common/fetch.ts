@@ -86,8 +86,10 @@ export const fetch = function (act: String, param: Object = {}, options = false,
 
 };
 
-
+export const getActiveInfo = (data:object={},options:any=false)=> fetch('getActiveInfo', data, options)
 export const bizProdList = (data:object={},options:any=false)=> fetch('bizProdList', data, options)
+export const opRightsCard = (data:object={},options:any=false)=> fetch('opRightsCard', data, options)
+export const opActive = (data:object={},options:any=false)=> fetch('opActive', data, options)
 //获取权益卡
 export const getCouponLists = (data:object={},options:any=false)=> fetch('getCouponList', data, options)
 //获取权益卡
@@ -418,7 +420,8 @@ export const getBizIndustryDetail =  (data: object={}, options: any=false) => fe
 //获取行业分类
 export const bizIndustryList =  (data: object={}, options: any=false) => fetch('bizIndustryList', data, options);
 
-
+// 系统配置
+export const operateShopConfig = (data: object={}, options: any=false) => fetch('operateShopConfig', data, options);
 
 
 

@@ -3,12 +3,12 @@ const shell = require('shelljs');
 // 全局模式下，就不需要用shell开头了。
 // require('shelljs/global');
 
-shell.exec('git pull origin master');
+// shell.exec('git pull origin master');
 
-if (shell.exec('npm run build').code !== 0) { // 执行npm run build 命令
-  shell.echo('Error: Git commit failed');
-  shell.exit(1);
-}
+// if (shell.exec('npm run build').code !== 0) { // 执行npm run build 命令
+//   shell.echo('Error: Git commit failed');
+//   shell.exit(1);
+// }
 
 
 shell.rm('-rf', '../newo2osrc/htdocs/member/shop/setting/diy/*');// 删除
@@ -25,5 +25,5 @@ console.log(time);
 
 // 不能在一股脑全部添加了
 shell.exec('git add htdocs/member/shop/setting/diy/');
-shell.exec(`git commit -m "商户端发布版本${time}"`);
+shell.exec(`git commit -m "O2O系统后台发布版本${time}"`);
 shell.exec('git push origin master');

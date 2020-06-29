@@ -42,7 +42,8 @@ const JoinCate = () => import('@/views/JoinCate')
 const JoinMaterial = () => import('@/views/JoinMaterial')
 const RightCard = () => import('@/views/RightCard')
 const FreeSetting = () => import('@/views/FreeSetting')
-
+const RightCardDetail = () => import('@/views/RightCardDetail')
+const SystemConf = () => import('@/views/SystemConf')
 const routerInstance = new Router({
   routes: [
     {
@@ -56,6 +57,14 @@ const routerInstance = new Router({
       component: StorePurchaseApply,
       meta:{
         title:'进货记录'
+      }
+    },
+    {
+      path:'/SystemConf',
+      name:'SystemConf',
+      component: SystemConf,
+      meta:{
+        title:'系统设置'
       }
     },
     {
@@ -326,6 +335,14 @@ const routerInstance = new Router({
       path: '/RightCard',
       name: 'RightCard',
       component: RightCard,
+      meta:{
+        title:'权益卡'
+      }
+    },
+    {
+      path: '/RightCardDetail',
+      name: 'RightCardDetail',
+      component: RightCardDetail,
       meta:{
         title:'权益卡'
       }

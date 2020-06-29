@@ -103,7 +103,6 @@ function setAttrData() {
         }
 
       },
-
       {
         type: 'input',
         // inputType: 'number',
@@ -112,6 +111,54 @@ function setAttrData() {
         editKey: 'interval',
         model: this.config.interval,
         inputCB: (item) => item.model
+      },
+      {
+        type: 'input',
+        // inputType: 'number',
+        text: '自定义间距',
+        desc:'eg.20px 0 20px 0,不清楚规则可以问技术',
+        editType: 'config',
+        editKey: 'paddingStr',
+        model: this.config.paddingStr,
+        inputCB: (item) => item.model
+      },
+      {
+        type: 'switch',
+        text: '循环播放',
+        editType: 'config',
+        editKey: 'loop',
+        model: this.config.loop,
+        value: [
+          {
+            label: '关闭',
+            value: false,
+          },
+          {
+            label: '开启',
+            value: true,
+          },
+        ],
+      },
+      {
+        type: 'radio',
+        text: '知识点模式',
+        editType: 'config',
+        editKey: 'indicatorDots',
+        model: this.config.indicatorDots,
+        value: [
+          {
+            label: '不显示',
+            value: 'none',
+          },
+          {
+            label: '圆点',
+            value: 'circle',
+          },
+          {
+            label: '横线',
+            value: 'line',
+          }
+        ],
       },
       // {
       //   type: 'switch',
@@ -191,6 +238,8 @@ class Swiper extends Common {
   config = {
     loop: false,//是否循环
     interval: 5,//切换时间
+    indicatorDots:'none',//指示器
+    paddingStr:'',//自定义边距
     autoplay: true,//自动播放
     //type: 1, //两种风格
   }
