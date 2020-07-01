@@ -3,6 +3,7 @@
 ### 项目运行方式
 1.安装node和npm  
 2.换源或者安装cnpm(推荐cnpm,不然node-sass安装容易失败）,具体文档参见[换源和安装cnpm](https://www.jianshu.com/p/0deb70e6f395)  
+3.需要先安装 npm i webpack和npm i webpack-cli
 3.cnpm i  
 4.npm run dev  
 ### 常见问题
