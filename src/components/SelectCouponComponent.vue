@@ -47,7 +47,7 @@
 </template>
 
 <script>
-  import { getCouponList } from '../common/fetch';
+import { getCouponList, getCouponLists } from '../common/fetch'
 
   export default {
     name: 'SelectCouponComponent',
@@ -190,7 +190,7 @@
         if (this.paginate.total > 0 && this.page >= this.paginate.total) return;
         this.loading = true;
         let _self = this;
-        getCouponList({...this.paginate,User_ID:null,store_id:null,biz_id:-1,front_show:1})
+        getCouponLists({...this.paginate,User_ID:null,store_id:null,biz_id:-1,front_show:1})
           .then(res => {
             setTimeout(function () {
               _self.loading = false;
