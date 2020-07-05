@@ -46,16 +46,15 @@
                 <el-option label="优惠券" value="coupon"></el-option>
                 <el-option label="积分" value="score"></el-option>
               </el-select>
-              <block v-if="item.type==='score'">
-                <el-input :disabled="!editCan" placeholder="请输入积分数量" style="width: 130px;margin-left: 15px"
-                          v-model="item.value"></el-input>
-              </block>
-              <block v-if="item.type==='gift'">
+              <template v-if="item.type==='score'">
+                <el-input :disabled="!editCan" placeholder="请输入积分数量" style="width: 130px;margin-left: 15px" v-model="item.value"></el-input>
+              </template>
+              <template v-if="item.type==='gift'">
                 <span @click="selectGi(index)" class="spans">选择赠品</span>
-              </block>
-              <block v-if="item.type==='coupon'">
+              </template>
+              <template v-if="item.type==='coupon'">
                 <span @click="selectGis(index)" class="spans">选择优惠券</span>
-              </block>
+              </template>
             </el-form-item>
             <div class="first second" v-if="item.type==='gift'">
               <div class="listLine" v-if="item.pname||item.lose_txt">
@@ -202,12 +201,12 @@
         </el-table-column>
         <el-table-column
           label="优惠券ID"
-          prop="id"
+          prop="Coupon_ID"
         >
         </el-table-column>
         <el-table-column
           label="优惠券名称"
-          prop="title"
+          prop="Coupon_Subject"
         >
         </el-table-column>
       </el-table>
@@ -341,17 +340,15 @@ export default class Rotate extends Vue {
   searchLists() {
     let data = {
       status: 1,
-      front_show: 2,
       page: this.pages,
       pageSize: this.pageSizes,
       cou_name: this.nameMbxs,
       biz_id: -1,
-      front_show: 2
+      User_ID:null,//不能传用户id
+      front_show:2
     }
     getCouponLists(data).then(res => {
-      if (res.errorCode == 0) {
-        this.GivingGiftss = res.data;
-      }
+      this.GivingGiftss = res.data;
     })
   }
 
