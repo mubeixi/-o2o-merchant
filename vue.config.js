@@ -10,13 +10,24 @@ const { styles } = require('@ckeditor/ckeditor5-dev-utils')
 module.exports = {
   // options...
   publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
-  configureWebpack:(config)=>{
-    if(process.env.NODE_ENV === 'production'){
-
+  css: {
+    loaderOptions: {
+      sass: {
+        // data: fs.readFileSync('src/assets/css/variable.scss', 'utf-8'),
+        implementation: require('sass') // This line must in sass option
+      },
+      scss: {
+        // data: fs.readFileSync('src/assets/css/variable.scss', 'utf-8'),
+        implementation: require('sass') // This line must in sass option
+      }
+    }
+  },
+  configureWebpack: (config) => {
+    if (process.env.NODE_ENV === 'production') {
       config.plugins.push(
         // 引用动态链接库
         new webpack.DllReferencePlugin({
-          manifest: path.resolve(__dirname, "./build/dll/libs-manifest.json")
+          manifest: path.resolve(__dirname, './build/dll/libs-manifest.json')
         })
       )
       config.plugins.push(
@@ -39,9 +50,6 @@ module.exports = {
         language: 'zh-cn'
       })
     )
-
-
-
   },
   devServer: {
     proxy: {

@@ -176,7 +176,7 @@
       @close="cardCancels"
       append-to-body
       class="setting"
-      title="选择优惠券"
+      title="选择优惠券(点击即可选中)"
       width="40%"
     >
       <div class="cardTitle" style="margin-bottom: 10px">
@@ -353,10 +353,24 @@ export default class Rotate extends Vue {
   }
 
   handleSelectionChanges(val) {
+    console.log(val)
+    // Coupon_Cash: 20
+    // Coupon_Condition: 100
+    // Coupon_Discount: "0.00"
+    // Coupon_EndTime: "2020-07-12 09:47:44"
+    // Coupon_ID: 55
+    // Coupon_PhotoPath: ""
+    // Coupon_StartTime: "2020-07-05 09:47:44"
+    // Coupon_Subject: "通用优惠券100-20"
+    // Coupon_UseType: 1
+    // Coupon_UsedTimes: 1
+    // biz_id: 0
+    // coupon_prod: "0"
+    // front_show: 2
     if (val) {
       this.isShows = false
-      this.rotateList[this.rotateIndex].cname = val.title
-      this.rotateList[this.rotateIndex].value = val.id
+      this.rotateList[this.rotateIndex].cname = val.Coupon_Subject
+      this.rotateList[this.rotateIndex].value = val.Coupon_ID
       this.$refs.multipleTables.setCurrentRow();
     }
   }
