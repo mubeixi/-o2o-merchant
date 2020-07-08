@@ -314,7 +314,7 @@
       >
         <template slot="Products_Name-column" slot-scope="props">
           <div style="display: flex;align-items: center;margin-left: 10px">
-            <img :src="props.row.img_url" height="100px" width="90px">
+            <img :src="props.row.ImgPath" height="100px" width="90px">
             <span style="margin-left: 10px">{{props.row.Products_Name}}</span>
           </div>
         </template>
@@ -412,7 +412,7 @@ import UploadComponents from "@/components/comm/UploadComponents.vue";
 import {createTmplArray, findArrayIdx, objTranslate, plainArray} from '@/common/utils';
 import {
   getGivingGifts,
-  getProductCategory,
+  getProductCategory, getProductList,
   getProducts,
   systemLevelAdd,
   systemLevelDetail,
@@ -722,12 +722,12 @@ export default class DistributorLevel extends Vue {
     let data = {
       pageSize: this.dataTableOpt.pageSize,
       page: this.dataTableOpt.page,
-      pro_name: this.dataTableOpt.columns[nameIdx].value,
-      sel_cate: this.dataTableOpt.columns[cateIdx].value,
+      Products_Name: this.dataTableOpt.columns[nameIdx].value,
+      Cate_ID: this.dataTableOpt.columns[cateIdx].value,
       store_id: ''
     }
 
-    getProducts(data).then(res => {
+    getProductList(data).then(res => {
       if (res.errorCode == 0) {
         this.dataTableOpt.dataList = res.data
         this.dataTableOpt.totalCount = res.totalCount

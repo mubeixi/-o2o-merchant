@@ -130,7 +130,7 @@
     for (var v of arr) {
       v.id = v.Category_ID;
       v.label = v.Category_Name;
-      v.path = `/pages/classify/result?Cate_ID=${v.Category_ID}`;
+      v.path = `/pages/search/result?Cate_ID=${v.Category_ID}`;
       v.type = 'classify';
 
       if (v.child) {
