@@ -1,7 +1,8 @@
 // vue.config.js
 const environment = require('./build/environment.ts')
 const webpack = require('webpack')
-
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 const path = require('path')
 const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin')
 const { styles } = require('@ckeditor/ckeditor5-dev-utils')
@@ -9,14 +10,47 @@ const { styles } = require('@ckeditor/ckeditor5-dev-utils')
 module.exports = {
   // options...
   publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
-  // configureWebpack: {
-  //   plugins: [
-  //     new webpack.DefinePlugin({
-  //       'process.env.STAGE': JSON.stringify(environment.stage),
-  //       'process.env.API_BASE_URL': JSON.stringify(environment.apiurl)
-  //     })
-  //   ]
-  // },
+  css: {
+    loaderOptions: {
+      sass: {
+        // data: fs.readFileSync('src/assets/css/variable.scss', 'utf-8'),
+        implementation: require('sass') // This line must in sass option
+      },
+      scss: {
+        // data: fs.readFileSync('src/assets/css/variable.scss', 'utf-8'),
+        implementation: require('sass') // This line must in sass option
+      }
+    }
+  },
+  configureWebpack: (config) => {
+    if (process.env.NODE_ENV === 'production') {
+      config.plugins.push(
+        // 引用动态链接库
+        new webpack.DllReferencePlugin({
+          manifest: path.resolve(__dirname, './build/dll/libs-manifest.json')
+        })
+      )
+      config.plugins.push(
+        // 将 dll 注入到 生成的 html 模板中
+        new AddAssetHtmlPlugin({
+          // dll文件位置
+          filepath: path.resolve(__dirname, './build/dll/*.js'),
+          // dll 引用路径
+          publicPath: 'dll',
+          // dll最终输出的目录
+          outputPath: 'dll'
+        })
+      )
+    }
+
+    config.plugins.push(
+      // CKEditor needs its own plugin to be built using webpack.
+      new CKEditorWebpackPlugin({
+        // See https://ckeditor.com/docs/ckeditor5/latest/features/ui-language.html
+        language: 'zh-cn'
+      })
+    )
+  },
   devServer: {
     proxy: {
       '/api': {
@@ -38,17 +72,6 @@ module.exports = {
   transpileDependencies: [
     /ckeditor5-[^/\\]+[/\\]src[/\\].+\.js$/
   ],
-
-  configureWebpack: {
-    plugins: [
-      // CKEditor needs its own plugin to be built using webpack.
-      new CKEditorWebpackPlugin({
-        // See https://ckeditor.com/docs/ckeditor5/latest/features/ui-language.html
-        language: 'zh-cn'
-      })
-    ]
-  },
-
   // Vue CLI would normally use its own loader to load .svg and .css files, however:
   //	1. The icons used by CKEditor must be loaded using raw-loader,
   //	2. The CSS used by CKEditor must be transpiled using PostCSS to load properly.

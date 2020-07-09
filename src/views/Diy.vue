@@ -13,8 +13,7 @@
                class="item preview-page-coms"><i class="preview-page-coms-icon"></i>组件管理
           </div>
         </div>
-        <preview-component :isDiy="true" @preFun="setPreEv" @setData="setDataEv"
-                           ref="preview"></preview-component>
+        <preview-component :isDiy="true" @preFun="setPreEv" @setData="setDataEv" ref="preview"></preview-component>
       </div>
       <div class="setattr">
         <div class="deco-component-title">

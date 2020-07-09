@@ -46,16 +46,15 @@
                 <el-option label="优惠券" value="coupon"></el-option>
                 <el-option label="积分" value="score"></el-option>
               </el-select>
-              <block v-if="item.type==='score'">
-                <el-input :disabled="!editCan" placeholder="请输入积分数量" style="width: 130px;margin-left: 15px"
-                          v-model="item.value"></el-input>
-              </block>
-              <block v-if="item.type==='gift'">
+              <template v-if="item.type==='score'">
+                <el-input :disabled="!editCan" placeholder="请输入积分数量" style="width: 130px;margin-left: 15px" v-model="item.value"></el-input>
+              </template>
+              <template v-if="item.type==='gift'">
                 <span @click="selectGi(index)" class="spans">选择赠品</span>
-              </block>
-              <block v-if="item.type==='coupon'">
+              </template>
+              <template v-if="item.type==='coupon'">
                 <span @click="selectGis(index)" class="spans">选择优惠券</span>
-              </block>
+              </template>
             </el-form-item>
             <div class="first second" v-if="item.type==='gift'">
               <div class="listLine" v-if="item.pname||item.lose_txt">
@@ -177,7 +176,7 @@
       @close="cardCancels"
       append-to-body
       class="setting"
-      title="选择优惠券"
+      title="选择优惠券(点击即可选中)"
       width="40%"
     >
       <div class="cardTitle" style="margin-bottom: 10px">
@@ -202,12 +201,12 @@
         </el-table-column>
         <el-table-column
           label="优惠券ID"
-          prop="id"
+          prop="Coupon_ID"
         >
         </el-table-column>
         <el-table-column
           label="优惠券名称"
-          prop="title"
+          prop="Coupon_Subject"
         >
         </el-table-column>
       </el-table>
@@ -341,25 +340,37 @@ export default class Rotate extends Vue {
   searchLists() {
     let data = {
       status: 1,
-      front_show: 2,
       page: this.pages,
       pageSize: this.pageSizes,
       cou_name: this.nameMbxs,
       biz_id: -1,
-      front_show: 2
+      User_ID:null,//不能传用户id
+      front_show:2
     }
     getCouponLists(data).then(res => {
-      if (res.errorCode == 0) {
-        this.GivingGiftss = res.data;
-      }
+      this.GivingGiftss = res.data;
     })
   }
 
   handleSelectionChanges(val) {
+    console.log(val)
+    // Coupon_Cash: 20
+    // Coupon_Condition: 100
+    // Coupon_Discount: "0.00"
+    // Coupon_EndTime: "2020-07-12 09:47:44"
+    // Coupon_ID: 55
+    // Coupon_PhotoPath: ""
+    // Coupon_StartTime: "2020-07-05 09:47:44"
+    // Coupon_Subject: "通用优惠券100-20"
+    // Coupon_UseType: 1
+    // Coupon_UsedTimes: 1
+    // biz_id: 0
+    // coupon_prod: "0"
+    // front_show: 2
     if (val) {
       this.isShows = false
-      this.rotateList[this.rotateIndex].cname = val.title
-      this.rotateList[this.rotateIndex].value = val.id
+      this.rotateList[this.rotateIndex].cname = val.Coupon_Subject
+      this.rotateList[this.rotateIndex].value = val.Coupon_ID
       this.$refs.multipleTables.setCurrentRow();
     }
   }

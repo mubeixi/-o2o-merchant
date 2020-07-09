@@ -485,8 +485,7 @@
               </template>
             </el-select>
           </el-form-item>
-          <el-input-number :min="1" label="件" sizi="mini" style="width: 120px;margin-left: 10px"
-                           v-model="vipNum"></el-input-number>
+          <el-input-number :min="1" label="件" sizi="mini" style="width: 120px;margin-left: 10px" v-model="vipNum"></el-input-number>
           <div style="font-size: 14px;margin-left: 10px">件</div>
         </el-checkbox-group>
       </el-form-item>
@@ -2198,9 +2197,10 @@ export default class AddProduct extends Vue {
       this.area_Proxy_Reward = res.data.Shop_Commision_Reward_Json.area_Proxy_Reward;
       this.commission_ratio = res.data.Shop_Commision_Reward_Json.commission_Reward;
       this.manage_Reward = res.data.Shop_Commision_Reward_Json.manage_Reward;
-    }).catch();
+    }).catch(()=>{});
 
     let id = this.$route.query.prod_id;
+    console.log('is is ',id)
     await getShippingTemplate().then(res => {
       this.yunfei = res.data
     })
