@@ -1,6 +1,9 @@
 <template>
   <div class="preview-body" id="previewWrap">
-    <div class="preview-head"><div class="preview-header-title"></div></div>
+    <div class="preview-head-new" v-if="!isDiy"><div class="preview-header-title"></div></div>
+    <div class="preview-head" v-if="isDiy">
+      <div class="preview-header-title">{{system.title||'新页面'}}</div>
+    </div>
     <div class="canvasBox" @drop="dropEv" @dragover.prevent >
 <!--      @mouseover="selectStyle"-->
 <!--      @mouseout="outStyle"-->
@@ -180,7 +183,7 @@
 
         </section>
 
-        <div class="kill noselect" @click.stop="noop">
+        <div v-if="!isDiy" class="kill noselect" @click.stop="noop">
           <div class="kill-title flex flex-ver-c">
             <div class="kill-title-text">今日秒杀</div>
             <div class="kill-title-more flex flex-ver-c">
@@ -203,7 +206,7 @@
           </div>
         </div>
 
-        <div class="live noselect" @click.stop="noop">
+        <div v-if="!isDiy" class="live noselect" @click.stop="noop">
 
           <div class="live-title">
             <div class="live-title-text">钜惠推荐</div>
@@ -1408,8 +1411,19 @@ export default class PreviewComponent extends Vue {
   .canvasBox::-webkit-scrollbar {
     display:none !important;
   }
-  .preview-head{
+  .preview-head-new{
     background-image: url(~@/assets/img/statusbar.jpg);
+    height: 64px;
+    width: 375px;
+    margin: 0 auto;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50%;
+    position: relative;
+    box-shadow: 0 0 14px 0 rgba(0,0,0,.1);
+  }
+  .preview-head{
+    background-image: url(~@/assets/img/statusbar2.jpg);
     height: 64px;
     width: 375px;
     margin: 0 auto;
