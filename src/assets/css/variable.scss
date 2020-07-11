@@ -1,0 +1,35 @@
+
+/* 颜色变量 */
+$fun-gray-color: #BEBEBE;
+$fun-primary-color: #26C78D;
+$fun-green-color: #26C78D;
+$fun-black-color: #000000;
+$fun-red-color: #f53636;
+$fun-blue-color: #00A8FF;
+$fun-yellow-color: #FFE300;
+$fun-orange-color: #ff7800;
+
+$fun-selling-color: #E41515; //商品现在价格
+$fun-market-color: #939393; //原价
+$fun-border-color: #e7e7e7;
+
+
+/** mixins **/
+@mixin cover-img($bgsize:cover,$paddingTop:0px,$bgcolor:#f2f2f2,$repreat:no-repeat,$position:center) {
+  background: {
+    color: $bgcolor;
+    size: $bgsize;
+    repeat: $repreat;
+    position: $position;
+  };
+  padding: {
+    top: $paddingTop;
+  };
+}
+
+@mixin rest{
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+

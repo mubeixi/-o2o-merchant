@@ -6,6 +6,7 @@ const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 const path = require('path')
 const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin')
 const { styles } = require('@ckeditor/ckeditor5-dev-utils')
+const fs = require('fs')
 
 module.exports = {
   // options...

@@ -647,7 +647,7 @@
   .container-right-image{
     display: flex;
     flex-wrap: wrap;
-    justify-content: start;
+    justify-content: flex-start;
     width: 890px;
     margin: 0 auto;
     /*padding-left: 10px;*/

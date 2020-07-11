@@ -24,9 +24,9 @@ import 'vuescroll/dist/vuescroll.css';
 Vue.use(vuescroll);
 
 
-// @ts-ignore
+// // @ts-ignore
 Vue.http.options.emulateJSON = true;
-// @ts-ignore
+// // @ts-ignore
 Vue.http.options.emulateHTTP = true;
 
 Vue.use(Common);

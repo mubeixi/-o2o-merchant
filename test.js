@@ -38,9 +38,9 @@ const config = {
   // exclude: ["dist/**/*.map", "node_modules/**", "node_modules/**/.*", ".git/**"],
   exclude: ['static/fonts/**'],
   // delete ALL existing files at destination before uploading, if true
-  deleteRemote: true,
+  deleteRemote: false,
   // Passive mode is forced (EPSV command is not sent)
-  forcePasv: false
+  forcePasv: true
 }
 
 // use with promises
