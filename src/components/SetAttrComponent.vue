@@ -82,7 +82,7 @@
             </div>
 
             <div class="flex" v-if="['coupon'].indexOf(item.row_type)!==-1">
-              <span class="padding10-c">{{item.label}} : {{item.value[idx].Coupon_Title}}</span>
+              <span class="padding10-c">{{item.label}} : {{item.value[idx].Coupon_Subject}}</span>
             </div>
 
             <div class="row-container flex" v-if="['swiper'].indexOf(item.row_type)!==-1">

@@ -106,11 +106,11 @@
                 }else if(Array.isArray(this.goods.value.list) && this.goods.value.list.length>0){
                   return this.goods.value.list.length
                 }else{
-                  return 6
+                  return 999
                 }
 
               }catch (e) {
-                return 6
+                return 999
               }
             },
             isEmpeyInfo() {
