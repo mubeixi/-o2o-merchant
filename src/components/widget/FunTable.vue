@@ -132,6 +132,8 @@
               }
           },
           _totalCount:{
+              immediate:true,
+              deep:true,
               handler(val){
                   this.totalCount = val
               }
