@@ -25,24 +25,25 @@ export class uploadByTiny {
   static upload(blobInfo, success, failure, progress) {
 
     console.log(blobInfo,arguments)
-    const {file} = blobInfo
-
+    var file = blobInfo.blob();//转化为易于理解的file对象
+    console.log(file)
     const initData = store.state.initData
     const upload_rule = initData.upload_rule.image
 
-    // let curFileSize = parseInt(file.size/1024*100)/100
-    // console.log(curFileSize,upload_rule)
-    // //1.服务器模式 2.不是视频类型 才限制大小
-    // if(curFileSize>upload_rule.size){
-    //   const errMsg = `文件${file.name}大小${curFileSize}kb超出上传限制${upload_rule.size}kb`
-    //   fun.error({msg:errMsg})
-    //   failure(errMsg)
-    //   return;
-    // }
+
+
+    let curFileSize = parseInt(file.size/1024*100)/100
+    console.log(curFileSize,upload_rule)
+    //1.服务器模式 2.不是视频类型 才限制大小
+    if(curFileSize>upload_rule.size){
+      const errMsg = `文件${file.name}大小${curFileSize}kb超出上传限制${upload_rule.size}kb`
+      fun.error({msg:errMsg})
+      failure(errMsg)
+      return;
+    }
 
     let reader = new FileReader();
     reader.addEventListener("load", ()=>{
-
       const param:any = {}
 
       // console.log(param)
@@ -74,7 +75,6 @@ export class uploadByTiny {
       if(!param.hasOwnProperty('store_id')){
         param.store_id = get_Stores_ID();
       }
-
 
       param.image = reader.result
 

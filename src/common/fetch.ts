@@ -119,9 +119,9 @@ export const fetch = function (act: String, param:any, options = false, url: Str
   let data = createToken(param);
 
   //保持签名通过，同时支持传空字符串
-  Object.assign(data,param)
+  //Object.assign(data,param)
 
-  // console.log(data)
+  //console.log(data)
 
   // console.log(process.env.VUE_APP_API_BASE_URL)
   url = (process.env.NODE_ENV === 'production' ? baseApiUrl : '') + url;
@@ -490,7 +490,16 @@ export const operateShopConfig = (data: object={}, options: any=false) => fetch(
 // 生成自定义路径的小程序码
 export const getLpQrcode = (data: object={}, options: any=false) => fetch('getLpQrcode', data, options);
 
+// 公告列表
+export const getBizMessageList = (data: object={}, options: any=false) => fetch('bizMessageList', data, options);
 
+// 公告详情
+export const bizMessageDetail = (data: object={}, options: any=false) => fetch('bizMessageDetail', data, options);
+
+// 新增或编辑
+export const operateBizMessage = (data: object={}, options: any=false) => fetch('operateBizMessage', data, options);
+
+export const delBizMessage = (data: object={}, options: any=false) => fetch('delBizMessage', data, options);
 
 
 function get_Appid() {
@@ -505,8 +514,11 @@ export const get_Stores_ID = () => Cookie.get('Stores_ID');
 export const get_Users_Account = () => ls.get('Users_Account')
 
 export const createToken = function (object) {
+
   object = ObjectToArr(object);
+
   var signString = ObjectToString(object);
+
   signString = signString.slice(0, -1);
   var timestamp = parseInt(new Date().getTime() / 1000).toString();
   var key = '458f_$#@$*!fdjisdJDFHUk4%%653154%^@#(FSD#$@0-T';
@@ -527,7 +539,7 @@ function ObjectToArr(object, addkey) {
 
     var newkey = addkey + (addkey === '' ? i : '[' + i + ']');
     if (typeof object[i] !== 'object') {
-      if (object[i] !== '') {
+      if (object[i] !== '' && typeof object[i]!=='undefined' && object!=='undefined') {
         if (i !== 'timestamp' && i !== 'sign' && i !== 'sortToken') {
           arrs[newkey] = object[i];
         }

@@ -1,1 +1,1 @@
-window.pro_base_apiurl = 'https://new40122.bafangka.com';
+window.pro_base_apiurl = 'https://new40122.bafangka.com'

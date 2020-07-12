@@ -1,7 +1,7 @@
 import { PLUGINSLIST } from './data';
 import Vue from 'vue';
 import { staticUrl } from './env';
-
+const moment  =require('moment')
 Vue.filter('getTitleByTag',(tag) => {
 
   for (const group of PLUGINSLIST) {
@@ -32,5 +32,10 @@ Vue.filter('percent',(val) => parseInt(val*100)/100)
 Vue.filter('num2px',(val) => {
   if (val.indexOf('px') == -1) return `${val}px`;
   return val;
+})
+
+Vue.filter('formatetime',(val,formatStr='YYYY-MM-DD hh:mm:ss') => {
+
+  return moment.unix(val).format(formatStr);
 })
 

@@ -1,4 +1,4 @@
-import store from "../../../store";
+import store from "../../store";
 let finderDialogInstance = store.state.finderDialogInstance
 const noop = ()=>{}
 export class FUNFinder {

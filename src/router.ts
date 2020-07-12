@@ -45,6 +45,9 @@ const FreeSetting = () => import('@/views/FreeSetting.vue')
 const RightCardDetail = () => import('@/views/RightCardDetail.vue')
 const SystemConf = () => import('@/views/SystemConf.vue')
 const Demo = ()=>import('@/views/Demo.vue')
+const MessageList = ()=>import('@/views/MessageList.vue')
+const MessageForm = ()=>import('@/views/MessageForm.vue')
+
 const routerInstance = new Router({
   routes: [
     {
@@ -58,6 +61,22 @@ const routerInstance = new Router({
       component: Demo,
       meta:{
         title:'demo'
+      }
+    },
+    {
+      path:'/message/list',
+      name:'MessageList',
+      component: MessageList,
+      meta:{
+        title:'公告列表'
+      }
+    },
+    {
+      path:'/message/form',
+      name:'MessageForm',
+      component: MessageForm,
+      meta:{
+        title:'编辑公告'
       }
     },
     {

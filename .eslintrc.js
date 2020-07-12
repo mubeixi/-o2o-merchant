@@ -6,7 +6,7 @@ module.exports = {
     es6: true,
   },
   globals:{
-
+    FUNFinder
   },
   extends: ["plugin:vue/essential", "standard", "@vue/typescript"],
   rules: {

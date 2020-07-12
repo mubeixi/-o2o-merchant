@@ -235,27 +235,27 @@
           <!--              <el-option :label="it.Type_Name" :value="it.Type_ID" ></el-option>-->
           <!--            </template>-->
           <!--          </el-select>-->
-          <block v-if="!Array.isArray(prod_attrval.attrs)">
-            <block :key="index" v-for="(item,index) in  prod_attrval.attrs">
+          <template v-if="!Array.isArray(prod_attrval.attrs)">
+            <div :key="index" v-for="(item,index) in  prod_attrval.attrs">
               <el-input :value="index" class="sortInput"></el-input>
-            </block>
-          </block>
-          <blcok v-else>
+            </div>
+          </template>
+          <template v-else>
             <el-input class="sortInput" value="无规格"></el-input>
-          </blcok>
+          </template>
 
         </el-tooltip>
       </el-form-item>
 
       <el-form-item label="商品规格" v-if="ruleForm.Products_Type">
-        <block v-if="!Array.isArray(prod_attrval.attrs)">
-          <block :key="index" v-for="(item,index) in  prod_attrval.attrs">
+        <template v-if="!Array.isArray(prod_attrval.attrs)">
+          <div :key="index" v-for="(item,index) in  prod_attrval.attrs">
             <el-input :value="index" class="sortInput"></el-input>
-          </block>
-        </block>
-        <blcok v-else>
+          </div>
+        </template>
+        <template v-else>
           <el-input class="sortInput" value="无规格"></el-input>
-        </blcok>
+        </template>
         <!--       <div class="specs_box">-->
         <!--         <div class="specs_row" v-for="(row,idx_row) in prod_attrval.values" :key="idx_row">-->
         <!--           <span class="label">{{row.title}}</span>-->
@@ -535,8 +535,9 @@
       </el-form-item>
       <el-form-item label="商品详情" style="margin-bottom: 0">
         <div style="padding-right: 200px">
-          <wzw-editor :content.sync="editorText" @on-content-change="onContentChange"
-                      ref="richtext"></wzw-editor>
+<!--          <wzw-editor :content.sync="editorText" @on-content-change="onContentChange" ref="richtext"></wzw-editor>-->
+          <!--@change="onContentChange"-->
+          <wzw-tinymce :content.sync="editorText"  ref="richtext"></wzw-tinymce>
           <!--          <kind-editor id="container" height="400px" width="800px" :content.sync="editorText"-->
           <!--                      :afterChange="afterChange()"-->
           <!--                      :loadStyleMode="false"-->
@@ -634,7 +635,7 @@
             <el-form-item label="" prop="sort" style="margin-bottom: 0px;">
               <el-input style="width: 80px;margin-left: 19px;"
                         v-model="commission_ratio"></el-input>
-              % <span class="msg"><block v-if="self_commi=='2'&&parent_commi=='2'">(此项设置无效)</block><block
+              % <span class="msg"><template v-if="self_commi=='2'&&parent_commi=='2'">(此项设置无效)</template><block
               v-else>(按照下方设置对各个身份、各个等级的分销商发放奖励)</block></span>
             </el-form-item>
           </div>
@@ -646,7 +647,7 @@
           <div class="rightTitle">
             <el-form-item label="" prop="sort" style="margin-bottom: 0px;">
               <el-input style="width: 80px;margin-left: 19px;" v-model="manage_Reward"></el-input>
-              % <span class="msg"><block v-if="manage_commi=='2'">(此项设置无效)</block><block v-else>(在分销等级发放之外额外发放，当下级有和自己同级别身份就不再发放)</block></span>
+              % <span class="msg"><template v-if="manage_commi=='2'">(此项设置无效)</template><block v-else>(在分销等级发放之外额外发放，当下级有和自己同级别身份就不再发放)</block></span>
             </el-form-item>
           </div>
         </div>
@@ -705,16 +706,16 @@
                   <span class="label">{{dis}}</span>
                   <el-input style="width: 70px"
                             v-model="distriboutor_config[fenIndex][disIndex]"></el-input>
-                  <block v-if="parent_commi=='2'"><span style="margin-left: 10px">元</span></block>
-                  <block v-else>% <span class="msg">(佣金比例百分比)</span></block>
+                  <template v-if="parent_commi=='2'"><span style="margin-left: 10px">元</span></template>
+                  <template v-else>% <span class="msg">(佣金比例百分比)</span></template>
                 </el-form-item>
                 <el-form-item class="padding15-t marginBootom" label="" prop="sort">
                   <span class="label">管理</span>
                   <!--手动加了一个-->
                   <el-input style="width: 70px"
                             v-model="distriboutor_config[fenIndex][110]"></el-input>
-                  <block v-if="manage_commi=='2'"><span style="margin-left: 10px">元</span></block>
-                  <block v-else>% <span class="msg">(佣金比例百分比)</span></block>
+                  <template v-if="manage_commi=='2'"><span style="margin-left: 10px">元</span></template>
+                  <template v-else>% <span class="msg">(佣金比例百分比)</span></template>
                 </el-form-item>
                 <el-form-item class="padding15-t marginBootom" label="" prop="sort"
                               v-if="prodConfig.Dis_Self_Bonus==1">
@@ -722,8 +723,8 @@
                   <!--手动加了一个-->
                   <el-input style="width: 70px"
                             v-model="distriboutor_config[fenIndex][prodConfig.Dis_Level]"></el-input>
-                  <block v-if="self_commi=='2'"><span style="margin-left: 10px">元</span></block>
-                  <block v-else>% <span class="msg">(佣金比例百分比)</span></block>
+                  <template v-if="self_commi=='2'"><span style="margin-left: 10px">元</span></template>
+                  <template v-else>% <span class="msg">(佣金比例百分比)</span></template>
                 </el-form-item>
               </div>
             </div>
@@ -832,9 +833,8 @@ import BindCateComponents from '@/components/BindCateComponents.vue';
 import BindStoreComponent from "@/components/comm/BindStoreComponent.vue";
 import SettingComponent from "@/components/comm/SettingComponent.vue";
 // import KindEditor from "@/components/comm/kindeditor.vue"
-import WzwEditor from "../components/editor/WzwEditor.vue";
 
-import {FUNFinder} from '../components/editor/ckeditt-resource/FUNFinder';
+import {FUNFinder} from '../components/editor/FUNFinder';
 
 import {
   getCouponLists,
@@ -858,14 +858,14 @@ import {
   plainArray
 } from '@/common/utils';
 import {fun} from '@/common';
+import WzwTinymce from "../components/editor/WzwTinymce.vue";
 
 @Component({
   mixins: [],
   components: {
+    WzwTinymce,
     BindStoreComponent,
     SettingComponent,
-    WzwEditor,
-
     // KindEditor,
     UploadComponents, BindCateComponents
   },
@@ -1348,18 +1348,18 @@ export default class AddProduct extends Vue {
 
   }
 
-  onContentChange2(val) {
-    // console.log(val)
-    this.editorText = val
-  }
+  // onContentChange2(val) {
+  //   // console.log(val)
+  //   this.editorText = val
+  // }
 
-  onContentChange(val) {
-    // console.log(val)
-    this.editorText = val
-  }
+  // onContentChange(val) {
+  //   // console.log(val)
+  //   this.editorText = val
+  // }
 
-  afterChange() {
-  }
+  // afterChange() {
+  // }
 
   handleRow(row, column, event) {
     this.$refs.multipleTable.toggleRowSelection(row);
@@ -1647,6 +1647,9 @@ export default class AddProduct extends Vue {
     //if (valid) {
     this.isLoading = true;
     let id = this.$route.query.prod_id;
+
+
+    this.editorText =  this.$refs.richtext.getContent()
 
     //   if(this.ruleForm.orderType<=0){
     //       if(this.ruleForm.Products_Weight<=0){
@@ -2290,8 +2293,8 @@ export default class AddProduct extends Vue {
       }
       this.$nextTick().then(() => {
         //做一下富文本的格式化，兼容原来浏览器的视频标签
-        let richTxt = formatRichTextByKindEditor(productInfo.Products_Description)
-        this.$refs.richtext.setData(richTxt)
+        let richTxt = productInfo.Products_Description//formatRichTextByKindEditor(productInfo.Products_Description)
+        this.$refs.richtext.setContent(richTxt)
       })
 
 
