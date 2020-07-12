@@ -108,9 +108,9 @@
                         </div>
                         <template v-if="source_type=='media'">
                           <!--<video @click="addFn(file)" class="img-cover" :src="file.fileurl"></video>-->
-                          <img @click="addFn(file)" class="img-cover" :src="getFileUrl(file.fileurl)" />
+                          <img @click="addFn(file)" class="img-cover" v-lazy="getFileUrl(file.fileurl)" />
                         </template>
-                        <template v-else>
+                        <template v-if="source_type=='image'">
                           <div @click="addFn(file)" class="img-cover" v-lazy:background-image="getFileUrl(file.fileurl)"></div>
                         </template>
                         <div class="file_name">
@@ -647,7 +647,7 @@
   .container-right-image{
     display: flex;
     flex-wrap: wrap;
-    justify-content: start;
+    justify-content: flex-start;
     width: 890px;
     margin: 0 auto;
     /*padding-left: 10px;*/

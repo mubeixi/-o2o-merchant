@@ -1,20 +1,90 @@
 import Vue from 'vue';
-import {baseApiUrl} from './env';
+import axios from 'axios'
+import Qs from 'qs'
+import {baseApiUrl, isDev} from './env';
 import {hexMD5} from "@/common/tool/md5";
 import {Loading} from "element-ui";
 import {ls} from "@/common/tool/ls";
-
+import {fun} from "./index";
 import Cookie from 'js-cookie';
-
-
 require('./tool/base64');
+import eventHub from "./eventHub";
 
-window.funLoading = false
+export const serves = axios.create({
+  // baseURL: process.env.BASE_API,
+  timeout: 5000
+})
 
-export const fetch = function (act: String, param: Object = {}, options = false, url: String = '/api/little_program/shopconfig.php', method: String = 'post') {
+
+// 设置请求发送之前的拦截器
+serves.interceptors.request.use(config => {
+  // 设置发送之前数据需要做什么处理
+  // console.log('axios config is',config)
+  return config
+}, err => Promise.reject(err))
+
+// 设置请求接受拦截器
+serves.interceptors.response.use(res => {
+  // 设置接受数据之后，做什么处理
+  // if (res.data.code === 50000) {
+  //   fun.error({msg:res.data.data})
+  // }
+  console.log(res)
+
+  eventHub.funLoading && eventHub.funLoading.close();
+
+  //为了阿里云上传不报错，累死了
+  //操碎了心
+  if(!res.hasOwnProperty('data') || !res.data){
+    res.data = {}
+    res.data.errorCode = 0
+  }
+  switch (+res.data.errorCode) {
+    case 66001:
+      fun.error({msg:res.data.msg})
+
+      if(!isDev){
+        //清空cookies
+        Cookie.set('Users_ID', '')
+        Cookie.set('Stores_Bind_User_ID', '')//为了区分其他的user_id，所以弄了这个代表店铺的user_id
+        Cookie.set('Stores_ID', '')
+        Cookie.set('access_token', '')
+
+        setTimeout(() => {
+          location.href = '/member/login.php';
+        },1000)
+        return;
+      }
+      break;
+    case 0:
+      break;
+    //空数组
+    case 2:
+      console.log("请求数据为空数组")
+      if (!res.data.data) {
+        res.data.data = [];
+      }
+      break;
+    default:
+      fun.error({msg: res.data.msg || '服务器去旅行了'})
+      return Promise.reject(res.data.msg || '服务器去旅行了')
+  }
+  return res
+}, err => {
+  // 判断请求异常信息中是否含有超时timeout字符串
+  if (err.message.includes('timeout')) {
+    console.log('错误回调', err)
+    fun.error({msg:'网络超时'})
+  }
+  return Promise.reject(err)
+})
+
+
+
+export const fetch = function (act: String, param:any, options = false, url: String = '/api/little_program/shopconfig.php', method: String = 'post') {
 
   // console.log(param)
-  if (!act) Vue.$fun.warning('获取信息失败');
+  if (!act) fun.warning({msg:'获取信息失败'});
 
   url = `/api/v1/${act}.html` // 替换url
 
@@ -49,9 +119,9 @@ export const fetch = function (act: String, param: Object = {}, options = false,
   let data = createToken(param);
 
   //保持签名通过，同时支持传空字符串
-  Object.assign(data,param)
+  //Object.assign(data,param)
 
-  // console.log(data)
+  //console.log(data)
 
   // console.log(process.env.VUE_APP_API_BASE_URL)
   url = (process.env.NODE_ENV === 'production' ? baseApiUrl : '') + url;
@@ -60,7 +130,7 @@ export const fetch = function (act: String, param: Object = {}, options = false,
   // console.log(url, param);
 
   if (options) {
-    window.funLoading = Loading.service(options)
+    eventHub.funLoading = Loading.service(options)
   }
 
   let {
@@ -70,14 +140,8 @@ export const fetch = function (act: String, param: Object = {}, options = false,
 
   return new Promise(((resolve, reject) => {
 
-    Vue.http[method](url, data, options).then(res=>{
-      if(res.data.errorCode === 0){
-        //resolve(res.data)
-        resolve(onlyData ? res.data.data : res.data)
-      }else{
-        reject(res.data)
-      }
-
+    serves({url,method,data: Qs.stringify(data)}).then(res=>{
+      resolve(onlyData ? res.data.data : res.data)
     },error=>{
       reject(error)
     })
@@ -423,7 +487,19 @@ export const bizIndustryList =  (data: object={}, options: any=false) => fetch('
 // 系统配置
 export const operateShopConfig = (data: object={}, options: any=false) => fetch('operateShopConfig', data, options);
 
+// 生成自定义路径的小程序码
+export const getLpQrcode = (data: object={}, options: any=false) => fetch('getLpQrcode', data, options);
 
+// 公告列表
+export const getBizMessageList = (data: object={}, options: any=false) => fetch('bizMessageList', data, options);
+
+// 公告详情
+export const bizMessageDetail = (data: object={}, options: any=false) => fetch('bizMessageDetail', data, options);
+
+// 新增或编辑
+export const operateBizMessage = (data: object={}, options: any=false) => fetch('operateBizMessage', data, options);
+
+export const delBizMessage = (data: object={}, options: any=false) => fetch('delBizMessage', data, options);
 
 
 function get_Appid() {
@@ -438,8 +514,11 @@ export const get_Stores_ID = () => Cookie.get('Stores_ID');
 export const get_Users_Account = () => ls.get('Users_Account')
 
 export const createToken = function (object) {
+
   object = ObjectToArr(object);
+
   var signString = ObjectToString(object);
+
   signString = signString.slice(0, -1);
   var timestamp = parseInt(new Date().getTime() / 1000).toString();
   var key = '458f_$#@$*!fdjisdJDFHUk4%%653154%^@#(FSD#$@0-T';
@@ -460,7 +539,7 @@ function ObjectToArr(object, addkey) {
 
     var newkey = addkey + (addkey === '' ? i : '[' + i + ']');
     if (typeof object[i] !== 'object') {
-      if (object[i] !== '') {
+      if (object[i] !== '' && typeof object[i]!=='undefined' && object!=='undefined') {
         if (i !== 'timestamp' && i !== 'sign' && i !== 'sortToken') {
           arrs[newkey] = object[i];
         }

@@ -2,54 +2,82 @@ import Vue from 'vue';
 import Router from 'vue-router';
 Vue.use(Router);
 
-const Page = () => import("@/views/PageTmpl")
-const Home = () => import('@/views/Home')
-const Tmpl = () => import('@/views/Tmpl')
-const Diy = () => import('@/views/Diy')
-const Empty = () => import('@/views/Empty')
-const ProductForm = () => import('@/views/ProductForm')
-const UserList = () => import('@/views/UserList')
-const Marketing = () => import('@/views/Marketing')
-const DayMark = () => import('@/views/DayMark')
-const LabelManagement = () => import('@/views/LabelManagement')
-const LabelAdd = () => import('@/views/LabelAdd')
-const CrowdName = () => import('@/views/CrowdName')
-const CrowdClient = () => import('@/views/CrowdClient')
-const DayMarkDetail = () => import('@/views/DayMarkDetail')
-const StoreChannel = () => import('@/views/StoreChannel')
-const StorePurchase = () => import('@/views/StorePurchase')
-const SystemNotice = () => import('@/views/SystemNotice')
-const StorePurchaseApply = () => import('@/views/StorePurchaseApply')
-const StorePurchaseBack = () => import('@/views/StorePurchaseBack')
-const MessageSend = () => import('@/views/MessageSend')
-const MessageStationSend = () => import('@/views/MessageStationSend')
-const CouponGift = () => import('@/views/CouponGift')
-const GiftsGift = () => import('@/views/GiftsGift')
-const NotFound = () => import('@/views/NotFound')
-const ProductList = () => import('@/views/ProductList')
-const StoreProductList = () => import('@/views/StoreProductList')
-const DistributorLevel = () => import('@/views/DistributorLevel')
-const Rotate = () => import('@/views/Rotate')
-const RotateList = () => import('@/views/RotateList')
-const ProductStatistics = () => import('@/views/statistics/ProductStatistics')
-const VipStatistics = () => import('@/views/statistics/VipStatistics')
-const TransactionStatistics = () => import('@/views/statistics/TransactionStatistics')
-const Contribute = () => import('@/views/distributor/Contribute')
-const ContributeDetail = () => import('@/views/distributor/ContributeDetail')
-const DesignPanel = () => import('@/views/design/DesignPanel')
-const SameCityDelivery = () => import('@/views/SameCityDelivery')
-const JoinCate = () => import('@/views/JoinCate')
-const JoinMaterial = () => import('@/views/JoinMaterial')
-const RightCard = () => import('@/views/RightCard')
-const FreeSetting = () => import('@/views/FreeSetting')
-const RightCardDetail = () => import('@/views/RightCardDetail')
-const SystemConf = () => import('@/views/SystemConf')
+const Page = () => import('@/views/PageTmpl.vue')
+const Home = () => import('@/views/Home.vue')
+const Tmpl = () => import('@/views/Tmpl.vue')
+const Diy = () => import('@/views/Diy.vue')
+const Empty = () => import('@/views/Empty.vue')
+const ProductForm = () => import('@/views/ProductForm.vue')
+const UserList = () => import('@/views/UserList.vue')
+const Marketing = () => import('@/views/Marketing.vue')
+const DayMark = () => import('@/views/DayMark.vue')
+const LabelManagement = () => import('@/views/LabelManagement.vue')
+const LabelAdd = () => import('@/views/LabelAdd.vue')
+const CrowdName = () => import('@/views/CrowdName.vue')
+const CrowdClient = () => import('@/views/CrowdClient.vue')
+const DayMarkDetail = () => import('@/views/DayMarkDetail.vue')
+const StoreChannel = () => import('@/views/StoreChannel.vue')
+const StorePurchase = () => import('@/views/StorePurchase.vue')
+const SystemNotice = () => import('@/views/SystemNotice.vue')
+const StorePurchaseApply = () => import('@/views/StorePurchaseApply.vue')
+const StorePurchaseBack = () => import('@/views/StorePurchaseBack.vue')
+const MessageSend = () => import('@/views/MessageSend.vue')
+const MessageStationSend = () => import('@/views/MessageStationSend.vue')
+const CouponGift = () => import('@/views/CouponGift.vue')
+const GiftsGift = () => import('@/views/GiftsGift.vue')
+const NotFound = () => import('@/views/NotFound.vue')
+const ProductList = () => import('@/views/ProductList.vue')
+const StoreProductList = () => import('@/views/StoreProductList.vue')
+const DistributorLevel = () => import('@/views/DistributorLevel.vue')
+const Rotate = () => import('@/views/Rotate.vue')
+const RotateList = () => import('@/views/RotateList.vue')
+const ProductStatistics = () => import('@/views/statistics/ProductStatistics.vue')
+const VipStatistics = () => import('@/views/statistics/VipStatistics.vue')
+const TransactionStatistics = () => import('@/views/statistics/TransactionStatistics.vue')
+const Contribute = () => import('@/views/distributor/Contribute.vue')
+const ContributeDetail = () => import('@/views/distributor/ContributeDetail.vue')
+const DesignPanel = () => import('@/views/design/DesignPanel.vue')
+const SameCityDelivery = () => import('@/views/SameCityDelivery.vue')
+const JoinCate = () => import('@/views/JoinCate.vue')
+const JoinMaterial = () => import('@/views/JoinMaterial.vue')
+const RightCard = () => import('@/views/RightCard.vue')
+const FreeSetting = () => import('@/views/FreeSetting.vue')
+const RightCardDetail = () => import('@/views/RightCardDetail.vue')
+const SystemConf = () => import('@/views/SystemConf.vue')
+const Demo = ()=>import('@/views/Demo.vue')
+const MessageList = ()=>import('@/views/MessageList.vue')
+const MessageForm = ()=>import('@/views/MessageForm.vue')
+
 const routerInstance = new Router({
   routes: [
     {
       path: '/',
       name: 'Tmpl',
       component: Tmpl,
+    },
+    {
+      path:'/demo',
+      name:'Demo',
+      component: Demo,
+      meta:{
+        title:'demo'
+      }
+    },
+    {
+      path:'/message/list',
+      name:'MessageList',
+      component: MessageList,
+      meta:{
+        title:'公告列表'
+      }
+    },
+    {
+      path:'/message/form',
+      name:'MessageForm',
+      component: MessageForm,
+      meta:{
+        title:'编辑公告'
+      }
     },
     {
       path:'/StorePurchaseApply',

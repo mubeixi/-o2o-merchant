@@ -16,12 +16,14 @@ import {
     State
 } from 'vuex-class'
 import WzwFinder from './components/editor/WzwFinder';
+import {FUNFinder} from "./components/editor/FUNFinder";
 
 @Component({
     components:{
         WzwFinder
     }
 })
+
 export default class App extends Vue {
 
     @State('finderDialogInstance') finderDialogInstance
@@ -31,8 +33,9 @@ export default class App extends Vue {
     created() {
         getCommonConfig().then(res=>{
             this.setInitData(res.data)
-
         })
+
+      window.FUNFinder = FUNFinder
     }
 }
 
@@ -190,5 +193,7 @@ input[type="number"]{
     padding: 15px 15px 0 15px;
   }
 }
+
+
 
 </style>
