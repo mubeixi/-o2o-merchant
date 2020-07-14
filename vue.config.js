@@ -28,6 +28,31 @@ module.exports = {
           manifest: path.resolve(__dirname, './build/dll/libs-manifest.json')
         })
       )
+
+      config.plugins.push(
+        // 引用动态链接库
+        new webpack.DllReferencePlugin({
+          manifest: path.resolve(__dirname, './build/dll/elementUI-manifest.json')
+        })
+      )
+
+      config.plugins.push(
+        // 引用动态链接库
+        new webpack.DllReferencePlugin({
+          manifest: path.resolve(__dirname, './build/dll/vue-manifest.json')
+        })
+      )
+
+      config.plugins.push(
+        // 引用动态链接库
+        new webpack.DllReferencePlugin({
+          manifest: path.resolve(__dirname, './build/dll/echarts-manifest.json')
+        })
+      )
+
+     
+      
+      
       config.plugins.push(
         // 将 dll 注入到 生成的 html 模板中
         new AddAssetHtmlPlugin({

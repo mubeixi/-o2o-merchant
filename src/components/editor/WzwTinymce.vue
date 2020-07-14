@@ -1,17 +1,21 @@
 <template>
 	<div class="tiny-wrap">
+		<bind-link-components @cancel="bindLinkCancel" :onSuccess="bindLinkSuccessCall" :pageEl="pageEl" :show="bindLinkDialogShow"></bind-link-components>
 		<textarea :id="tinymceId"></textarea>
 	</div>
 </template>
 
 <script>
 
+import BindLinkComponents from '@/components/BindLinkComponents'
 const tinyLibUrl = 'static/tinymce/tinymce.min.js';
 import {uploadByTiny} from '@/components/editor/uploadByTiny'
+import Vue from 'vue'
 
 export default {
   name: 'WzwTinymce',
-	props:{
+  components: { BindLinkComponents },
+  props:{
     tinymceId:{
       type:String,
       default:'tinyEle'
@@ -22,7 +26,22 @@ export default {
     }
 	},
   data () {
-    return {}
+    return {
+      pageEl:null,
+      bindLinkDialogShow: false,
+      bindLinkIdx2: null,
+      bindLinkSuccessCall(dataType, type, path, tooltip, dataItem, pageEl, idx2){
+
+        console.log(dataType, type, path, tooltip, dataItem, pageEl, idx2)
+        pageEl.bindLinkDialogShow = false;
+
+        const ext = encodeURIComponent(JSON.stringify(dataItem))
+
+	      var innerHtml = `<p><span class="diy-link-ele" data-ext="${ext}" data-linkType="${type}" data-url="${path}">${tooltip}</span></p>`
+        window.tinymce.get(pageEl.tinymceId).insertContent(innerHtml)
+
+      },
+    }
   },
 	watch:{
     content:{
@@ -36,6 +55,9 @@ export default {
     }
 	},
 	methods:{
+    bindLinkCancel(){
+      this.bindLinkDialogShow = false
+    },
     bindChange(){
       const content = this.getContent()
       //console.log(content)
@@ -79,9 +101,11 @@ export default {
       tinymce.init({
         selector: `#${this.tinymceId}`,
         language: 'zh_CN',
+        height: 500,
+        max_height:700,
         menubar:false,
-        plugins: 'funimgs code print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern lplink help emoticons autosave indent2em autoresize lineheight',
-        toolbar: 'code undo redo restoredraft | removeformat forecolor backcolor link lplink| styleselect alignment indent2em lineheight |  fontselect fontsizeselect | bullist numlist| table image funimgs media |charmap emoticons hr pagebreak insertdatetime | blockquote subscript superscript   |  print preview fullscreen',
+        plugins: 'funimgs code print preview searchreplace autolink directionality visualblocks visualchars fullscreen media template codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern lplink help emoticons autosave indent2em lineheight',
+        toolbar: 'code undo redo restoredraft | removeformat forecolor backcolor lplink | styleselect alignment indent2em lineheight |  fontselect fontsizeselect | bullist numlist| table funimgs media |charmap emoticons hr pagebreak insertdatetime | blockquote subscript superscript   |  print preview fullscreen',
         toolbar_groups: {
           formatting: {
             text: '文字格式',
@@ -94,7 +118,7 @@ export default {
             items: 'alignleft aligncenter alignright alignjustify outdent indent',
           },
         },
-        min_height: 400,
+
         fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
         font_formats: '微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;苹果苹方=PingFang SC,Microsoft YaHei,sans-serif;宋体=simsun,serif;仿宋体=FangSong,serif;黑体=SimHei,sans-serif;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;',
         link_list: [
@@ -129,6 +153,8 @@ export default {
         init_instance_callback : function(editor) {
           console.log("Editor: " + editor.id + " is now initialized.");
           that.$emit('initDone',1)
+
+          window.tinymce.get(that.tinymceId).vm = that
         },
         // setup: function(editor){
         //   editor.on('change',function(){
@@ -142,6 +168,9 @@ export default {
 	},
 	created(){
     this._init_func()
+
+		this.pageEl = this
+
 	}
 }
 </script>
