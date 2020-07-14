@@ -17,7 +17,7 @@
         <el-button @click="batch(1)" class="" size="mini" type="primary">批量下架</el-button>
         <el-button @click="batch(5)" class="" size="mini" type="primary">批量审核</el-button>
         <el-button @click="batch(6)" class="" size="mini" type="primary">批量禁售</el-button>
-        <el-button @click="batch(7)" class="" size="mini" type="primary">批量删除</el-button>
+<!--        <el-button @click="batch(7)" class="" size="mini" type="primary">批量删除</el-button>-->
       </div>
       <fun-table
         :_pageSize="dataTableOpt.pageSize"
@@ -67,7 +67,7 @@
         </template>
         <template slot="operate-column" slot-scope="props">
           <span @click="goEdit(props)" class="spans">查看</span>
-          <span @click="delProduct(props)" class="spans">删除</span>
+<!--          <span @click="delProduct(props)" class="spans">删除</span>-->
           <span @click="agreePro(props)" class="spans"
                 v-if="Number(activeName)===4||Number(activeName)===5">审核</span>
         </template>
@@ -296,6 +296,7 @@ export default class ProductList extends Vue {
   }
 
   handleClick() {
+    this.dataTableOpt.page=1
     this.getProduct()
   }
 
@@ -453,13 +454,14 @@ export default class ProductList extends Vue {
 
   //删除
   delProduct(props) {
-    let id = props.row.Products_ID
+    let id = [props.row.Products_ID]
+    console.log(id,"sss")
     this.$confirm('你确定要删除这个商品吗', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      delProduct({id: id}).then(res => {
+      batchSetting({ids: id,type:7}).then(res => {
         if (res.errorCode == 0) {
           this.$message({
             message: '删除成功',
