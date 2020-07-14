@@ -17,6 +17,12 @@
       <template slot="created_at-column" slot-scope="props">
         <span>{{props.row.created_at|formatetime}}</span>
       </template>
+      <template slot="updated_at-column" slot-scope="props">
+        <span>{{props.row.updated_at|formatetime}}</span>
+      </template>
+      <template slot="home_show-column" slot-scope="props">
+        <span>{{props.row.home_show==1?'是':'否'}}</span>
+      </template>
       <template slot="operate-column" slot-scope="props">
         <div class="flex">
           <el-button size="mini" type="primary" @click="edit(props)" class="m-r-15">查看</el-button>
@@ -73,8 +79,21 @@ export default class MessageList extends Vue {
         search: false
       },
       {
+        prop: "home_show",
+        label: "是否首页显示",
+        value: '',
+        align: 'center',
+        search: false
+      },
+      {
         prop: "created_at",
         label: "发布时间",
+        align: 'center',
+        search: false
+      },
+      {
+        prop: "updated_at",
+        label: "修改时间",
         align: 'center',
         search: false
       },
