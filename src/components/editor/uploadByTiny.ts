@@ -24,16 +24,16 @@ export class uploadByTiny {
 
   static upload(blobInfo, success, failure, progress) {
 
-    console.log(blobInfo,arguments)
-    var file = blobInfo.blob();//转化为易于理解的file对象
-    console.log(file)
+    // console.log(blobInfo,arguments)
+    var file:any = blobInfo.blob();//转化为易于理解的file对象
+    // console.log(file)
     const initData = store.state.initData
     const upload_rule = initData.upload_rule.image
 
 
 
-    let curFileSize = parseInt(file.size/1024*100)/100
-    console.log(curFileSize,upload_rule)
+    let curFileSize = Number(file.size/1024*100)/100
+    // console.log(curFileSize,upload_rule)
     //1.服务器模式 2.不是视频类型 才限制大小
     if(curFileSize>upload_rule.size){
       const errMsg = `文件${file.name}大小${curFileSize}kb超出上传限制${upload_rule.size}kb`
@@ -91,7 +91,7 @@ export class uploadByTiny {
         method:'post',
         data: Qs.stringify(data),
         onUploadProgress:(event)=>{
-          console.log(event)
+          // console.log(event)
           let percent = parseInt(event.loaded / event.total * 100)
           console.log(`upload task upload :0==>${percent}`);
 
