@@ -47,6 +47,9 @@
             <div>
               <div :key="index" class="coupons" v-for="(item,index) of productData">
                 {{item.Coupon_Subject}}
+                <block v-if="item.is_ok==0">
+                  (已过期)
+                </block>
                 <img @click="del(index)" class="del-img" src="@/assets/img/productAdd/del.png">
               </div>
             </div>
@@ -193,7 +196,15 @@ export default class RightCardDetail extends Vue {
     let id = this.$route.query.id;
 
     let arr = this.card_content
-    arr.coupon = this.selectValue.join(',')
+    let canCoupon=[]
+    for(let item  of this.productData){
+      for(let it of this.selectValue){
+            if(item.Coupon_ID==it&&item.is_ok!=0){
+              canCoupon.push(it)
+            }
+      }
+    }
+    arr.coupon = canCoupon.join(',')
     let data = {
       card_name: this.card_name,
       bg_img: this.bg_img,
@@ -343,14 +354,15 @@ export default class RightCardDetail extends Vue {
         this.$refs.thumb.handleInitHas([this.bg_img])
       }
 
+      this.productData=arr.coupons
 
-      for (let item of this.dataTableOpt.dataList) {
-        for (let it of this.selectValue) {
-          if (it == item.Coupon_ID) {
-            this.productData.push(item)
-          }
-        }
-      }
+      // for (let item of this.dataTableOpt.dataList) {
+      //   for (let it of this.selectValue) {
+      //     if (it == item.Coupon_ID) {
+      //       this.productData.push(item)
+      //     }
+      //   }
+      // }
 
     })
 
