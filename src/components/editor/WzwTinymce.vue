@@ -7,10 +7,119 @@
 
 <script>
 
+
 import BindLinkComponents from '@/components/BindLinkComponents'
 const tinyLibUrl = 'static/tinymce/tinymce.min.js';
 import {uploadByTiny} from '@/components/editor/uploadByTiny'
-import Vue from 'vue'
+
+var getGlobal = function () { return (typeof window !== 'undefined' ? window : global); };
+var getTinymce = function () {
+  var global = getGlobal();
+  return global && global.tinymce ? global.tinymce : null;
+};
+
+
+var isImageFigure = function (elm) {
+  return elm && elm.nodeName === 'FIGURE' && /\bimage\b/i.test(elm.className);
+};
+var getAnchorElement = function (editor, selectedElm) {
+  selectedElm = selectedElm || editor.selection.getNode();
+  if (isImageFigure(selectedElm)) {
+    return editor.dom.select('span[data-url]', selectedElm)[0];
+  } else {
+    return editor.dom.getParent(selectedElm, 'span[data-url]');
+  }
+};
+var getAnchorText = function (selection, anchorElm) {
+  var text = anchorElm ? anchorElm.innerText || anchorElm.textContent : selection.getContent({ format: 'text' });
+  return trimCaretContainers(text);
+};
+
+var updateLink = function (editor, anchorElm, text, linkAttrs) {
+  text.each(function (text) {
+    if (anchorElm.hasOwnProperty('innerText')) {
+      anchorElm.innerText = text;
+    } else {
+      anchorElm.textContent = text;
+    }
+  });
+  editor.dom.setAttribs(anchorElm, linkAttrs);
+  editor.selection.select(anchorElm);
+};
+var createLink = function (editor, selectedElm, text, linkAttrs) {
+  if (isImageFigure(selectedElm)) {
+    linkImageFigure(editor, selectedElm, linkAttrs);
+  } else {
+    text.fold(function () {
+      editor.execCommand('mceInsertLink', false, linkAttrs);
+    }, function (text) {
+      editor.insertContent(editor.dom.createHTML('a', linkAttrs, editor.dom.encode(text)));
+    });
+  }
+};
+var applyRelTargetRules = function (rel, isUnsafe) {
+  var rules = ['noopener'];
+  var rels = rel ? rel.split(/\s+/) : [];
+  var toString = function (rels) {
+    return global$2.trim(rels.sort().join(' '));
+  };
+  var addTargetRules = function (rels) {
+    rels = removeTargetRules(rels);
+    return rels.length > 0 ? rels.concat(rules) : rules;
+  };
+  var removeTargetRules = function (rels) {
+    return rels.filter(function (val) {
+      return global$2.inArray(rules, val) === -1;
+    });
+  };
+  var newRels = isUnsafe ? addTargetRules(rels) : removeTargetRules(rels);
+  return newRels.length > 0 ? toString(newRels) : '';
+};
+var allowUnsafeLinkTarget = function (editor) {
+  return editor.getParam('allow_unsafe_link_target', false, 'boolean');
+};
+var applyLinkOverrides = function (editor, linkAttrs) {
+  var newLinkAttrs = __assign({}, linkAttrs);
+  if (!(getRelList(editor).length > 0) && allowUnsafeLinkTarget(editor) === false) {
+    var newRel = applyRelTargetRules(newLinkAttrs.rel, newLinkAttrs.target === '_blank');
+    newLinkAttrs.rel = newRel ? newRel : null;
+  }
+  if (Option.from(newLinkAttrs.target).isNone() && getTargetList(editor) === false) {
+    newLinkAttrs.target = getDefaultLinkTarget(editor);
+  }
+  newLinkAttrs.href = handleExternalTargets(newLinkAttrs.href, assumeExternalTargets(editor));
+  return newLinkAttrs;
+};
+var getLinkAttrs = function (data) {
+  return foldl([
+    'title',
+    'rel',
+    'class',
+    'target'
+  ], function (acc, key) {
+    data[key].each(function (value) {
+      acc[key] = value.length > 0 ? value : null;
+    });
+    return acc;
+  }, { href: data.href });
+};
+
+var linkDomMutation = function (editor, attachState, data) {
+  var selectedElm = editor.selection.getNode();
+  var anchorElm = getAnchorElement(editor, selectedElm);
+  var linkAttrs = applyLinkOverrides(editor, getLinkAttrs(data));
+  editor.undoManager.transact(function () {
+    if (data.href === attachState.href) {
+      attachState.attach();
+    }
+    if (anchorElm) {
+      editor.focus();
+      updateLink(editor, anchorElm, data.text, linkAttrs);
+    } else {
+      createLink(editor, selectedElm, data.text, linkAttrs);
+    }
+  });
+};
 
 export default {
   name: 'WzwTinymce',
@@ -30,15 +139,35 @@ export default {
       pageEl:null,
       bindLinkDialogShow: false,
       bindLinkIdx2: null,
+	    tinymceInstance:null,
       bindLinkSuccessCall(dataType, type, path, tooltip, dataItem, pageEl, idx2){
 
-        console.log(dataType, type, path, tooltip, dataItem, pageEl, idx2)
+
+        const tinymceInstance = window.tinymce.get(pageEl.tinymceId)
+        //console.log(pageEl.tinymceInstance)
+
+        var selectedElm = tinymceInstance.selection.getNode();
+        var anchorElm = getAnchorElement(tinymceInstance, selectedElm);
+        console.log(selectedElm,anchorElm)
+        // console.log(dataType, type, path, tooltip, dataItem, pageEl, idx2)
         pageEl.bindLinkDialogShow = false;
-
+				//
         const ext = encodeURIComponent(JSON.stringify(dataItem))
+				//
 
-	      var innerHtml = `<p><span class="diy-link-ele" data-ext="${ext}" data-linkType="${type}" data-url="${path}">${tooltip}</span></p>`
-        window.tinymce.get(pageEl.tinymceId).insertContent(innerHtml)
+
+        // window.tinymce.get(pageEl.tinymceId).insertContent(innerHtml)
+
+        if (anchorElm) {
+          var innerHtml = `<span class="diy-link-ele" data-ext="${ext}" data-linkType="${type}" data-url="${path}">${tooltip}</span>`
+          //tinymceInstance.focus();
+          // updateLink(editor, anchorElm, data.text, linkAttrs);
+          selectedElm.innerHTML = innerHtml
+        } else {
+          var innerHtml = `<p><span class="diy-link-ele" data-ext="${ext}" data-linkType="${type}" data-url="${path}">${tooltip}</span></p><p></p>`
+          tinymceInstance.insertContent(innerHtml)
+          // createLink(editor, selectedElm, data.text, linkAttrs);
+        }
 
       },
     }
@@ -49,7 +178,7 @@ export default {
         console.log('content change',val)
         if(!val)return
         this.$nextTick(() =>
-          window.tinymce.get(this.tinymceId).setContent(val || '')
+          window.tinymce && window.tinymce.get(this.tinymceId).setContent(val || '')
         )
 	    }
     }
@@ -94,7 +223,7 @@ export default {
 
 			//加载各种资源
       await this.loadResource()
-
+      // console.log(getTinymce())
 			//toolbar: 'code undo redo restoredraft | cut copy paste pastetext | forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright alignjustify outdent indent | styleselect formatselect fontselect fontsizeselect | bullist numlist | blockquote subscript superscript removeformat | table image funimgs media charmap emoticons hr pagebreak insertdatetime print preview | fullscreen | indent2em lineheight',
 			//采用了折叠的配置，是方便一行显示完
 			//初始化，init_instance_callback触发initDone
@@ -103,9 +232,9 @@ export default {
         language: 'zh_CN',
         height: 500,
         max_height:700,
-        menubar:false,
-        plugins: 'funimgs code print preview searchreplace autolink directionality visualblocks visualchars fullscreen media template codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern lplink help emoticons autosave indent2em lineheight',
-        toolbar: 'code undo redo restoredraft | removeformat forecolor backcolor lplink | styleselect alignment indent2em lineheight |  fontselect fontsizeselect | bullist numlist| table funimgs media |charmap emoticons hr pagebreak insertdatetime | blockquote subscript superscript   |  print preview fullscreen',
+        // menubar:false,
+        plugins: 'funimgs code print preview searchreplace autolink directionality visualblocks visualchars fullscreen media template codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern link lplink help emoticons autosave indent2em lineheight',
+        toolbar: 'code  | removeformat forecolor backcolor link lplink | styleselect alignment indent2em lineheight |table funimgs media |  fontselect fontsizeselect | bullist numlist| charmap emoticons hr pagebreak insertdatetime | blockquote subscript superscript   |  print preview fullscreen undo redo restoredraft',
         toolbar_groups: {
           formatting: {
             text: '文字格式',
@@ -121,10 +250,12 @@ export default {
 
         fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
         font_formats: '微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;苹果苹方=PingFang SC,Microsoft YaHei,sans-serif;宋体=simsun,serif;仿宋体=FangSong,serif;黑体=SimHei,sans-serif;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;',
+	      link_title:false,
         link_list: [
           // { title: '预置链接1', value: 'http://www.tinymce.com' },
           // { title: '预置链接2', value: 'http://tinymce.ax-z.cn' }
         ],
+        link_context_toolbar: true,
         image_list: [
           // { title: '预置图片1', value: 'https://www.tiny.cloud/images/glyph-tinymce@2x.png' },
           // { title: '预置图片2', value: 'https://www.baidu.com/img/bd_logo1.png' }
@@ -154,6 +285,7 @@ export default {
           console.log("Editor: " + editor.id + " is now initialized.");
           that.$emit('initDone',1)
 
+	        that.tinymceInstance =editor
           window.tinymce.get(that.tinymceId).vm = that
         },
         // setup: function(editor){
@@ -167,8 +299,8 @@ export default {
 		}
 	},
 	created(){
-    this._init_func()
 
+    this._init_func()
 		this.pageEl = this
 
 	}
