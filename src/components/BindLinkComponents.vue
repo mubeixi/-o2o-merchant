@@ -120,9 +120,9 @@
 <script>
   import {
     getProductCategory, getProductList,getDiyPageList,getSystemUrl,getDiyUrl,systemArticleUrl,getTurns
-  } from "../common/fetch";
+  } from '@/common/fetch';
   import { deepCopy } from '@/common/utils';
-  import {fun} from '../common';
+  import {fun} from '@/common';
 
   function refreshCateData(arr) {
 
@@ -465,7 +465,7 @@
                 this.innerDialog.diy.isHasData = true;
                 let data = res.data.map(v => {
                   v.text = `[自定义页面] ${v.Home_Name}`;
-                  v.path = `/pages/page/page?Home_ID=${v.Home_ID}`;
+                  v.path = `/pagesA/common/single?Home_ID=${v.Home_ID}`;
                   v.type = 'default';
                   return v;
                 });
@@ -524,7 +524,7 @@
             this.innerDialog.product.isHasData = true;
             let data = res.data.map(v => {
               v.text = `[商品] ${v.Products_Name}`;
-              v.path = `/pages/detail/detail?Products_ID=${v.Products_ID}`;
+              v.path = `/pages/product/detail?prod_id=${v.Products_ID}`;
               v.type = 'default';
               return v;
             });
@@ -606,7 +606,7 @@
             return;
           }
 
-          if(this.innerDialog.mini.url.indexOf('http')==-1){
+          if(this.innerDialog.mini.url.indexOf('http')===-1){
             fun.error({msg:'备用地址必须包含http(https)'})
             return;
           }
