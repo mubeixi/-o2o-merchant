@@ -23,9 +23,6 @@
         <span class="tip" v-show="!area.bgimg">{{getTip(area)}}</span>
         <!--        <img src="@/assets/img/icon-del.png" class="delicon" />-->
         <i v-if="type==='diy'" class="el-icon-error delicon" @click.stop="delArea(area)"/>
-        <!--        <svg class="fun-icon icon delicon" @click="delArea(area)" aria-hidden="true">-->
-        <!--          <use xlink:href="#icon-del"></use>-->
-        <!--        </svg>-->
       </div>
 
       <div v-show="mouseInBox" class="hover" :style="[getAreaStyle(tempAreaObj)]">

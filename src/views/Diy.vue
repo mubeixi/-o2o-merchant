@@ -61,7 +61,7 @@ import Cookies from 'js-cookie';
 import QrcodeVue from 'qrcode.vue';
 import {serialize} from '@/common/utils';
 import {tmplDiyMixin} from '@/common/mixin';
-import {getLpQrcode} from "../common/fetch";
+import {getLpQrcode} from "@/common/fetch";
 import {fun} from "../common";
 
 // const front_url = process.env.VUE_APP_FRONT_URL
@@ -82,7 +82,7 @@ export default class Home extends Vue {
 
   is_dev = isDev
   preUrl = ''
-  preQrImgUrl = ''
+  preQrImgUrl: unknown = ''
   centerDialogVisible = false
   previewActiveIndex = null
 

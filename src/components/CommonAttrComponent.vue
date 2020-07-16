@@ -119,9 +119,6 @@
   }
 </style>
 <style scoped lang="less">
-  @import "../assets/css/variable.less";
-
-
 
   .attr-body{
     padding-top: 15px;

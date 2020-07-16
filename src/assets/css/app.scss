@@ -1,0 +1,436 @@
+ul, li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+
+p {
+  padding: 0;
+  margin: 0;
+}
+
+
+.font12 {
+  font-size: 12px
+}
+
+.font14 {
+  font-size: 14px
+}
+
+.font16 {
+  font-size: 16px
+}
+
+.font18 {
+  font-size: 18px
+}
+
+.font20 {
+  font-size: 20px
+}
+
+.font24 {
+  font-size: 24px
+}
+
+.noselect {
+  user-select: none
+}
+
+
+.line6 {
+  margin-bottom: 6px !important
+}
+
+.line4 {
+  margin-bottom: 4px !important
+}
+
+.line8 {
+  margin-bottom: 8px !important
+}
+
+.line10 {
+  margin-bottom: 10px !important
+}
+
+.line15 {
+  margin-bottom: 15px !important
+}
+
+
+.graytext {
+  color: #666 !important
+}
+
+.graytext2 {
+  color: #999 !important
+}
+
+.text-center {
+  text-align: center
+}
+
+.text-right {
+  text-align: right
+}
+
+.text-left {
+  text-align: left
+}
+
+.flex {
+  display: flex
+}
+
+.flex1 {
+  flex: 1
+}
+
+.padding6-r {
+  padding: 6px 0
+}
+
+.padding4-c {
+  padding: 0 4px
+}
+
+
+.padding-left-10 {
+  padding-left: 10px
+}
+
+.padding-right-10 {
+  padding-right: 10px
+}
+
+.padding10 {
+  padding: 10px
+}
+
+.padding10-c {
+  padding: 0 10px
+}
+
+.padding10-r {
+  padding: 10px 0
+}
+
+.padding15 {
+  padding: 15px
+}
+
+.padding15-r {
+  padding: 15px 0
+}
+
+.margin15-c {
+  margin: 0 15px
+}
+
+.margin-left-10 {
+  margin-left: 10px
+}
+
+.margin-right-10 {
+  margin-right: 10px
+}
+
+
+.w10 {
+  width: 10px !important;
+}
+
+.w60 {
+  width: 60px !important;
+}
+
+.w100 {
+  width: 100px !important;
+}
+
+.w120 {
+  width: 120px !important;
+}
+
+.w200 {
+  width: 200px !important;
+}
+
+.w300 {
+  width: 300px !important;
+}
+
+.w140 {
+  width: 140px !important;
+}
+
+.w160 {
+  width: 160px !important;
+}
+
+.w180 {
+  width: 180px !important;
+}
+
+.link {
+  cursor: pointer;
+}
+
+.danger-color {
+  color: #F43131;
+}
+
+.color-blue {
+  color: #409EFF;
+}
+
+.color-red {
+  color: #F56C6C;
+}
+
+.color-green {
+  color: #67C23A;
+}
+
+.color-gray {
+  color: #909399;
+}
+
+
+.pageBlock {
+  display: block !important;
+  margin-bottom: 6px !important;
+}
+
+.uploadImg .mini .avatar-uploader .el-upload--picture-card {
+  width: 60px !important;
+  height: 60px !important;
+  line-height: 60px !important;
+}
+
+.small .avatar-uploader .el-upload--picture-card {
+
+  width: 100px !important;
+  height: 100px !important;
+  line-height: 100px !important;
+}
+
+.isHas .el-upload--picture-card {
+  border: none;
+}
+
+
+.fun-table-row {
+  cursor: pointer;
+}
+
+//覆盖组件自带样式
+.fun-preview-swiper {
+  color: white
+}
+
+.el-carousel__arrow .el-carousel__indicators--horizontal {
+  bottom: 8px
+}
+
+.el-carousel__indicator--horizontal {
+  padding: 0;
+  margin: 0;
+  width: 8px;
+  height: 8px;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 1px solid #409EFF;
+  margin-right: 8px;
+}
+
+.el-carousel__button {
+  width: 8px;
+  height: 8px;
+
+  .fun-preview-swiper .single .el-carousel__indicators--horizontal {
+    display: none;
+  }
+
+}
+
+
+.el-carousel__indicator.is-active .el-carousel__button {
+  background-color: #409EFF;
+}
+
+
+.innerDislog .container .tabs-child .el-tabs__content {
+  min-height: 300px;
+  max-height: calc(100vh - 500px);
+  overflow-y: auto;
+}
+
+
+.ck-content.ck-editor__editable {
+  min-height: 400px;
+}
+
+
+.fun-plugin-tag {
+  background: #ff4444;
+  color: #FFFFFF;
+  font-size: 12px;
+  padding: 2px 4px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translateX(100%);
+  visibility: hidden;
+}
+
+
+.section {
+  &:hover {
+    .fun-plugin-tag {
+      visibility: visible;
+    }
+  }
+}
+
+.fun-load-img {
+  position: fixed;
+  z-index: -999;
+  left: 100%;
+  top: 100%;
+  width: 1px;
+  height: 1px;
+}
+
+
+.el-carousel__container{
+  height: auto;
+}
+#canvas{
+  .tab{
+    *::-webkit-scrollbar{
+      display:none !important;
+    }
+  }
+  *::-webkit-scrollbar{
+  }
+}
+
+//全局新增 element  input位数字是不显示加减按钮
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"]{
+  -moz-appearance: textfield;
+}
+
+
+.upload.mini{
+
+  &.is_full{
+    .el-upload--picture-card{
+      display: none !important;
+    }
+  }
+  .el-upload--picture-card{
+    width: 80px !important;
+    height: 80px !important;
+    line-height: 80px !important;
+  }
+  .el-upload-list--picture-card{
+
+    .el-upload-list__item{
+      width: 80px !important;
+      height: 80px !important;
+      img{
+      }
+    }
+  }
+}
+
+
+.upload.minimal{
+
+  height: 32px !important;
+  .el-upload__tip{
+
+  }
+  &.is_full{
+    .el-upload--picture-card{
+      display: none !important;
+    }
+  }
+  .el-upload--picture-card{
+    width: 32px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    i.el-icon-plus{
+    }
+  }
+  .el-upload-list--picture-card{
+
+    .el-upload-list__item{
+      width: 32px !important;
+      height: 32px !important;
+      margin: 0 !important;
+      img{
+      }
+    }
+  }
+}
+
+.wzw-table th {
+  color: #333 !important;
+  background-color: #F9FAFC !important;
+  border: none !important;
+  border-top: 1px solid #EAEAEA !important;
+  border-left: 1px solid #EAEAEA !important;
+}
+.wzw-table tr th:nth-last-of-type(2) {
+  border-right: 1px solid #EAEAEA !important;
+}
+.wzw-table {
+  .el-table__body tr td:nth-last-child(1) {
+    border-right: 1px solid #EAEAEA !important;
+  }
+  .el-table td {
+    border-bottom: 0;
+    border-top: 1px solid #eaeaea !important;
+    border-left: 1px solid #eaeaea !important;
+  }
+  .el-table__body tr:nth-last-child(1) {
+    border-bottom: 1px solid #eaeaea !important;
+  }
+  .el-table__empty-block {
+    border: 1px solid #EAEAEA !important;
+    box-sizing: border-box !important;
+  }
+  .el-table--scrollable-x .el-table__body-wrapper {
+    overflow-x: hidden !important;
+  }
+}
+
+
+.fly-pic{
+  position:fixed;
+  z-index:999;
+  width: 205px;
+  height: 205px;
+}
+
+.sourcePage{
+  .el-dialog__body{
+    padding: 15px 15px 0 15px;
+  }
+}
+
