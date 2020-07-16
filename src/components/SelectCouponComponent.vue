@@ -66,12 +66,12 @@ import { getCouponList, getCouponLists } from '../common/fetch'
           {
             label:'ID',
             prop:'Coupon_ID',
-            showIf:()=>false,
+            // showIf:()=>false,
             search:false
           },
           {
             label:'名称',
-            prop:'Coupon_Title',
+            prop:'Coupon_Subject',
             search:false,
             width:160
           },

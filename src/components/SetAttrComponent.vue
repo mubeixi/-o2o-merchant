@@ -268,7 +268,7 @@
 					</el-tooltip>
 				</div>
 
-				<div @click="openColorPicker">
+				<div @click="openColorPicker(item)">
 					<el-color-picker
 					show-alpha
 					v-if="item.type === 'color'"
@@ -470,8 +470,10 @@ export default {
 			this.change(item)
 
 		},
-		openColorPicker() {
+		openColorPicker(rowItem) {
 			this.isLockMouser = true;
+			//解决颜色配置后无法生效的问题
+			this.saveCurrentItem(rowItem)
 		},
 		taggleEditStatus() {
 
