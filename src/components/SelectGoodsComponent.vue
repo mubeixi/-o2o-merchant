@@ -269,7 +269,7 @@
 
 
 
-        let getProductListFn = getProducts;
+        let getProductListFn = getProductList;
         //秒杀
         if(this.kill_flag){
           getProductListFn = getFlashSaleList;
