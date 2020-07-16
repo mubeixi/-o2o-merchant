@@ -10,10 +10,9 @@ function setValue() {
 function setConfig() {
   // 如果新对象，那么可以考虑用默认值替换掉。
   if (JSON.stringify(this.style) === JSON.stringify({
-    bgColor: '',
-    height: 30,
-    color: '',
-    inputBgColor: '',
+    bgColor: '#fff',
+    dotsColor:'rgba(0,0,0,.3)',
+    dotsActiveColor:'rgba(38,199,141,100)',
   })) {
     Vue.set(this, 'style', JSON.parse(JSON.stringify(this.styleDefault)));
   }
@@ -106,7 +105,7 @@ function setAttrData() {
       {
         type: 'input',
         // inputType: 'number',
-        text: '滚动间隔(s)',
+        text: '滚动间隔(ms)',
         editType: 'config',
         editKey: 'interval',
         model: this.config.interval,
@@ -115,12 +114,38 @@ function setAttrData() {
       {
         type: 'input',
         // inputType: 'number',
+        text: '滑动动画时长(ms)',
+        editType: 'config',
+        editKey: 'duration',
+        model: this.config.duration,
+        inputCB: (item) => item.model
+      },
+      {
+        type: 'input',
+        // inputType: 'number',
         text: '自定义间距',
-        desc:'eg.20px 0 20px 0,不清楚规则可以问技术',
+        desc:'eg.20px 0px 20px 0px,不清楚规则可以问技术',
         editType: 'config',
         editKey: 'paddingStr',
         model: this.config.paddingStr,
         inputCB: (item) => item.model
+      },
+      {
+        type: 'switch',
+        text: '自动播放',
+        editType: 'config',
+        editKey: 'autoplay',
+        model: this.config.autoplay,
+        value: [
+          {
+            label: '关闭',
+            value: false,
+          },
+          {
+            label: '开启',
+            value: true,
+          },
+        ],
       },
       {
         type: 'switch',
@@ -141,7 +166,7 @@ function setAttrData() {
       },
       {
         type: 'radio',
-        text: '知识点模式',
+        text: '指示点模式',
         editType: 'config',
         editKey: 'indicatorDots',
         model: this.config.indicatorDots,
@@ -159,6 +184,22 @@ function setAttrData() {
             value: 'line',
           }
         ],
+      },
+      {
+        type: 'color',
+        text: '指示点颜色',
+        model: this.style.dotsColor,
+        editType: 'style',
+        editKey: 'dotsColor',
+        editCB: item => item.model,
+      },
+      {
+        type: 'color',
+        text: '选中指示点颜色',
+        model: this.style.dotsActiveColor,
+        editType: 'style',
+        editKey: 'dotsActiveColor',
+        editCB: item => item.model,
       },
       // {
       //   type: 'switch',
@@ -217,6 +258,8 @@ class Swiper extends Common {
 
   style = {
     bgColor: '#fff',
+    dotsColor:'rgba(0,0,0,.3)',
+    dotsActiveColor:'rgba(38,199,141,100)',
     // height: 30,
     // color: '',
     // inputBgColor: '',
@@ -229,15 +272,15 @@ class Swiper extends Common {
    * @inputBgColor  输入框背景
    */
   styleDefault = {
-    // bgColor: '#fff',
-    // height: 30,
-    // color: '#444',
-    // inputBgColor: '#f2f2f2',
+    bgColor: '#fff',
+    dotsColor:'rgba(0,0,0,.3)',
+    dotsActiveColor:'rgba(38,199,141,100)',
   }
 
   config = {
     loop: false,//是否循环
-    interval: 5,//切换时间
+    interval: 5000,//切换时间（毫秒)
+    duration:500,//滑动快慢(毫秒)
     indicatorDots:'none',//指示器
     paddingStr:'',//自定义边距
     autoplay: true,//自动播放

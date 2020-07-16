@@ -23,9 +23,6 @@
         <span class="tip" v-show="!area.bgimg">{{getTip(area)}}</span>
         <!--        <img src="@/assets/img/icon-del.png" class="delicon" />-->
         <i v-if="type==='diy'" class="el-icon-error delicon" @click.stop="delArea(area)"/>
-        <!--        <svg class="fun-icon icon delicon" @click="delArea(area)" aria-hidden="true">-->
-        <!--          <use xlink:href="#icon-del"></use>-->
-        <!--        </svg>-->
       </div>
 
       <div v-show="mouseInBox" class="hover" :style="[getAreaStyle(tempAreaObj)]">
@@ -161,6 +158,10 @@ export default {
       deep:true,
       handler(val){
         // console.log('333333333333333selecteds发生修改',val);
+        //更细提示文本
+        for(var key in val){
+          if(val[key].tooltip)this.$set(this.CTX.selects[key],'tooltip',val[key].tooltip)
+        }
       }
     },
     //传上去
@@ -281,9 +282,10 @@ export default {
     },
     activeArea(idx, area) {
 
-      // console.log('4444444444444')
+      //console.log('4444444444444',area)
       this.areaActiveIndex = idx;
-      this.currentArea = area;
+      // this.currentArea = area;
+      this.$set(this,'currentArea',area)
     },
     dragSelect() {
 
