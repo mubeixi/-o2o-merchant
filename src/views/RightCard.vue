@@ -27,6 +27,10 @@
       <template slot="coupons-column" slot-scope="props">
         <div :key="index" v-for="(item,index) of props.row.coupons">
           优惠券名称：{{item.Coupon_Subject}} 满{{item.Coupon_Condition}}减{{item.Coupon_Cash}}元
+
+          <template v-if="item.is_ok==0">
+            (已过期)
+          </template>
         </div>
       </template>
       <template slot="status-column" slot-scope="props">
