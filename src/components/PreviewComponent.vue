@@ -1577,6 +1577,7 @@ export default class PreviewComponent extends Vue {
         overflow-y: hidden;
         overflow-x: scroll;
         padding-left: 0;
+        white-space: nowrap;
         &::-webkit-scrollbar {
           display: none;
         }

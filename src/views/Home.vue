@@ -35,7 +35,8 @@
         <el-button @click="saveData(0,1)" size="small">预览</el-button>
         <div @click="centerDialogVisible=false" class="tooltip" v-show="centerDialogVisible">
           <div class="qrcode">
-            <qrcode-vue :value="preUrl" level="H" size="200"></qrcode-vue>
+            <img :src="preQrImgUrl" width="200px" height="200px"  />
+<!--            <qrcode-vue :value="preUrl" level="H" size="200"></qrcode-vue>-->
           </div>
           <div class="font12" style="line-height: 20px;height: 20px">扫一扫预览</div>
         </div>
@@ -61,6 +62,8 @@ import Cookies from 'js-cookie';
 import QrcodeVue from 'qrcode.vue';
 import {tmplDiyMixin} from '@/common/mixin';
 import {serialize} from '@/common/utils';
+import {getLpQrcode} from "../common/fetch";
+import {fun} from "../common";
 // const front_url = process.env.VUE_APP_FRONT_URL
 
 @Component({
@@ -80,6 +83,7 @@ export default class Home extends Vue {
 
   is_dev = isDev
   preUrl = ''
+  preQrImgUrl: any = ''
   centerDialogVisible = false
   previewActiveIndex = null
 
@@ -101,21 +105,33 @@ export default class Home extends Vue {
     this.setpreUrl();
   }
 
-  setpreUrl() {
+  async setpreUrl() {
 
-    let Skin_ID = ss.get('Skin_ID'),
-      Home_ID = ss.get('Home_ID'),
-      Users_ID = Cookies.get('Users_ID');
+    let Home_ID = ss.get('Home_ID'),
+    Users_ID = Cookies.get('Users_ID');
 
-    let obj = {Skin_ID, Home_ID, users_id: Users_ID};
-
+    let obj = {Home_ID, users_id: Users_ID};
     let str = serialize(obj);
-
     if (str) str = '?' + str;
-
-
-    this.preUrl = front_url + 'pages/index/pre' + str;
     console.log('更新preurl', this.preUrl);
+    //this.preUrl = front_url + 'pages/page/page' + str;
+    this.preQrImgUrl = await getLpQrcode({path:`pagesA/index/pre?Users_ID=${Users_ID}&mode=home&Home_ID=${Home_ID}`}).then(res=>res.data.qrcode).catch(err=>{
+      fun.error({msg:err.msg,title:'获取预览二维码失败'})
+    })
+
+    // let Skin_ID = ss.get('Skin_ID'),
+    //   Home_ID = ss.get('Home_ID'),
+    //   Users_ID = Cookies.get('Users_ID');
+    //
+    // let obj = {Skin_ID, Home_ID, users_id: Users_ID};
+    //
+    // let str = serialize(obj);
+    //
+    // if (str) str = '?' + str;
+    //
+    //
+    // this.preUrl = front_url + 'pages/index/pre' + str;
+    // console.log('更新preurl', this.preUrl);
 
   }
 

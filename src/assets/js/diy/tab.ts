@@ -237,7 +237,7 @@ function setAttrData() {
         value: [
           {
             label: '1/1',
-            value: 1/1,
+            value: 1,
           },
           {
             label: '1/2',
@@ -452,6 +452,7 @@ class Tab extends Common {
     origin: 'filter',
     origintooltip: '请绑定',//提示语
     style: 1,
+    ratio:1,
     showmode: 'noborder-bgwhite',//'border-bgwhite','noborder-nobg'  无边框白底 有边框白底 无边框透明底
     radius: 'round',//圆角 none直角
     attr: {

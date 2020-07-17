@@ -106,7 +106,7 @@
                 }else if(Array.isArray(this.goods.value.list) && this.goods.value.list.length>0){
                   return this.goods.value.list.length
                 }else{
-                  return 999
+                  return 9999
                 }
 
               }catch (e) {
@@ -225,9 +225,9 @@
                         param.Products_ID = list.join(',')
                     }
 
-                    if(list.length===0 && cate_id.length===0){
-                        param.pageSize = 6
-                    }
+                    // if(list.length===0 && cate_id.length===0){
+                    //     param.pageSize = 6
+                    // }
 
                     getProductList(param).then(res => {
                         this.goodsList = res.data

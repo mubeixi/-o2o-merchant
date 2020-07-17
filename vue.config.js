@@ -10,6 +10,11 @@ module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
   css: {
     loaderOptions: {
+      less:{
+        globalVars: {
+          danger : '#f56c6c'
+        }
+      },
       sass: {
         prependData: fs.readFileSync('src/assets/css/variable.scss', 'utf-8'),
         implementation: require('sass') // This line must in sass option
@@ -50,9 +55,7 @@ module.exports = {
         })
       )
 
-     
-      
-      
+
       config.plugins.push(
         // 将 dll 注入到 生成的 html 模板中
         new AddAssetHtmlPlugin({

@@ -61,7 +61,7 @@ import Cookies from 'js-cookie';
 import QrcodeVue from 'qrcode.vue';
 import {serialize} from '@/common/utils';
 import {tmplDiyMixin} from '@/common/mixin';
-import {getLpQrcode} from "../common/fetch";
+import {getLpQrcode} from "@/common/fetch";
 import {fun} from "../common";
 
 // const front_url = process.env.VUE_APP_FRONT_URL
@@ -82,7 +82,7 @@ export default class Home extends Vue {
 
   is_dev = isDev
   preUrl = ''
-  preQrImgUrl = ''
+  preQrImgUrl: any = ''
   centerDialogVisible = false
   previewActiveIndex = null
 
@@ -116,7 +116,7 @@ export default class Home extends Vue {
     if (str) str = '?' + str;
     console.log('更新preurl', this.preUrl);
     //this.preUrl = front_url + 'pages/page/page' + str;
-    this.preQrImgUrl = await getLpQrcode({path:`pagesA/index/pre?Home_ID=${Home_ID}`}).then(res=>res.data.qrcode).catch(err=>{
+    this.preQrImgUrl = await getLpQrcode({path:`pagesA/index/pre?Users_ID=${Users_ID}&mode=diy&Home_ID=${Home_ID}`}).then(res=>res.data.qrcode).catch(err=>{
       fun.error({msg:err.msg,title:'获取预览二维码失败'})
     })
   }

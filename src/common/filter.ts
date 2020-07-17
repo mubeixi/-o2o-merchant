@@ -1,7 +1,9 @@
 import { PLUGINSLIST } from './data';
 import Vue from 'vue';
 import { staticUrl } from './env';
-const moment  =require('moment')
+// @ts-ignore
+import moment from 'moment/min/moment.min.js'
+
 Vue.filter('getTitleByTag',(tag) => {
 
   for (const group of PLUGINSLIST) {
@@ -27,7 +29,7 @@ Vue.filter('cutstr',(str,len,tip) => {
   return str.substring(0,len)+tip
 })
 
-Vue.filter('percent',(val) => parseInt(val*100)/100)
+Vue.filter('percent',(val) => parseInt(String(val * 100))/100)
 
 Vue.filter('num2px',(val) => {
   if (val.indexOf('px') == -1) return `${val}px`;
