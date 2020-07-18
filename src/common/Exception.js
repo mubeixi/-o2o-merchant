@@ -44,4 +44,5 @@ function handle (e) {
 Exception.prototype = {
   constructor: Exception
 }
+
 Exception.handle = handle

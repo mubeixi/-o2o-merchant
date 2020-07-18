@@ -346,9 +346,11 @@ import MagicCube from '@/assets/js/diy/tool/MagicCube';
 
 
 import html2canvas from 'html2canvas';
-import {Canvas2Image} from '@/assets/js/diy/tool/canvas2img';
+import { Canvas2Image } from '@/assets/js/diy/tool/canvas2img.js';
 import {trim} from 'vue-resource/src/util';
 import {fun} from "../common";
+
+import {Exception} from "../common/Exception";
 
 @Component({
 	name: 'PreviewComponent',
@@ -498,27 +500,32 @@ import {fun} from "../common";
 			this.canvasScrollTop = this.$refs.pageTemplageBox.scrollTop
 		},
 		async convert2canvas(el) {
-			let shareContent = el //需要截图的包裹的（原生的）DOM 对象
-			let width = shareContent.offsetWidth //获取dom 宽度
-			let height = shareContent.offsetHeight //获取dom 高度
-			let canvas = document.createElement('canvas') //创建一个canvas节点
-			let scale = 0.5 //定义任意放大倍数 支持小数
-			canvas.width = width * scale //定义canvas 宽度 * 缩放
-			canvas.height = height * scale //定义canvas高度 *缩放
-			canvas.getContext('2d').scale(scale, scale) //获取context,设置scale
-			//https://html2canvas.hertzen.com/configuration
-			let opts = {
-				scale: 1, // 添加的scale 参数
-				canvas: canvas, //自定义 canvas
-				logging: false, //日志开关，便于查看html2canvas的内部执行流程
-				width: width, //dom 原始宽度
-				height: height,
-				useCORS: true // 【重要】开启跨域配置
-			}
-			await html2canvas(shareContent, opts).then(canvas => {
 
-				console.log(canvas)
-				let context = canvas.getContext('2d')
+			try {
+				let shareContent = el //需要截图的包裹的（原生的）DOM 对象
+				let width = shareContent.offsetWidth //获取dom 宽度
+				let height = shareContent.offsetWidth*1334/750 // shareContent.offsetHeight //获取dom 高度
+				let canvasEle = document.createElement('canvas') //创建一个canvas节点
+				let scale = 0.5 //定义任意放大倍数 支持小数
+				canvasEle.width = width * scale //定义canvas 宽度 * 缩放
+				canvasEle.height = height * scale //定义canvas高度 *缩放
+				canvasEle.getContext('2d').scale(scale, scale) //获取context,设置scale
+				//https://html2canvas.hertzen.com/configuration
+				let opts = {
+					scale: 1, // 添加的scale 参数
+					canvas: canvas, //自定义 canvas
+					logging: false, //日志开关，便于查看html2canvas的内部执行流程
+					width: width, //dom 原始宽度
+					height: height,
+					useCORS: true // 【重要】开启跨域配置
+				}
+				var canvas:any = await html2canvas(shareContent, opts).catch(err=>{
+					console.log(err)
+					throw err
+				})
+
+				// console.log(canvas)
+				let context:any = canvas.getContext('2d')
 				// 【重要】关闭抗锯齿
 				context.mozImageSmoothingEnabled = false
 				context.webkitImageSmoothingEnabled = false
@@ -533,6 +540,9 @@ import {fun} from "../common";
 				).getAttribute('src')
 				//console.log(src)
 
+				canvas = null
+				canvasEle.remove()
+
 				let base64Data = src;
 				//let blob = this.dataURItoBlob(src)
 				// let file = new File(
@@ -545,11 +555,24 @@ import {fun} from "../common";
 				//,'title':this.title || '自定义页面'+'png'
 				let data = {image: base64Data};
 
-				return uploadImgByBase64(data).then(res => {
-					console.log('upimg rt ', res.data.path)
-					this.imgUrl = res.data.path
+				const upimgRT =  await uploadImgByBase64(data).then(res => {
+					return res.data.path
+				}).catch(err=>{
+					throw Error('上传照片失败')
 				})
-			})
+				base64Data = null
+				data = null
+				console.log('upimg rt ', upimgRT)
+				this.imgUrl = upimgRT
+
+				return upimgRT
+
+			}catch (e) {
+				Exception.handle(e)
+			}
+
+
+
 		},
 		dataURItoBlob(base64Data) {
 			let byteString
@@ -618,11 +641,22 @@ import {fun} from "../common";
 				return;
 			}
 
+			// 不要带无用的数据
+			const postTemplateData = this.templateData[0].map(plugin=>{
+				var newOjb = Object.assign({},plugin)
+				newOjb.attrData = {}
+				return newOjb
+			})
+
 
 			this.isAjax = true
-			let mixinData = {plugin: this.templateData, system: this.system}
+			let mixinData = {
+				plugin: [postTemplateData],//this.templateData,
+				system: this.system
+			}
 
-			console.log(`提交模板配置`, mixinData)
+			// console.log(`提交模板配置`, mixinData,postTemplateData)
+
 
 
 			let postData = {
@@ -680,8 +714,9 @@ import {fun} from "../common";
 
 				})
 
-				await this.convert2canvas(el)
-				postData.Skin_Img = this.imgUrl;
+				const imgUrl = await this.convert2canvas(el)
+
+				postData.Skin_Img = imgUrl//this.imgUrl;
 
 
 			} else {
@@ -709,59 +744,59 @@ import {fun} from "../common";
 			saveFunc(postData).then(res => {
 
 				load.close();
-
+				//
 				this.isAjax = false
-				console.log(res.data.Home_ID)
-
-				//保存Home_ID
-				if (res.data.Home_ID) {
-
-
-					//刷新页面
-					if (!this.isDiy && (GetQueryByString(location.href, 'Home_ID') == 0 || !GetQueryByString(location.href, 'Home_ID'))) {
-						//需要刷新页面
-						//str.replace(/\?.*/g, "")
-						let oldURL = location.href;
-						let newUrl = oldURL.replace(/\?.*/g, "?Home_ID=" + res.data.Home_ID)
-						console.log('需要跳转到的页面', newUrl)
-						fun.success({msg: '配置保存成功'})
-						setTimeout(() => {
-							location.href = newUrl;
-							location.reload();
-						}, 1500)
-						return;
-
-					}
-
-					if (this.isDiy && (GetQueryByString(location.href, 'Home_ID') == 0 || !GetQueryByString(location.href, 'Home_ID'))) {
-						//需要刷新页面
-						//str.replace(/\?.*/g, "")
-						let oldURL = location.href;
-						let newUrl = ''
-
-						if (oldURL.indexOf('?') != -1) {
-							newUrl = oldURL.replace(/\?.*/g, "?Home_ID=" + res.data.Home_ID)
-						} else {
-							newUrl = oldURL + "?Home_ID=" + res.data.Home_ID
-						}
-
-						fun.success({msg: '配置保存成功'})
-						console.log('需要跳转到的页面', newUrl)
-
-						setTimeout(() => {
-							location.href = newUrl;
-							location.reload();
-						}, 1500)
-						return;
-
-					}
-					ss.set('Home_ID', res.data.Home_ID)
-				}
-
-				this.$fun.success({msg: '配置保存成功'});
-				if (pre) {
-					this.$emit('preFun', true);
-				}
+				// console.log(res.data.Home_ID)
+				//
+				// //保存Home_ID
+				// if (res.data.Home_ID) {
+				//
+				//
+				// 	//刷新页面
+				// 	if (!this.isDiy && (GetQueryByString(location.href, 'Home_ID') == 0 || !GetQueryByString(location.href, 'Home_ID'))) {
+				// 		//需要刷新页面
+				// 		//str.replace(/\?.*/g, "")
+				// 		let oldURL = location.href;
+				// 		let newUrl = oldURL.replace(/\?.*/g, "?Home_ID=" + res.data.Home_ID)
+				// 		console.log('需要跳转到的页面', newUrl)
+				// 		fun.success({msg: '配置保存成功'})
+				// 		setTimeout(() => {
+				// 			location.href = newUrl;
+				// 			location.reload();
+				// 		}, 1500)
+				// 		return;
+				//
+				// 	}
+				//
+				// 	if (this.isDiy && (GetQueryByString(location.href, 'Home_ID') == 0 || !GetQueryByString(location.href, 'Home_ID'))) {
+				// 		//需要刷新页面
+				// 		//str.replace(/\?.*/g, "")
+				// 		let oldURL = location.href;
+				// 		let newUrl = ''
+				//
+				// 		if (oldURL.indexOf('?') != -1) {
+				// 			newUrl = oldURL.replace(/\?.*/g, "?Home_ID=" + res.data.Home_ID)
+				// 		} else {
+				// 			newUrl = oldURL + "?Home_ID=" + res.data.Home_ID
+				// 		}
+				//
+				// 		fun.success({msg: '配置保存成功'})
+				// 		console.log('需要跳转到的页面', newUrl)
+				//
+				// 		setTimeout(() => {
+				// 			location.href = newUrl;
+				// 			location.reload();
+				// 		}, 1500)
+				// 		return;
+				//
+				// 	}
+				// 	ss.set('Home_ID', res.data.Home_ID)
+				// }
+				//
+				// this.$fun.success({msg: '配置保存成功'});
+				// if (pre) {
+				// 	this.$emit('preFun', true);
+				// }
 
 			}).catch(e => {
 				load.close();
