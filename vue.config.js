@@ -7,6 +7,7 @@ const fs = require('fs')
 
 module.exports = {
   // options...
+  productionSourceMap: false,//不要jsmap
   publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
   css: {
     loaderOptions: {
