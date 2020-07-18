@@ -22,7 +22,7 @@
           <div class="deco-component-title__msg">{{componentTitle.desc}}</div>
         </div>
         <set-attr-component ref="setAttr" v-show="mode=='attr'"></set-attr-component>
-        <common-attr-component v-show="mode=='system'"></common-attr-component>
+        <common-attr-component :isDiy="true" v-show="mode=='system'"></common-attr-component>
         <right-component v-show="mode=='plugin'"></right-component>
       </div>
     </div>

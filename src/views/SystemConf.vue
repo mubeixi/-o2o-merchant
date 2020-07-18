@@ -34,6 +34,7 @@ import DiyFormFormat from "../components/diy-form-format/diy-form-format.vue";
 import {checkValue, findArrayIdx, objTranslate} from "../common/utils";
 import {fun} from "../common";
 import {operateShopConfig} from "../common/fetch";
+import store from "@/store";
 
 /**
  * with属性如果为多个，就用数组申明，然后遍历数组就好了。单个的话就是字符串
@@ -246,6 +247,7 @@ const infoTmplByFeature = [
 		required: false,
 		type: 'radio',
 		value: '',
+		hide:store.state.initData.cash_from===2,
 		desc: '开启后，会员的余额可以申请提现，请注意，如果您设置了充值送余额，就不建议开启该功能，否则可能会出现消费者充值100到账120，直接提现的情况',
 		autoDesc: true,
 		options: [{label: '开启', val: 1}, {label: '关闭', val: 0}]

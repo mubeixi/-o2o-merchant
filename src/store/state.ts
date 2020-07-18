@@ -6,7 +6,7 @@ window.initData = initData
 
 export default {
   activeAttr: {attrData: {}},
-  system:{bgcolor:'#f2f2f2',title:'首页'},
+  system:{bgcolor:'#f2f2f2',title:'首页',topTheme:'none'},
   editStatus: false,
   finderDialogInstance:finderDialogInstance,
   mode:'attr',
