@@ -102,15 +102,15 @@
         </el-form-item>
 
 
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.mp_follow.checked">
-            关注公众号时间
-            <el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"
-                      v-model="crowdData.mp_follow.value"></el-input>
-            <span style="color: #B3B3B3">天内</span>
-          </el-checkbox>
-        </el-form-item>
+<!--        <el-form-item>-->
+<!--          <el-checkbox label="lastTime" name="consumptionTimes"-->
+<!--                       v-model="crowdData.mp_follow.checked">-->
+<!--            关注公众号时间-->
+<!--            <el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"-->
+<!--                      v-model="crowdData.mp_follow.value"></el-input>-->
+<!--            <span style="color: #B3B3B3">天内</span>-->
+<!--          </el-checkbox>-->
+<!--        </el-form-item>-->
 
         <el-form-item>
           <el-checkbox label="lastTime" name="consumptionTimes"
@@ -206,7 +206,7 @@ export default class AddProduct extends Vue {
     total_get_integral: {start: '', end: '', checked: false},
     order_avg: {start: '', end: '', checked: false},
     user_level: {value: '', checked: false},
-    mp_follow: {value: '', checked: false},
+    // mp_follow: {value: '', checked: false},
     last_login: {value: '', checked: false},
     last_nologin: {value: '', checked: false},
     refund_order_num: {start: '', end: '', checked: false},

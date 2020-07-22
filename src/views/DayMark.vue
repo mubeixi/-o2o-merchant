@@ -74,23 +74,23 @@
                     width="373">
                     <template slot-scope="scope">
                       <div style="text-align:left;padding-left:78px;">
-                        <div class="userinput baoyou">
-                          <label>
-                            <el-checkbox
-                              v-model="form.rights[0].rights.shipping.checked"></el-checkbox>
-                            包邮
-                          </label>
-                        </div>
-                        <div class="userinput xiaofei">
-                          <label>
-                            <el-checkbox
-                              v-model="form.rights[0].rights.discount.checked"></el-checkbox>
-                            消费折扣
-                          </label>
-                          <el-input :disabled="!form.rights[0].rights.discount.checked"
-                                    v-model="form.rights[0].rights.discount.value"></el-input>
-                          折
-                        </div>
+<!--                        <div class="userinput baoyou">-->
+<!--                          <label>-->
+<!--                            <el-checkbox-->
+<!--                              v-model="form.rights[0].rights.shipping.checked"></el-checkbox>-->
+<!--                            包邮-->
+<!--                          </label>-->
+<!--                        </div>-->
+<!--                        <div class="userinput xiaofei">-->
+<!--                          <label>-->
+<!--                            <el-checkbox-->
+<!--                              v-model="form.rights[0].rights.discount.checked"></el-checkbox>-->
+<!--                            消费折扣-->
+<!--                          </label>-->
+<!--                          <el-input :disabled="!form.rights[0].rights.discount.checked"-->
+<!--                                    v-model="form.rights[0].rights.discount.value"></el-input>-->
+<!--                          折-->
+<!--                        </div>-->
                         <div class="userinput jifenbei">
                           <label>
                             <el-checkbox
@@ -120,7 +120,7 @@
                                     v-model="form.rights[0].rights.score.value"></el-input>
                           积分
                         </div>
-                        <div class="giftbag song" style="display: flex">
+                        <!--<div class="giftbag song" style="display: flex">
                           <label>
                             <el-checkbox v-model="form.rights[0].rights.gift.checked"></el-checkbox>
                             送赠品
@@ -133,6 +133,20 @@
                               <div class="lst" style="display: block"
                                    v-if="form.rights[0].rights.gift.pname">
                                 {{form.rights[0].rights.gift.pname}}
+                              </div>
+                            </div>
+                          </el-tooltip>
+                        </div>-->
+                        <div class="giftbag song" style="display: flex">
+                          <label>
+                            <el-checkbox v-model="form.rights[0].rights.card.checked"></el-checkbox>
+                            送权益卡
+                          </label>
+                          <span @click="selectCard(1,0,form.rights[0].rights.card.checked)" class="current">送权益卡</span>
+                          <el-tooltip :content="form.rights[0].rights.card.pname" effect="light" placement="top">
+                            <div>
+                              <div class="lst" style="display: block" v-if="form.rights[0].rights.card.pname">
+                                {{form.rights[0].rights.card.pname}}
                               </div>
                             </div>
                           </el-tooltip>
@@ -176,22 +190,22 @@
                   width="373">
                   <template slot-scope="scope">
                     <div style="padding-left: 78px;text-align:left">
-                      <div class="userinput baoyou">
-                        <label>
-                          <el-checkbox :disabled="!form.morerights[scope.$index].enable"
-                                       v-model="form.morerights[scope.$index].rights.shipping.checked"></el-checkbox>
-                          包邮</label>
-                      </div>
-                      <div class="userinput xiaofei">
-                        <label>
-                          <el-checkbox :disabled="!form.morerights[scope.$index].enable"
-                                       v-model="form.morerights[scope.$index].rights.discount.checked"></el-checkbox>
-                          消费折扣
-                        </label>
-                        <el-input :disabled="!form.morerights[scope.$index].rights.discount.checked"
-                                  v-model="form.morerights[scope.$index].rights.discount.value"></el-input>
-                        折
-                      </div>
+<!--                      <div class="userinput baoyou">-->
+<!--                        <label>-->
+<!--                          <el-checkbox :disabled="!form.morerights[scope.$index].enable"-->
+<!--                                       v-model="form.morerights[scope.$index].rights.shipping.checked"></el-checkbox>-->
+<!--                          包邮</label>-->
+<!--                      </div>-->
+<!--                      <div class="userinput xiaofei">-->
+<!--                        <label>-->
+<!--                          <el-checkbox :disabled="!form.morerights[scope.$index].enable"-->
+<!--                                       v-model="form.morerights[scope.$index].rights.discount.checked"></el-checkbox>-->
+<!--                          消费折扣-->
+<!--                        </label>-->
+<!--                        <el-input :disabled="!form.morerights[scope.$index].rights.discount.checked"-->
+<!--                                  v-model="form.morerights[scope.$index].rights.discount.value"></el-input>-->
+<!--                        折-->
+<!--                      </div>-->
                       <div class="userinput jifenbei">
                         <label>
                           <el-checkbox :disabled="!form.morerights[scope.$index].enable"
@@ -224,22 +238,37 @@
                       </div>
                       <div class="giftbag song" style="display: flex">
                         <label>
-                          <el-checkbox :disabled="!form.morerights[scope.$index].enable"
-                                       v-model="form.morerights[scope.$index].rights.gift.checked"></el-checkbox>
-                          送赠品
+                          <el-checkbox :disabled="!form.morerights[scope.$index].enable" v-model="form.morerights[scope.$index].rights.card.checked"></el-checkbox>
+                          送送权益卡
                         </label>
-                        <span @click="selectGift(2,scope.$index,form.morerights[scope.$index].rights.gift.checked)"
-                              class="current">选择赠品</span>
-                        <el-tooltip :content="form.morerights[scope.$index].rights.gift.pname"
-                                    effect="light" placement="top">
+                        <span @click="selectCard(2,scope.$index,form.morerights[scope.$index].rights.card.checked)"
+                              class="current">选择送权益卡</span>
+                        <el-tooltip :content="form.morerights[scope.$index].rights.card.pname" effect="light" placement="top">
                           <div>
-                            <div class="lst" style="display: block"
-                                 v-if="form.morerights[scope.$index].rights.gift.pname">
-                              {{form.morerights[scope.$index].rights.gift.pname}}
+                            <div class="lst" style="display: block" v-if="form.morerights[scope.$index].rights.card.pname">
+                              {{form.morerights[scope.$index].rights.card.pname}}
                             </div>
                           </div>
                         </el-tooltip>
                       </div>
+<!--                      <div class="giftbag song" style="display: flex">-->
+<!--                        <label>-->
+<!--                          <el-checkbox :disabled="!form.morerights[scope.$index].enable"-->
+<!--                                       v-model="form.morerights[scope.$index].rights.gift.checked"></el-checkbox>-->
+<!--                          送赠品-->
+<!--                        </label>-->
+<!--                        <span @click="selectGift(2,scope.$index,form.morerights[scope.$index].rights.gift.checked)"-->
+<!--                              class="current">选择赠品</span>-->
+<!--                        <el-tooltip :content="form.morerights[scope.$index].rights.gift.pname"-->
+<!--                                    effect="light" placement="top">-->
+<!--                          <div>-->
+<!--                            <div class="lst" style="display: block"-->
+<!--                                 v-if="form.morerights[scope.$index].rights.gift.pname">-->
+<!--                              {{form.morerights[scope.$index].rights.gift.pname}}-->
+<!--                            </div>-->
+<!--                          </div>-->
+<!--                        </el-tooltip>-->
+<!--                      </div>-->
                       <div class="giftbag jifenbei">
                         <label>
                           <el-checkbox :disabled="!form.morerights[scope.$index].enable"
@@ -326,6 +355,54 @@
     </div>
 
     <el-dialog
+    :visible.sync="isCardShow"
+    @close="cardCancel"
+    append-to-body
+    class="setting"
+    title="选择权益卡"
+    width="60%"
+    >
+      <div class="cardTitle" style="margin-bottom: 10px">
+        <div class="cardTitle" style="margin-right: 10px">
+          权益卡：
+          <el-input class="sortInput" style="width: 100px" v-model="rightCardKeyword"></el-input>
+        </div>
+        <el-button @click="getRightsList(1)" type="primary">搜索</el-button>
+      </div>
+      <el-table
+      :data="rightsCardList"
+      @current-change="handleCardRowChange"
+      highlight-current-row
+      ref="cardTable"
+      style="width: 100%"
+      tooltip-effect="dark"
+      >
+        <el-table-column
+        label="ID"
+        prop="id"
+        width="120">
+        </el-table-column>
+        <el-table-column
+        label="权益卡名称"
+        prop="card_name">
+        </el-table-column>
+        <el-table-column
+        label="创建时间"
+        prop="created_at">
+        </el-table-column>
+
+      </el-table>
+      <el-pagination
+      :page-size="cardPaginate.pageSize"
+      :total="cardPaginate.totalCount"
+      @current-change="bindPageChange"
+      background
+      layout="prev, pager, next"
+      style="margin-top: 20px;text-align: center;">
+      </el-pagination>
+    </el-dialog>
+
+    <el-dialog
       :visible.sync="isShow"
       @close="cardCancel"
       append-to-body
@@ -405,8 +482,10 @@
 <script lang="ts">
 import {Component} from 'vue-property-decorator';
 import Vue from 'vue'
-import {addScene, getGivingGifts, getScene, initScene} from '../common/fetch'
+import {addScene, getGivingGifts, getRightsCard, getScene, initScene} from '@/common/fetch'
 import {createTmplArray} from '@/common/utils';
+import {fun} from "@/common";
+const moment = require('moment');
 
 
 const tmpl_data = {
@@ -415,6 +494,11 @@ const tmpl_data = {
   rights:
     {
       gift: {
+        checked: false,
+        value: '',
+        pname: ''
+      },
+      card: {
         checked: false,
         value: '',
         pname: ''
@@ -471,6 +555,11 @@ export default class DayMark extends Vue {
           value: '',
           pname: ''
         },
+        card: {
+          checked: false,
+          value: '',
+          pname: ''
+        },
         score: {
           checked: false,
           value: ''
@@ -522,9 +611,35 @@ export default class DayMark extends Vue {
   pageSize = 8
   //赠品
   isShow = false;
+  isCardShow = false;
   GivingGifts = [];//赠品列表
+  rightsCardList:unknown = []
+  cardPaginate = {
+    page : 1,
+    pageSize:10,
+    totalCount:0
+  }
+  rightCardKeyword = ''
   giftIndex = 0;
   giftType = 1;
+
+  cardType = 1;
+  cardIndex =0
+
+  selectCard(type, index, bool) {
+    console.log(type, index, bool)
+    //type  为1是同一规则  2 为不同规则
+    //index   下标 第几行
+    //bool  是否选择赠品
+    if (!bool) {
+      this.$message.error('请勾选送权益卡');
+      return
+    }
+    this.cardType = type;
+    this.cardIndex = index;
+    this.isCardShow = true;
+    this.getRightsList()
+  }
 
   selectGift(type, index, bool) {
     //type  为1是同一规则  2 为不同规则
@@ -544,6 +659,12 @@ export default class DayMark extends Vue {
     this.searchList()
   }
 
+  bindPageChange(val){
+
+    this.cardPaginate.page =val
+    this.getRightsList()
+  }
+
   searchList() {
     let data = {
       page: this.page,
@@ -557,6 +678,26 @@ export default class DayMark extends Vue {
     })
   }
 
+  async getRightsList(clear=false){
+    if(clear){
+      this.cardPaginate.page =1
+    }
+    if(this.cardPaginate.page!=1 && this.rightsCardList.length>this.cardPaginate.totalCount)return;//分页加载完毕
+    const rightsCardList = await getRightsCard({status:1,card_name:this.rightCardKeyword,...this.cardPaginate}).then(res=>{
+      this.cardPaginate.page++
+      const {totalCount,data} =res
+      this.cardPaginate.totalCount = totalCount
+      return data
+    }).catch(({msg})=>{ fun.error({msg})})
+
+    if(clear){
+      this.rightsCardList = rightsCardList
+    }else{
+      this.rightsCardList = this.rightsCardList.concat(rightsCardList)
+    }
+
+  }
+
   goMarking() {
     this.$router.push({
       name: 'Marketing'
@@ -566,6 +707,24 @@ export default class DayMark extends Vue {
   //取消
   cardCancel() {
     this.isShow = false
+  }
+
+  handleCardRowChange(val){
+    console.log(val)
+    if(!val)return
+    if(this.cardType===1){
+      this.form.rights[0].rights.card.value = val.id;
+      this.form.rights[0].rights.card.pname = val.card_name;
+      this.form.rights[0].rights.card.checked = true;
+    }
+
+    if(this.cardType===2){
+      this.form.morerights[this.cardIndex].rights.card.value = val.id;
+      this.form.morerights[this.cardIndex].rights.card.pname = val.card_name;
+      this.form.morerights[this.cardIndex].rights.card.checked = true;
+    }
+    this.isCardShow = false
+    this.$refs.cardTable.setCurrentRow();
   }
 
   handleSelectionChange(val) {
