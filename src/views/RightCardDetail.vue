@@ -1,121 +1,121 @@
 <template>
-  <div class="free-all">
-    <div class="free-content">
+	<div class="free-all">
+		<div class="free-content">
 
-      <el-form label-width="180px" ref="form">
+			<el-form label-width="180px" ref="form">
 
-        <el-form-item label="背景图：">
-          <div style="display: flex;margin-left: 14px">
-            <upload-components
-              :limit="1"
-              :onSuccess="upThumbSuccessCall"
-              ref="thumb"
-              size="mini"
-              tip="上传标识图片"
-            />
-          </div>
-        </el-form-item>
+				<el-form-item label="背景图：">
+					<div style="display: flex;margin-left: 14px">
+						<upload-components
+						:limit="1"
+						:onSuccess="upThumbSuccessCall"
+						ref="thumb"
+						size="mini"
+						tip="上传标识图片"
+						/>
+					</div>
+				</el-form-item>
 
-        <el-form-item label="名称：">
-          <div class="flex flex-align-c c8">
-            <el-input class="inputs" style="width: 300px !important;"
-                      v-model="card_name"></el-input>
+				<el-form-item label="名称：">
+					<div class="flex flex-align-c c8">
+						<el-input class="inputs" style="width: 300px !important;"
+						          v-model="card_name"></el-input>
 
-          </div>
-        </el-form-item>
-        <el-form-item label="价格：">
-          <div class="flex flex-align-c c8">
-            <el-input class="inputs" style="width: 150px !important;" v-model="price"></el-input>
-            元
+					</div>
+				</el-form-item>
+				<el-form-item label="价格：">
+					<div class="flex flex-align-c c8">
+						<el-input class="inputs" style="width: 150px !important;" v-model="price"></el-input>
+						元
 
-          </div>
-        </el-form-item>
+					</div>
+				</el-form-item>
 
-        <el-form-item label="礼包内容：">
+				<el-form-item label="礼包内容：">
 
-          <div style="margin-bottom: 10px">
-            送积分
+					<div style="margin-bottom: 10px">
+						送积分
 
-            <el-input class="inputs" style="width: 140px !important;"
-                      v-model="card_content.score"></el-input>
-            分
-            <span style="color: #999999;">（ 购买该权益卡一次性赠送购买者多少积分）</span>
+						<el-input class="inputs" style="width: 140px !important;"
+						          v-model="card_content.score"></el-input>
+						分
+						<span style="color: #999999;">（ 购买该权益卡一次性赠送购买者多少积分）</span>
 
-          </div>
-          <div>
-            送优惠卷 <span @click="openCoupon" class="select">选择优惠券</span>
-            <div>
-              <div :key="index" class="coupons" v-for="(item,index) of productData">
-                {{item.Coupon_Subject}}
-                <block v-if="item.is_ok==0">
-                  (已过期)
-                </block>
-                <img @click="del(index)" class="del-img" src="@/assets/img/productAdd/del.png">
-              </div>
-            </div>
-          </div>
-        </el-form-item>
-
-
-        <el-form-item label="购买须知：">
-          <el-input
-            :autosize="{ minRows: 6, maxRows: 10}"
-            placeholder="请输入内容"
-            style="width: 480px"
-            type="textarea"
-            v-model="descr">
-          </el-input>
-        </el-form-item>
+					</div>
+					<div>
+						送优惠卷 <span @click="openCoupon" class="select">选择优惠券</span>
+						<div>
+							<div :key="index" class="coupons" v-for="(item,index) of productData">
+								{{item.Coupon_Subject}}
+								<block v-if="item.is_ok==0">
+									(已过期)
+								</block>
+								<img @click="del(index)" class="del-img" src="@/assets/img/productAdd/del.png">
+							</div>
+						</div>
+					</div>
+				</el-form-item>
 
 
-      </el-form>
-    </div>
-
-    <div class="submit-div">
-      <div @click="saveActive" class="submit">保存</div>
-    </div>
-
-
-    <el-dialog
-      :visible.sync="isShow"
-      @close="closeDialog"
-      append-to-body
-      class="setting"
-      title="选择优惠券"
-      width="60%"
-    >
-      <fun-table
-        :_pageSize="dataTableOpt.pageSize"
-        :_totalCount="dataTableOpt.totalCount"
-        :columns="dataTableOpt.columns"
-        :dataList="dataTableOpt.dataList"
-        :formSize="'small'"
-        :has.sync="selectValue"
-        :isRow="false"
-        :is_paginate="dataTableOpt.is_paginate"
-        @closeDialog="closeDialog"
-        @currentChange="currentChanges"
-        @handleSizeChange="handleSizeChange"
-        @reset="reset"
-        @selectVal="selectVal"
-        @submit="submit"
-        ref="funTableComp"
-        v-if="isShow"
-        vkey="Coupon_ID"
-      >
-      </fun-table>
-      <div class="myButton">
-        <el-button @click="closeDialog" size="small" type="primary">保存</el-button>
-      </div>
-    </el-dialog>
+				<el-form-item label="购买须知：">
+					<el-input
+					:autosize="{ minRows: 6, maxRows: 10}"
+					placeholder="请输入内容"
+					style="width: 480px"
+					type="textarea"
+					v-model="descr">
+					</el-input>
+				</el-form-item>
 
 
-  </div>
+			</el-form>
+		</div>
+
+		<div class="submit-div">
+			<div @click="saveActive" class="submit">保存</div>
+		</div>
+
+
+		<el-dialog
+		:visible.sync="isShow"
+		@close="closeDialog"
+		append-to-body
+		class="setting"
+		title="选择优惠券"
+		width="60%"
+		>
+			<fun-table
+			:_pageSize="dataTableOpt.pageSize"
+			:_totalCount="dataTableOpt.totalCount"
+			:columns="dataTableOpt.columns"
+			:dataList="dataTableOpt.dataList"
+			:formSize="'small'"
+			:has.sync="selectValue"
+			:isRow="false"
+			:is_paginate="dataTableOpt.is_paginate"
+			@closeDialog="closeDialog"
+			@currentChange="currentChanges"
+			@handleSizeChange="handleSizeChange"
+			@reset="reset"
+			@selectVal="selectVal"
+			@submit="submit"
+			ref="funTableComp"
+			v-if="isShow"
+			vkey="Coupon_ID"
+			>
+			</fun-table>
+			<div class="myButton">
+				<el-button @click="closeDialog" size="small" type="primary">保存</el-button>
+			</div>
+		</el-dialog>
+
+
+	</div>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import UploadComponents from "@/components/comm/UploadComponents.vue";
+import {Component, Vue} from 'vue-property-decorator'
+import UploadComponents from "@/components/comm/UploadComponents.vue"
 import {getCouponLists, getRightsCard, opRightsCard} from '@/common/fetch'
 
 @Component({
@@ -193,15 +193,15 @@ export default class RightCardDetail extends Vue {
       })
       return
     }
-    let id = this.$route.query.id;
+    let id = this.$route.query.id
 
     let arr = this.card_content
-    let canCoupon=[]
-    for(let item  of this.productData){
-      for(let it of this.selectValue){
-            if(item.Coupon_ID==it&&item.is_ok!=0){
-              canCoupon.push(it)
-            }
+    let canCoupon = []
+    for (let item of this.productData) {
+      for (let it of this.selectValue) {
+        if (item.Coupon_ID == it && item.is_ok != 0) {
+          canCoupon.push(it)
+        }
       }
     }
     arr.coupon = canCoupon.join(',')
@@ -253,7 +253,7 @@ export default class RightCardDetail extends Vue {
   }
 
   openCoupon() {
-    this.isShow = true;
+    this.isShow = true
     this.selectValue = []
     this.productData.map(item => {
       this.selectValue.push(item.Coupon_ID)
@@ -335,7 +335,7 @@ export default class RightCardDetail extends Vue {
 
 
   init() {
-    let id = this.$route.query.id;
+    let id = this.$route.query.id
 
     getRightsCard({card_id: id}).then(res => {
       let arr = res.data[0]
@@ -354,7 +354,7 @@ export default class RightCardDetail extends Vue {
         this.$refs.thumb.handleInitHas([this.bg_img])
       }
 
-      this.productData=arr.coupons
+      this.productData = arr.coupons
 
       // for (let item of this.dataTableOpt.dataList) {
       //   for (let it of this.selectValue) {
@@ -370,7 +370,7 @@ export default class RightCardDetail extends Vue {
 
   created() {
     this.getProduct()
-    let id = this.$route.query.id;
+    let id = this.$route.query.id
     if (id) {
       this.init()
     }
@@ -382,151 +382,151 @@ export default class RightCardDetail extends Vue {
 
 </script>
 <style lang="less" scoped>
-  .submit-div {
-    width: 100%;
-    height: 60px;
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.2);
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+	.submit-div {
+		width: 100%;
+		height: 60px;
+		background: rgba(255, 255, 255, 1);
+		box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.2);
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 
-  .submit {
-    width: 72px;
-    height: 37px;
-    line-height: 37px;
-    text-align: center;
-    background: rgba(66, 140, 247, 1);
-    border-radius: 5px;
-    font-size: 14px;
-    color: #FFFFFF;
-    cursor: pointer;
-  }
+	.submit {
+		width: 72px;
+		height: 37px;
+		line-height: 37px;
+		text-align: center;
+		background: rgba(66, 140, 247, 1);
+		border-radius: 5px;
+		font-size: 14px;
+		color: #FFFFFF;
+		cursor: pointer;
+	}
 
-  .tui-btn {
-    cursor: pointer;
-    width: 60px;
-    height: 25px;
-    line-height: 25px;
-    text-align: center;
-    font-size: 12px;
-    color: #FFFFFF;
-    background-color: #428CF7;
-    margin-left: 48px;
-  }
+	.tui-btn {
+		cursor: pointer;
+		width: 60px;
+		height: 25px;
+		line-height: 25px;
+		text-align: center;
+		font-size: 12px;
+		color: #FFFFFF;
+		background-color: #428CF7;
+		margin-left: 48px;
+	}
 
-  .disableds {
-    background-color: #D3D3D3 !important;
-  }
+	.disableds {
+		background-color: #D3D3D3 !important;
+	}
 
-  .del-img {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-  }
+	.del-img {
+		position: absolute;
+		top: -6px;
+		right: -6px;
+	}
 
-  .coupons {
-    margin-top: 10px;
-    padding: 0px 13px;
-    background-color: #F8F8F8;
-    position: relative;
-    width: fit-content;
-    height: 30px;
-    line-height: 30px;
-    box-sizing: border-box;
-    display: inline-block;
-    margin-right: 20px;
-  }
+	.coupons {
+		margin-top: 10px;
+		padding: 0px 13px;
+		background-color: #F8F8F8;
+		position: relative;
+		width: fit-content;
+		height: 30px;
+		line-height: 30px;
+		box-sizing: border-box;
+		display: inline-block;
+		margin-right: 20px;
+	}
 
-  .give-div {
-    width: 566px;
-    padding: 4px 20px 24px 20px;
-    background-color: #F9F9F9;
-    font-size: 12px;
-    color: #888888;
-  }
+	.give-div {
+		width: 566px;
+		padding: 4px 20px 24px 20px;
+		background-color: #F9F9F9;
+		font-size: 12px;
+		color: #888888;
+	}
 
-  .active {
-    background-color: #428CF7 !important;
-  }
+	.active {
+		background-color: #428CF7 !important;
+	}
 
-  .imgs {
-    width: 30px;
-    height: 30px;
-    margin-right: 14px;
-  }
+	.imgs {
+		width: 30px;
+		height: 30px;
+		margin-right: 14px;
+	}
 
-  .give-div-item {
-    height: 54px;
-    border-bottom: 1px dotted rgba(219, 219, 219, 1);
-  }
+	.give-div-item {
+		height: 54px;
+		border-bottom: 1px dotted rgba(219, 219, 219, 1);
+	}
 
-  .free-all {
-    background-color: #F8F8F8;
-    padding: 20px 0px 0px 20px;
-    box-sizing: border-box;
-  }
+	.free-all {
+		background-color: #F8F8F8;
+		padding: 20px 0px 0px 20px;
+		box-sizing: border-box;
+	}
 
-  .free-content {
-    width: 100%;
-    height: 100%;
-    background-color: #FFFFFF;
-    padding: 30px;
-    box-sizing: border-box;
-  }
+	.free-content {
+		width: 100%;
+		height: 100%;
+		background-color: #FFFFFF;
+		padding: 30px;
+		box-sizing: border-box;
+	}
 
-  .free-top {
-    width: 734px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #F8F8F8;
-    padding: 0px 24px;
-    font-size: 14px;
-    color: #666666;
-    margin-bottom: 20px;
-  }
+	.free-top {
+		width: 734px;
+		height: 50px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		background-color: #F8F8F8;
+		padding: 0px 24px;
+		font-size: 14px;
+		color: #666666;
+		margin-bottom: 20px;
+	}
 
-  .inputs {
-    width: 120px;
-    height: 40px;
-    margin-left: 14px;
-    margin-right: 10px;
-  }
+	.inputs {
+		width: 120px;
+		height: 40px;
+		margin-left: 14px;
+		margin-right: 10px;
+	}
 
-  .flex {
-    display: flex;
-  }
+	.flex {
+		display: flex;
+	}
 
-  .flex-align-c {
-    align-items: center;
-  }
+	.flex-align-c {
+		align-items: center;
+	}
 
-  .c8 {
-    color: #888888;
-  }
+	.c8 {
+		color: #888888;
+	}
 
-  .c6 {
-    color: #666666;
-  }
+	.c6 {
+		color: #666666;
+	}
 
-  .select {
-    font-size: 14px;
-    color: #428CF7;
-    cursor: pointer;
-    margin-left: 22px;
-  }
+	.select {
+		font-size: 14px;
+		color: #428CF7;
+		cursor: pointer;
+		margin-left: 22px;
+	}
 
-  .myButton {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 40px;
-  }
+	.myButton {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		margin-top: 40px;
+	}
 
 </style>

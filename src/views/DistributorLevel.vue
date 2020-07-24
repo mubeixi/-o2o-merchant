@@ -1,419 +1,419 @@
 <template>
-  <div class="labelManagement">
-    <div class="labelMain">
-      <el-form size="small">
-        <el-form-item class="marginLR" label="级别名称：" style="margin-left: 57px">
-          <el-input style="width: 350px" v-model="Level_Name"></el-input>
-        </el-form-item>
+	<div class="labelManagement">
+		<div class="labelMain">
+			<el-form size="small">
+				<el-form-item class="marginLR" label="级别名称：" style="margin-left: 57px">
+					<el-input style="width: 350px" v-model="Level_Name"></el-input>
+				</el-form-item>
 
-        <el-form-item class="marginLR" label="级别描述：" style="margin-left: 57px">
-          <el-input
-            :autosize="{ minRows: 3, maxRows: 10}"
-            placeholder="请输入内容"
-            resize="none"
-            style="width: 480px"
-            type="textarea"
-            v-model="Level_Description">
-          </el-input>
-        </el-form-item>
+				<el-form-item class="marginLR" label="级别描述：" style="margin-left: 57px">
+					<el-input
+					:autosize="{ minRows: 3, maxRows: 10}"
+					placeholder="请输入内容"
+					resize="none"
+					style="width: 480px"
+					type="textarea"
+					v-model="Level_Description">
+					</el-input>
+				</el-form-item>
 
-        <el-form-item class="marginLR labelCenter" label="级别标识：" style="margin-left: 57px">
-          <div class="divFlex">
-            <upload-components
-              :limit="1"
-              :onSuccess="upThumbSuccessCall"
-              ref="thumb"
-              size="mini"
-              tip="上传标识图片"
-            />
-            <div class="labelDiv">
-              图片建议尺寸：30*30像素
-            </div>
-          </div>
-        </el-form-item>
+				<el-form-item class="marginLR labelCenter" label="级别标识：" style="margin-left: 57px">
+					<div class="divFlex">
+						<upload-components
+						:limit="1"
+						:onSuccess="upThumbSuccessCall"
+						ref="thumb"
+						size="mini"
+						tip="上传标识图片"
+						/>
+						<div class="labelDiv">
+							图片建议尺寸：30*30像素
+						</div>
+					</div>
+				</el-form-item>
 
-        <el-form-item class="marginLR labelCenter" label="级别背景：" style="margin-left: 57px">
-          <div class="divFlex">
-            <upload-components
-              :limit="1"
-              :onSuccess="upThumbSuccess"
-              ref="thumbs"
-              size="mini"
-              tip="上传级别背景图片"
-            />
-            <div class="labelDiv">
-              图片建议尺寸：665x325像素
-            </div>
-          </div>
-        </el-form-item>
+				<el-form-item class="marginLR labelCenter" label="级别背景：" style="margin-left: 57px">
+					<div class="divFlex">
+						<upload-components
+						:limit="1"
+						:onSuccess="upThumbSuccess"
+						ref="thumbs"
+						size="mini"
+						tip="上传级别背景图片"
+						/>
+						<div class="labelDiv">
+							图片建议尺寸：665x325像素
+						</div>
+					</div>
+				</el-form-item>
 
-        <el-form-item class="marginLRS divFlex" label="佣金人数限制：">
-          <div class="divFlex">
-            <div class="marginRight" v-if="level>=1">
-              一级
-              <el-input class="inputMargin" v-model="Level_PeopleLimit[0]"></el-input>
-              个
-            </div>
-            <div class="marginRight" v-if="level>=2">
-              二级
-              <el-input class="inputMargin" v-model="Level_PeopleLimit[1]"></el-input>
-              个
-            </div>
-            <div class="marginRight" v-if="level>=3">
-              三级
-              <el-input class="inputMargin" v-model="Level_PeopleLimit[2]"></el-input>
-              个
-            </div>
-          </div>
-          <div class="fontSize">
-            注：此级别的分销商获得佣金的人数限制。如：一级 3、二级 -1、三级 -1，说明此级别分销商只能获得3个下属的一级佣金，不能获得二级、三级佣金；
-            0表示不限制，-1 表示禁止获得此级别佣金。此设置对于发展下级会员人数不起作用
-          </div>
-        </el-form-item>
-
-
-        <el-form-item class="marginLRS divFlex" label="达标方式选择：">
-          <el-radio-group v-model="arrive_limit">
-            <el-radio label="3">满足任一条件</el-radio>
-            <el-radio label="4">满足全部条件</el-radio>
-            <el-radio label="1">不限制</el-radio>
-            <el-radio label="2">手动申请</el-radio>
-          </el-radio-group>
-          <block v-if="arrive_limit==3||arrive_limit==4">
-            <div class="myCenter">
-              <!--     消费额       -->
-              <el-checkbox-group :disabled="direct_buy.checked" v-model="pay_money.checked">
-                <el-checkbox label="lastTime" name="lastTime">消费额</el-checkbox>
-              </el-checkbox-group>
-              <div class="first">
-                <el-form-item class="divFlex" label="消费类型：">
-                  <el-radio-group :disabled="!pay_money.checked||direct_buy.checked"
-                                  v-model="pay_money.value.type">
-                    <el-radio label="1">商城总消费</el-radio>
-                    <el-radio label="2">一次性消费</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-                <el-form-item class="divFlex" label="消费金额：">
-                  <el-input :disabled="!pay_money.checked||direct_buy.checked"
-                            class="widthInput"
-                            v-model="pay_money.value.money"></el-input>
-                  元 <span class="spans">（注：用户需消费此额度才能成为该级别分销商）</span>
-                </el-form-item>
-                <el-form-item class="divFlex" label="生效状态：">
-                  <el-radio-group :disabled="!pay_money.checked||direct_buy.checked"
-                                  v-model="pay_money.value.arrive_status">
-                    <el-radio label="2">订单付款后计入</el-radio>
-                    <el-radio label="4">订单确认收货后计入</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-              </div>
-              <!--     购买礼包       -->
-              <el-checkbox-group :disabled="direct_buy.checked" v-model="buy_prod.checked">
-                <el-checkbox label="lastTime" name="lastTime">购买礼包</el-checkbox>
-                <el-radio-group :disabled="!buy_prod.checked||direct_buy.checked" class="productRadio"
-                                v-model="buy_prod.value.type">
-                  <el-radio label="1">任意商品</el-radio>
-                  <el-radio label="2">特定商品</el-radio>
-                </el-radio-group>
-                <span @click="showSetting" class="selects"
-                      v-if="buy_prod.value.type=='2'&&buy_prod.checked">选择商品</span>
-              </el-checkbox-group>
-              <div class="first second" v-if="buy_prod.checked">
-                <block v-if="buy_prod.value.type=='2'">
-                  <div class="listLine" v-for="(item,index) of productData">
-                    <img :src="item.img_url||item.ImgPath" class="lineImg">
-                    <div class="lineDiv">{{item.Products_Name}}</div>
-                  </div>
-                </block>
-                <el-form-item class="divFlex" label="生效状态："
-                              style="margin-top: 10px;margin-bottom: 0px;">
-                  <el-radio-group :disabled="!buy_prod.checked||direct_buy.checked"
-                                  v-model="buy_prod.value.arrive_status">
-                    <el-radio label="2">订单付款后计入</el-radio>
-                    <el-radio label="4">订单确认收货后计入</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-              </div>
+				<el-form-item class="marginLRS divFlex" label="佣金人数限制：">
+					<div class="divFlex">
+						<div class="marginRight" v-if="level>=1">
+							一级
+							<el-input class="inputMargin" v-model="Level_PeopleLimit[0]"></el-input>
+							个
+						</div>
+						<div class="marginRight" v-if="level>=2">
+							二级
+							<el-input class="inputMargin" v-model="Level_PeopleLimit[1]"></el-input>
+							个
+						</div>
+						<div class="marginRight" v-if="level>=3">
+							三级
+							<el-input class="inputMargin" v-model="Level_PeopleLimit[2]"></el-input>
+							个
+						</div>
+					</div>
+					<div class="fontSize">
+						注：此级别的分销商获得佣金的人数限制。如：一级 3、二级 -1、三级 -1，说明此级别分销商只能获得3个下属的一级佣金，不能获得二级、三级佣金；
+						0表示不限制，-1 表示禁止获得此级别佣金。此设置对于发展下级会员人数不起作用
+					</div>
+				</el-form-item>
 
 
-              <!--    购买商品次数      -->
-              <el-checkbox-group :disabled="direct_buy.checked" class="marginBo"
-                                 v-model="buy_times.checked">
-                <el-checkbox label="lastTime" name="lastTime">购买商品次数</el-checkbox>
-                <el-input :disabled="!buy_times.checked" class="inputMy"
-                          v-model="buy_times.value"></el-input>
-                <span class="oneFont">次</span>
-              </el-checkbox-group>
-              <!--    团队销售额      -->
-              <el-checkbox-group :disabled="direct_buy.checked" class="marginBo"
-                                 v-model="team_sales.checked">
-                <el-checkbox label="lastTime" name="lastTime">团队销售额</el-checkbox>
-                <el-input :disabled="!team_sales.checked" class="inputMy" style="margin-left: 38px"
-                          v-model="team_sales.value"></el-input>
-                <span class="oneFont">元</span>
-              </el-checkbox-group>
-              <!--    直接购买身份      -->
-              <el-checkbox-group class="marginBo inputMyDa" v-model="direct_buy.checked">
-                <el-checkbox label="lastTime" name="lastTime">直接购买身份</el-checkbox>
-                <el-select :disabled="!direct_buy.checked" lass="inputMy"
-                           style="margin-left: 24px;width: 140px" v-model="direct_buy.value.type">
-                  <el-option label="直接购买" value="1"></el-option>
-                  <el-option label="送产品" value="2"></el-option>
-                  <el-option label="存入余额" value="3"></el-option>
-                </el-select>
-                <block>
-                  <el-input :disabled="!direct_buy.checked" class="inputMy inputT"
-                            placeholder="级别金额" v-model="direct_buy.value.money"></el-input>
-                  <span class="oneFont">元</span>
-                </block>
-                <block v-if="direct_buy.value.type==3">
-                  <el-input :disabled="!direct_buy.checked" class="inputMy inputT"
-                            placeholder="赠送金额" v-model="direct_buy.value.present"></el-input>
-                  <span class="oneFont">元</span>
-                </block>
-                <block v-if="direct_buy.value.type==2">
-                  <span @click="selectGi" class="selects">选择赠品</span>
-                  <el-tooltip :content="text" effect="light" placement="top">
-                    <div
-                      style="display:inline-block;height: 20px;line-height: 20px;font-size: 14px">
-                      <div class="lst" style="display: block" v-if="text">{{text}}</div>
-                    </div>
-                  </el-tooltip>
-                </block>
-              </el-checkbox-group>
-              <!--    直邀等级数量      -->
-              <el-checkbox-group :disabled="direct_buy.checked" class="marginBo"
-                                 style="display: flex" v-model="direct_sons.checked">
-                <el-checkbox label="lastTime" name="lastTime">直邀等级数量</el-checkbox>
-                <div>
-                  <div style="margin-bottom: 10px" v-for="(item,index) of direct_sons.value">
-                    <el-input :disabled="!direct_sons.checked" class="inputMy inputT"
-                              v-model="item.count"></el-input>
-                    <span class="oneFont">人</span>
-                    <el-select :disabled="!direct_sons.checked" lass="inputMy"
-                               placeholder="请选择分销等级"
-                               style="margin-left: 24px;width: 140px" v-model="item.level_id">
-                      <block :key="md" v-for="(mb,md) of disList">
-                        <el-option :label="mb.Level_Name" :value="mb.Level_ID"></el-option>
-                      </block>
-                    </el-select>
-                    <span @click="addDirect" class="addSpan" v-if="index==0">添加</span>
-                    <span @click="delDirect(index)" class="addSpan" v-else>删除</span>
-                  </div>
-                </div>
-              </el-checkbox-group>
-              <!--    团队等级数量      -->
-              <el-checkbox-group :disabled="direct_buy.checked" class="marginBo" style="display: flex"
-                                 v-model="team_sons.checked">
-                <el-checkbox label="lastTime" name="lastTime">团队等级数量</el-checkbox>
-                <div>
-                  <div style="margin-bottom: 10px" v-for="(it,ind) of team_sons.value">
-                    <el-input :disabled="!team_sons.checked" class="inputMy inputT"
-                              v-model="it.count"></el-input>
-                    <span class="oneFont">人</span>
-                    <el-select :disabled="!team_sons.checked" lass="inputMy" placeholder="请选择等级"
-                               style="margin-left: 24px;width: 140px" v-model="it.level_id">
-                      <block :key="md" v-for="(mb,md) of disList">
-                        <el-option :label="mb.Level_Name" :value="mb.Level_ID"></el-option>
-                      </block>
-                    </el-select>
-                    <span @click="addTeam" class="addSpan" v-if="ind==0">添加</span>
-                    <span @click="delTeam(ind)" class="addSpan" v-else>删除</span>
-                  </div>
-                </div>
-              </el-checkbox-group>
-            </div>
-          </block>
+				<el-form-item class="marginLRS divFlex" label="达标方式选择：">
+					<el-radio-group v-model="arrive_limit">
+						<el-radio label="3">满足任一条件</el-radio>
+						<el-radio label="4">满足全部条件</el-radio>
+						<el-radio label="1">不限制</el-radio>
+						<el-radio label="2">手动申请</el-radio>
+					</el-radio-group>
+					<block v-if="arrive_limit==3||arrive_limit==4">
+						<div class="myCenter">
+							<!--     消费额       -->
+							<el-checkbox-group :disabled="direct_buy.checked" v-model="pay_money.checked">
+								<el-checkbox label="lastTime" name="lastTime">消费额</el-checkbox>
+							</el-checkbox-group>
+							<div class="first">
+								<el-form-item class="divFlex" label="消费类型：">
+									<el-radio-group :disabled="!pay_money.checked||direct_buy.checked"
+									                v-model="pay_money.value.type">
+										<el-radio label="1">商城总消费</el-radio>
+										<el-radio label="2">一次性消费</el-radio>
+									</el-radio-group>
+								</el-form-item>
+								<el-form-item class="divFlex" label="消费金额：">
+									<el-input :disabled="!pay_money.checked||direct_buy.checked"
+									          class="widthInput"
+									          v-model="pay_money.value.money"></el-input>
+									元 <span class="spans">（注：用户需消费此额度才能成为该级别分销商）</span>
+								</el-form-item>
+								<el-form-item class="divFlex" label="生效状态：">
+									<el-radio-group :disabled="!pay_money.checked||direct_buy.checked"
+									                v-model="pay_money.value.arrive_status">
+										<el-radio label="2">订单付款后计入</el-radio>
+										<el-radio label="4">订单确认收货后计入</el-radio>
+									</el-radio-group>
+								</el-form-item>
+							</div>
+							<!--     购买礼包       -->
+							<el-checkbox-group :disabled="direct_buy.checked" v-model="buy_prod.checked">
+								<el-checkbox label="lastTime" name="lastTime">购买礼包</el-checkbox>
+								<el-radio-group :disabled="!buy_prod.checked||direct_buy.checked" class="productRadio"
+								                v-model="buy_prod.value.type">
+									<el-radio label="1">任意商品</el-radio>
+									<el-radio label="2">特定商品</el-radio>
+								</el-radio-group>
+								<span @click="showSetting" class="selects"
+								      v-if="buy_prod.value.type=='2'&&buy_prod.checked">选择商品</span>
+							</el-checkbox-group>
+							<div class="first second" v-if="buy_prod.checked">
+								<block v-if="buy_prod.value.type=='2'">
+									<div class="listLine" v-for="(item,index) of productData">
+										<img :src="item.img_url||item.ImgPath" class="lineImg">
+										<div class="lineDiv">{{item.Products_Name}}</div>
+									</div>
+								</block>
+								<el-form-item class="divFlex" label="生效状态："
+								              style="margin-top: 10px;margin-bottom: 0px;">
+									<el-radio-group :disabled="!buy_prod.checked||direct_buy.checked"
+									                v-model="buy_prod.value.arrive_status">
+										<el-radio label="2">订单付款后计入</el-radio>
+										<el-radio label="4">订单确认收货后计入</el-radio>
+									</el-radio-group>
+								</el-form-item>
+							</div>
 
-          <block v-if="arrive_limit==2">
-            <div class="amu">
-              <div class="th">
-                <div class="td">字段类型</div>
-                <div class="td">字段名称</div>
-                <div class="td">初始内容</div>
-                <div class="td" style="width: 125px">操作</div>
-              </div>
-              <div class="tr" v-for="(item,index) of manual_rules">
-                <div class="td">
-                  <el-select class="widthmbx" v-model="item.type">
-                    <el-option label="文本框" value="input"></el-option>
-                    <el-option label="选择框" value="select"></el-option>
-                    <el-option label="地区选择" value="address"></el-option>
-                  </el-select>
-                </div>
-                <div class="td">
-                  <el-input class="widthmbx" maxlength="10" v-model="item.name"></el-input>
-                </div>
-                <div class="td">
-                  <el-input :disabled="item.type=='address'" class="widthmbx" maxlength="10"
-                            placeholder="多个值以|分隔" v-model="item.place"></el-input>
-                </div>
-                <div class="td" style="width: 125px">
-                  <img @click="delManual(index)" src="@/assets/img/mydel.png"
-                       style="cursor:pointer;">
-                </div>
-              </div>
-              <el-button @click="addManual" style="margin-top: 20px" type="primary">增加</el-button>
-            </div>
-          </block>
-        </el-form-item>
 
-        <el-form-item class="marginLRS divFlex" label="佣金发放限制："
-                      v-if="direct_buy.checked&&(arrive_limit==3||arrive_limit==4)">
-          <div class="divFlex">
-            <div class="marginRight" v-if="level>=1">
-              一级
-              <el-input class="inputMargin" v-model="commi_rules[0]"></el-input>
-              元
-            </div>
-            <div class="marginRight" v-if="level>=2">
-              二级
-              <el-input class="inputMargin" v-model="commi_rules[1]"></el-input>
-              元
-            </div>
-            <div class="marginRight" v-if="level>=3">
-              三级
-              <el-input class="inputMargin" v-model="commi_rules[2]"></el-input>
-              元
-            </div>
-          </div>
-          <div class="fontSize">
-            注：会员购买此级别时，其上级获得的佣金
-          </div>
-        </el-form-item>
+							<!--    购买商品次数      -->
+							<el-checkbox-group :disabled="direct_buy.checked" class="marginBo"
+							                   v-model="buy_times.checked">
+								<el-checkbox label="lastTime" name="lastTime">购买商品次数</el-checkbox>
+								<el-input :disabled="!buy_times.checked" class="inputMy"
+								          v-model="buy_times.value"></el-input>
+								<span class="oneFont">次</span>
+							</el-checkbox-group>
+							<!--    团队销售额      -->
+							<el-checkbox-group :disabled="direct_buy.checked" class="marginBo"
+							                   v-model="team_sales.checked">
+								<el-checkbox label="lastTime" name="lastTime">团队销售额</el-checkbox>
+								<el-input :disabled="!team_sales.checked" class="inputMy" style="margin-left: 38px"
+								          v-model="team_sales.value"></el-input>
+								<span class="oneFont">元</span>
+							</el-checkbox-group>
+							<!--    直接购买身份      -->
+							<el-checkbox-group class="marginBo inputMyDa" v-model="direct_buy.checked">
+								<el-checkbox label="lastTime" name="lastTime">直接购买身份</el-checkbox>
+								<el-select :disabled="!direct_buy.checked" lass="inputMy"
+								           style="margin-left: 24px;width: 140px" v-model="direct_buy.value.type">
+									<el-option label="直接购买" value="1"></el-option>
+									<el-option label="送产品" value="2"></el-option>
+									<el-option label="存入余额" value="3"></el-option>
+								</el-select>
+								<block>
+									<el-input :disabled="!direct_buy.checked" class="inputMy inputT"
+									          placeholder="级别金额" v-model="direct_buy.value.money"></el-input>
+									<span class="oneFont">元</span>
+								</block>
+								<block v-if="direct_buy.value.type==3">
+									<el-input :disabled="!direct_buy.checked" class="inputMy inputT"
+									          placeholder="赠送金额" v-model="direct_buy.value.present"></el-input>
+									<span class="oneFont">元</span>
+								</block>
+								<block v-if="direct_buy.value.type==2">
+									<span @click="selectGi" class="selects">选择赠品</span>
+									<el-tooltip :content="text" effect="light" placement="top">
+										<div
+										style="display:inline-block;height: 20px;line-height: 20px;font-size: 14px">
+											<div class="lst" style="display: block" v-if="text">{{text}}</div>
+										</div>
+									</el-tooltip>
+								</block>
+							</el-checkbox-group>
+							<!--    直邀等级数量      -->
+							<el-checkbox-group :disabled="direct_buy.checked" class="marginBo"
+							                   style="display: flex" v-model="direct_sons.checked">
+								<el-checkbox label="lastTime" name="lastTime">直邀等级数量</el-checkbox>
+								<div>
+									<div style="margin-bottom: 10px" v-for="(item,index) of direct_sons.value">
+										<el-input :disabled="!direct_sons.checked" class="inputMy inputT"
+										          v-model="item.count"></el-input>
+										<span class="oneFont">人</span>
+										<el-select :disabled="!direct_sons.checked" lass="inputMy"
+										           placeholder="请选择分销等级"
+										           style="margin-left: 24px;width: 140px" v-model="item.level_id">
+											<block :key="md" v-for="(mb,md) of disList">
+												<el-option :label="mb.Level_Name" :value="mb.Level_ID"></el-option>
+											</block>
+										</el-select>
+										<span @click="addDirect" class="addSpan" v-if="index==0">添加</span>
+										<span @click="delDirect(index)" class="addSpan" v-else>删除</span>
+									</div>
+								</div>
+							</el-checkbox-group>
+							<!--    团队等级数量      -->
+							<el-checkbox-group :disabled="direct_buy.checked" class="marginBo" style="display: flex"
+							                   v-model="team_sons.checked">
+								<el-checkbox label="lastTime" name="lastTime">团队等级数量</el-checkbox>
+								<div>
+									<div style="margin-bottom: 10px" v-for="(it,ind) of team_sons.value">
+										<el-input :disabled="!team_sons.checked" class="inputMy inputT"
+										          v-model="it.count"></el-input>
+										<span class="oneFont">人</span>
+										<el-select :disabled="!team_sons.checked" lass="inputMy" placeholder="请选择等级"
+										           style="margin-left: 24px;width: 140px" v-model="it.level_id">
+											<block :key="md" v-for="(mb,md) of disList">
+												<el-option :label="mb.Level_Name" :value="mb.Level_ID"></el-option>
+											</block>
+										</el-select>
+										<span @click="addTeam" class="addSpan" v-if="ind==0">添加</span>
+										<span @click="delTeam(ind)" class="addSpan" v-else>删除</span>
+									</div>
+								</div>
+							</el-checkbox-group>
+						</div>
+					</block>
 
-        <el-form-item class="submit">
-          <el-button @click="backLev" class="close">返回</el-button>
-          <el-button :loading="loadingSubmit" @click="saveData" class="submits" type="primary">确定
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+					<block v-if="arrive_limit==2">
+						<div class="amu">
+							<div class="th">
+								<div class="td">字段类型</div>
+								<div class="td">字段名称</div>
+								<div class="td">初始内容</div>
+								<div class="td" style="width: 125px">操作</div>
+							</div>
+							<div class="tr" v-for="(item,index) of manual_rules">
+								<div class="td">
+									<el-select class="widthmbx" v-model="item.type">
+										<el-option label="文本框" value="input"></el-option>
+										<el-option label="选择框" value="select"></el-option>
+										<el-option label="地区选择" value="address"></el-option>
+									</el-select>
+								</div>
+								<div class="td">
+									<el-input class="widthmbx" maxlength="10" v-model="item.name"></el-input>
+								</div>
+								<div class="td">
+									<el-input :disabled="item.type=='address'" class="widthmbx" maxlength="10"
+									          placeholder="多个值以|分隔" v-model="item.place"></el-input>
+								</div>
+								<div class="td" style="width: 125px">
+									<img @click="delManual(index)" src="@/assets/img/mydel.png"
+									     style="cursor:pointer;">
+								</div>
+							</div>
+							<el-button @click="addManual" style="margin-top: 20px" type="primary">增加</el-button>
+						</div>
+					</block>
+				</el-form-item>
 
-    <el-dialog :visible.sync="settingShow" class="myProduct" style="height: 900px;overflow: auto" title="选择商品"
-               width="80%">
-      <fun-table
-        :_pageSize="dataTableOpt.pageSize"
-        :_totalCount="dataTableOpt.totalCount"
-        :act="dataTableOpt.act"
-        :columns="dataTableOpt.columns"
-        :dataList="dataTableOpt.dataList"
-        :formSize="'small'"
-        :has="selectValue"
-        :isRow="false"
-        :is_paginate="dataTableOpt.is_paginate"
-        :showSave=true
-        @closeDialog="closeDialog"
-        @currentChange="currentChanges"
-        @handleSizeChange="handleSizeChange"
-        @reset="reset"
-        @selectVal="selectVal"
-        @submit="submit"
-        ref="funTableComp"
-        vkey="Products_ID"
-      >
-        <template slot="Products_Name-column" slot-scope="props">
-          <div style="display: flex;align-items: center;margin-left: 10px">
-            <img :src="props.row.ImgPath" height="100px" width="90px">
-            <span style="margin-left: 10px">{{props.row.Products_Name}}</span>
-          </div>
-        </template>
-        <template slot="Products_PriceX-column" slot-scope="props">
-          <span>¥ {{props.row.Products_PriceX}}</span>
-        </template>
-        <template slot="Products_Sales-column" slot-scope="props">
-          <span>{{props.row.Products_Sales}}/{{props.row.Products_Count}}</span>
-        </template>
-      </fun-table>
-    </el-dialog>
+				<el-form-item class="marginLRS divFlex" label="佣金发放限制："
+				              v-if="direct_buy.checked&&(arrive_limit==3||arrive_limit==4)">
+					<div class="divFlex">
+						<div class="marginRight" v-if="level>=1">
+							一级
+							<el-input class="inputMargin" v-model="commi_rules[0]"></el-input>
+							元
+						</div>
+						<div class="marginRight" v-if="level>=2">
+							二级
+							<el-input class="inputMargin" v-model="commi_rules[1]"></el-input>
+							元
+						</div>
+						<div class="marginRight" v-if="level>=3">
+							三级
+							<el-input class="inputMargin" v-model="commi_rules[2]"></el-input>
+							元
+						</div>
+					</div>
+					<div class="fontSize">
+						注：会员购买此级别时，其上级获得的佣金
+					</div>
+				</el-form-item>
 
-    <el-dialog
-      :visible.sync="isShow"
-      @close="cardCancel"
+				<el-form-item class="submit">
+					<el-button @click="backLev" class="close">返回</el-button>
+					<el-button :loading="loadingSubmit" @click="saveData" class="submits" type="primary">确定
+					</el-button>
+				</el-form-item>
+			</el-form>
+		</div>
 
-      append-to-body
-      class="setting"
-      title="选择赠品"
-      width="60%"
-    >
-      <div class="cardTitle" style="margin-bottom: 10px">
-        <div class="cardTitle" style="margin-right: 10px">
-          产品名称：
-          <el-input class="sortInput" style="width: 100px" v-model="nameMbx"></el-input>
-        </div>
-        <el-button @click="searchList" type="primary">搜索</el-button>
-      </div>
-      <el-table
-        :data="GivingGifts"
-        @current-change="handleSelectionChange"
-        highlight-current-row
-        ref="multipleTable"
-        style="width: 100%"
-        tooltip-effect="dark"
-      >
-        <el-table-column
-          label="#"
-          type="index"
-          width="55">
-        </el-table-column>
-        <el-table-column
-          label="赠品名称"
-          prop="gift_name"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          label="产品名称"
-          prop="Products_Name"
-          width="300px"
-        >
-          <template slot-scope="scope">
-            <div class="fixDisplay">
-              <div style="width: 100px;height: 100px">
-                <img :src="GivingGifts[scope.$index].img_url" style="width: 100%;height: 100%">
-              </div>
-              <div style="width: 200px;margin-left: 10px;">
-                {{GivingGifts[scope.$index].Products_Name}}
-              </div>
-            </div>
-          </template>
-        </el-table-column>
-        <!--        <el-table-column-->
-        <!--          prop="valid_days"-->
-        <!--          label="领取有效天数"-->
-        <!--          show-overflow-tooltip>-->
-        <!--        </el-table-column>-->
-        <!--        <el-table-column-->
-        <!--          prop="limit_times"-->
-        <!--          label="限制领取次数"-->
-        <!--          show-overflow-tooltip>-->
-        <!--        </el-table-column>-->
-        <el-table-column
-          label="剩余库存"
-          prop="Products_Count"
-          show-overflow-tooltip>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        :page-size="pageSize"
-        :total="totalCount"
-        @current-change="currentChange"
-        background
-        layout="prev, pager, next"
-        style="margin-top: 20px;text-align: center;">
-      </el-pagination>
-    </el-dialog>
+		<el-dialog :visible.sync="settingShow" class="myProduct" style="height: 900px;overflow: auto" title="选择商品"
+		           width="80%">
+			<fun-table
+			:_pageSize="dataTableOpt.pageSize"
+			:_totalCount="dataTableOpt.totalCount"
+			:act="dataTableOpt.act"
+			:columns="dataTableOpt.columns"
+			:dataList="dataTableOpt.dataList"
+			:formSize="'small'"
+			:has="selectValue"
+			:isRow="false"
+			:is_paginate="dataTableOpt.is_paginate"
+			:showSave=true
+			@closeDialog="closeDialog"
+			@currentChange="currentChanges"
+			@handleSizeChange="handleSizeChange"
+			@reset="reset"
+			@selectVal="selectVal"
+			@submit="submit"
+			ref="funTableComp"
+			vkey="Products_ID"
+			>
+				<template slot="Products_Name-column" slot-scope="props">
+					<div style="display: flex;align-items: center;margin-left: 10px">
+						<img :src="props.row.ImgPath" height="100px" width="90px">
+						<span style="margin-left: 10px">{{props.row.Products_Name}}</span>
+					</div>
+				</template>
+				<template slot="Products_PriceX-column" slot-scope="props">
+					<span>¥ {{props.row.Products_PriceX}}</span>
+				</template>
+				<template slot="Products_Sales-column" slot-scope="props">
+					<span>{{props.row.Products_Sales}}/{{props.row.Products_Count}}</span>
+				</template>
+			</fun-table>
+		</el-dialog>
 
-  </div>
+		<el-dialog
+		:visible.sync="isShow"
+		@close="cardCancel"
+
+		append-to-body
+		class="setting"
+		title="选择赠品"
+		width="60%"
+		>
+			<div class="cardTitle" style="margin-bottom: 10px">
+				<div class="cardTitle" style="margin-right: 10px">
+					产品名称：
+					<el-input class="sortInput" style="width: 100px" v-model="nameMbx"></el-input>
+				</div>
+				<el-button @click="searchList" type="primary">搜索</el-button>
+			</div>
+			<el-table
+			:data="GivingGifts"
+			@current-change="handleSelectionChange"
+			highlight-current-row
+			ref="multipleTable"
+			style="width: 100%"
+			tooltip-effect="dark"
+			>
+				<el-table-column
+				label="#"
+				type="index"
+				width="55">
+				</el-table-column>
+				<el-table-column
+				label="赠品名称"
+				prop="gift_name"
+				width="120">
+				</el-table-column>
+				<el-table-column
+				label="产品名称"
+				prop="Products_Name"
+				width="300px"
+				>
+					<template slot-scope="scope">
+						<div class="fixDisplay">
+							<div style="width: 100px;height: 100px">
+								<img :src="GivingGifts[scope.$index].img_url" style="width: 100%;height: 100%">
+							</div>
+							<div style="width: 200px;margin-left: 10px;">
+								{{GivingGifts[scope.$index].Products_Name}}
+							</div>
+						</div>
+					</template>
+				</el-table-column>
+				<!--        <el-table-column-->
+				<!--          prop="valid_days"-->
+				<!--          label="领取有效天数"-->
+				<!--          show-overflow-tooltip>-->
+				<!--        </el-table-column>-->
+				<!--        <el-table-column-->
+				<!--          prop="limit_times"-->
+				<!--          label="限制领取次数"-->
+				<!--          show-overflow-tooltip>-->
+				<!--        </el-table-column>-->
+				<el-table-column
+				label="剩余库存"
+				prop="Products_Count"
+				show-overflow-tooltip>
+				</el-table-column>
+			</el-table>
+			<el-pagination
+			:page-size="pageSize"
+			:total="totalCount"
+			@current-change="currentChange"
+			background
+			layout="prev, pager, next"
+			style="margin-top: 20px;text-align: center;">
+			</el-pagination>
+		</el-dialog>
+
+	</div>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import UploadComponents from "@/components/comm/UploadComponents.vue";
-import {createTmplArray, findArrayIdx, objTranslate, plainArray} from '@/common/utils';
+import {Component, Vue} from 'vue-property-decorator'
+import UploadComponents from "@/components/comm/UploadComponents.vue"
+import {createTmplArray, findArrayIdx, objTranslate, plainArray} from '@/common/utils'
 import {
   getGivingGifts,
-  getProductCategory, getProductList,
-  getProducts,
+  getProductCategory,
+  getProductList,
   systemLevelAdd,
   systemLevelDetail,
   systemLevelEdit,
@@ -426,7 +426,7 @@ const getParentsCount = (arr, key, pkey, val, tempArr) => {
     let item = arr[i]
     if (item[key] == val[pkey]) {
       idx = i
-      break;
+      break
     }
   }
   if (idx !== false) {
@@ -440,7 +440,7 @@ const restArr = (arr, key) => {
   plainArray(arr, key, plainArr)
   for (var i in plainArr) {
     let item = plainArr[i]
-    item.parent_count = 0;
+    item.parent_count = 0
     let tempArr = []
     if (item['Category_ParentID']) {
       getParentsCount(plainArr, 'Category_ID', 'Category_ParentID', item, tempArr)
@@ -460,7 +460,7 @@ const restArr = (arr, key) => {
 export default class DistributorLevel extends Vue {
   //赠品操作
   isShow = false
-  nameMbx = '';
+  nameMbx = ''
   GivingGifts = []
   text = ''
   send_id = ''
@@ -618,7 +618,7 @@ export default class DistributorLevel extends Vue {
   LevelID = ''
 
   currentChange(val) {
-    this.page = val;
+    this.page = val
     this.searchList()
   }
 
@@ -628,8 +628,8 @@ export default class DistributorLevel extends Vue {
   }
 
   selectGi() {
-    this.searchList();
-    this.isShow = true;
+    this.searchList()
+    this.isShow = true
   }
 
   searchList() {
@@ -640,7 +640,7 @@ export default class DistributorLevel extends Vue {
     }
     getGivingGifts(data).then(res => {
       if (res.errorCode == 0) {
-        this.GivingGifts = res.data;
+        this.GivingGifts = res.data
       }
     })
   }
@@ -652,7 +652,7 @@ export default class DistributorLevel extends Vue {
       this.text = val.Products_Name
       this.send_id = val.id
       this.direct_buy.value.gift_id = val.id
-      this.$refs.multipleTable.setCurrentRow();
+      this.$refs.multipleTable.setCurrentRow()
     }
   }
 
@@ -758,7 +758,7 @@ export default class DistributorLevel extends Vue {
   }
 
   delDirect(index) {
-    this.direct_sons.value.splice(index, 1);
+    this.direct_sons.value.splice(index, 1)
   }
 
   //团队等级数量
@@ -768,7 +768,7 @@ export default class DistributorLevel extends Vue {
   }
 
   delTeam(index) {
-    this.team_sons.value.splice(index, 1);
+    this.team_sons.value.splice(index, 1)
   }
 
   upThumbSuccessCall(url_list) {
@@ -796,9 +796,9 @@ export default class DistributorLevel extends Vue {
       this.$notify.error({
         title: '错误',
         message: '请填写分销商名称'
-      });
+      })
       this.loadingSubmit = false
-      return;
+      return
     }
     let info = {
       Level_Name: this.Level_Name,
@@ -1007,242 +1007,242 @@ export default class DistributorLevel extends Vue {
 </script>
 
 <style lang="less" scoped>
-  .labelMain {
-    padding: 20px 0px;
+	.labelMain {
+		padding: 20px 0px;
 
-    .marginLR {
-      margin-left: 30px;
-    }
+		.marginLR {
+			margin-left: 30px;
+		}
 
-    .marginLRS {
-      margin-left: 30px;
-    }
-  }
+		.marginLRS {
+			margin-left: 30px;
+		}
+	}
 
-  .inputMyDa /deep/ .el-input__inner {
-    padding-left: 10px;
-  }
+	.inputMyDa /deep/ .el-input__inner {
+		padding-left: 10px;
+	}
 
-  .divFlex {
-    display: flex;
-  }
+	.divFlex {
+		display: flex;
+	}
 
-  .labelCenter {
-    display: flex;
+	.labelCenter {
+		display: flex;
 
-    .labelDiv {
-      font-size: 7px;
-      color: #BCBCBC;
-      margin-top: 25px;
-      margin-left: 12px;
-    }
-  }
+		.labelDiv {
+			font-size: 7px;
+			color: #BCBCBC;
+			margin-top: 25px;
+			margin-left: 12px;
+		}
+	}
 
-  .labelCenter /deep/ .el-form-item__label {
-    margin-top: 25px;
-  }
+	.labelCenter /deep/ .el-form-item__label {
+		margin-top: 25px;
+	}
 
-  .marginRight {
-    margin-right: 20px;
-    font-size: 8px;
-    color: #777777;
-  }
+	.marginRight {
+		margin-right: 20px;
+		font-size: 8px;
+		color: #777777;
+	}
 
-  .inputMargin {
-    margin-left: 10px;
-    margin-right: 6px;
-    width: 85px;
-  }
+	.inputMargin {
+		margin-left: 10px;
+		margin-right: 6px;
+		width: 85px;
+	}
 
-  .widthInput {
-    width: 85px;
-  }
+	.widthInput {
+		width: 85px;
+	}
 
-  .fontSize {
-    color: #BCBCBC;
-    font-size: 12px;
-    width: 630px;
-    margin-top: 10px;
-  }
+	.fontSize {
+		color: #BCBCBC;
+		font-size: 12px;
+		width: 630px;
+		margin-top: 10px;
+	}
 
-  .myCenter {
-    margin-top: 10px;
-    background-color: #F8F8F8;
-    padding: 11px 152px 21px 17px;
+	.myCenter {
+		margin-top: 10px;
+		background-color: #F8F8F8;
+		padding: 11px 152px 21px 17px;
 
-    .first {
-      margin-left: 18px;
-      margin-bottom: 15px;
-      background-color: #ffffff;
-      padding: 10px 50px 20px 16px;
+		.first {
+			margin-left: 18px;
+			margin-bottom: 15px;
+			background-color: #ffffff;
+			padding: 10px 50px 20px 16px;
 
-      .spans {
-        font-size: 12px;
-        color: #BCBCBC;
-        margin-left: 17px;
-      }
-    }
+			.spans {
+				font-size: 12px;
+				color: #BCBCBC;
+				margin-left: 17px;
+			}
+		}
 
-    .productRadio {
-      display: inline-block;
-      height: 32px;
-      line-height: 32px;
-      margin-left: 20px;
-    }
-  }
+		.productRadio {
+			display: inline-block;
+			height: 32px;
+			line-height: 32px;
+			margin-left: 20px;
+		}
+	}
 
-  .selects {
-    color: #428CF7;
-    font-size: 12px;
-    margin-left: 10px;
-    cursor: pointer;
-    display: inline-block;
-  }
+	.selects {
+		color: #428CF7;
+		font-size: 12px;
+		margin-left: 10px;
+		cursor: pointer;
+		display: inline-block;
+	}
 
-  .second {
-    padding: 5px 22px 12px 16px !important;
+	.second {
+		padding: 5px 22px 12px 16px !important;
 
-    .listLine {
-      height: 46px;
-      display: flex;
-      align-items: center;
-      border-bottom: 1px dotted #DBDBDB;
+		.listLine {
+			height: 46px;
+			display: flex;
+			align-items: center;
+			border-bottom: 1px dotted #DBDBDB;
 
-      .lineImg {
-        width: 30px;
-        height: 30px;
-      }
+			.lineImg {
+				width: 30px;
+				height: 30px;
+			}
 
-      .lineDiv {
-        color: #999999;
-        font-size: 12px;
-        margin-left: 14px;
-      }
-    }
-  }
+			.lineDiv {
+				color: #999999;
+				font-size: 12px;
+				margin-left: 14px;
+			}
+		}
+	}
 
-  .oneFont {
-    font-size: 14px;
-    margin-left: 8px;
-    color: #777777
-  }
+	.oneFont {
+		font-size: 14px;
+		margin-left: 8px;
+		color: #777777
+	}
 
-  .inputMy {
-    width: 75px;
-    margin-left: 24px
-  }
+	.inputMy {
+		width: 75px;
+		margin-left: 24px
+	}
 
-  .inputT {
-    margin-left: 20px;
+	.inputT {
+		margin-left: 20px;
 
-    & /deep/ .el-input__inner {
-      padding-right: 0px;
-    }
-  }
+		& /deep/ .el-input__inner {
+			padding-right: 0px;
+		}
+	}
 
-  .marginBo {
-    margin-bottom: 20px;
-  }
+	.marginBo {
+		margin-bottom: 20px;
+	}
 
-  .addSpan {
-    color: #428CF7;
-    font-size: 12px;
-    margin-left: 12px;
-    cursor: pointer;
-  }
+	.addSpan {
+		color: #428CF7;
+		font-size: 12px;
+		margin-left: 12px;
+		cursor: pointer;
+	}
 
-  .submit {
-    margin-left: 380px;
-    margin-top: 84px;
+	.submit {
+		margin-left: 380px;
+		margin-top: 84px;
 
-    .close {
-      margin-right: 20px;
-    }
-  }
+		.close {
+			margin-right: 20px;
+		}
+	}
 
-  .amu {
-    background-color: #F8F8F8;
-    width: 925px;
-    padding: 24px 95px 38px 42px;
-    box-sizing: border-box;
-    border: 1px solid #EEEEEE;
-    margin-top: 10px;
+	.amu {
+		background-color: #F8F8F8;
+		width: 925px;
+		padding: 24px 95px 38px 42px;
+		box-sizing: border-box;
+		border: 1px solid #EEEEEE;
+		margin-top: 10px;
 
-    .th {
-      background-color: #F2F7FF;
-      display: flex;
-      align-items: center;
-      height: 48px;
+		.th {
+			background-color: #F2F7FF;
+			display: flex;
+			align-items: center;
+			height: 48px;
 
-      .td {
-        text-align: center;
-        width: 220px;
-        border-right: 1px solid #EEEEEE;
+			.td {
+				text-align: center;
+				width: 220px;
+				border-right: 1px solid #EEEEEE;
 
-        &:last-child {
-          border: 0px;
-        }
-      }
-    }
+				&:last-child {
+					border: 0px;
+				}
+			}
+		}
 
-    .widthmbx {
-      width: 120px;
-    }
+		.widthmbx {
+			width: 120px;
+		}
 
-    .tr {
-      height: 60px;
-      display: flex;
-      align-items: center;
-      background-color: #ffffff;
-      border-top: 1px solid #EEEEEE;
+		.tr {
+			height: 60px;
+			display: flex;
+			align-items: center;
+			background-color: #ffffff;
+			border-top: 1px solid #EEEEEE;
 
-      .td {
-        width: 220px;
-        height: 60px;
-        line-height: 60px;
-        text-align: center;
-        border-right: 1px solid #EEEEEE;
+			.td {
+				width: 220px;
+				height: 60px;
+				line-height: 60px;
+				text-align: center;
+				border-right: 1px solid #EEEEEE;
 
-        &:last-child {
-          border: 0px;
-        }
-      }
-    }
-  }
+				&:last-child {
+					border: 0px;
+				}
+			}
+		}
+	}
 
-  /*赠品*/
-  .cardTitle {
-    display: flex;
-    align-items: center;
-  }
+	/*赠品*/
+	.cardTitle {
+		display: flex;
+		align-items: center;
+	}
 
-  .current {
-    cursor: pointer;
-    color: #79B0FF;
-    margin-left: 10px;
-  }
+	.current {
+		cursor: pointer;
+		color: #79B0FF;
+		margin-left: 10px;
+	}
 
-  .fixDisplay {
-    display: flex;
-    align-items: center;
-  }
+	.fixDisplay {
+		display: flex;
+		align-items: center;
+	}
 
-  .lst {
-    margin-left: 10px;
-    width: 100px;
-    overflow: hidden;
-    height: 17px;
-    line-height: 23px;
-    display: inline-block;
-  }
+	.lst {
+		margin-left: 10px;
+		width: 100px;
+		overflow: hidden;
+		height: 17px;
+		line-height: 23px;
+		display: inline-block;
+	}
 
-  /deep/ .el-table__row {
-    cursor: pointer;
-  }
+	/deep/ .el-table__row {
+		cursor: pointer;
+	}
 
-  .myProduct /deep/ .el-dialog {
-    height: 600px;
-    overflow: auto;
-  }
+	.myProduct /deep/ .el-dialog {
+		height: 600px;
+		overflow: auto;
+	}
 
 </style>

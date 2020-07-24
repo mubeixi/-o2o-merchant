@@ -1,53 +1,53 @@
 <template>
-  <div class="labelManagement">
+	<div class="labelManagement">
 
-    <div class="padding10">
-      <el-button @click="goProduct" class="" size="mini" type="primary">添加权益卡</el-button>
-    </div>
-    <fun-table
-      :_pageSize="dataTableOpt.pageSize"
-      :_totalCount="dataTableOpt.totalCount"
-      :act="dataTableOpt.act"
-      :columns="dataTableOpt.columns"
-      :dataList="dataTableOpt.dataList"
-      :formSize="'small'"
-      :has="selectValue"
-      :isRow="false"
-      :isSelect="false"
-      :is_paginate="dataTableOpt.is_paginate"
-      @closeDialog="closeDialog"
-      @currentChange="currentChanges"
-      @handleSizeChange="handleSizeChange"
-      @reset="reset"
-      @selectVal="selectVal"
-      @submit="submit"
-      ref="funTableComp"
-      vkey="Products_ID"
-    >
-      <template slot="coupons-column" slot-scope="props">
-        <div :key="index" v-for="(item,index) of props.row.coupons">
-          优惠券名称：{{item.Coupon_Subject}} 满{{item.Coupon_Condition}}减{{item.Coupon_Cash}}元
+		<div class="padding10">
+			<el-button @click="goProduct" class="" size="mini" type="primary">添加权益卡</el-button>
+		</div>
+		<fun-table
+		:_pageSize="dataTableOpt.pageSize"
+		:_totalCount="dataTableOpt.totalCount"
+		:act="dataTableOpt.act"
+		:columns="dataTableOpt.columns"
+		:dataList="dataTableOpt.dataList"
+		:formSize="'small'"
+		:has="selectValue"
+		:isRow="false"
+		:isSelect="false"
+		:is_paginate="dataTableOpt.is_paginate"
+		@closeDialog="closeDialog"
+		@currentChange="currentChanges"
+		@handleSizeChange="handleSizeChange"
+		@reset="reset"
+		@selectVal="selectVal"
+		@submit="submit"
+		ref="funTableComp"
+		vkey="Products_ID"
+		>
+			<template slot="coupons-column" slot-scope="props">
+				<div :key="index" v-for="(item,index) of props.row.coupons">
+					优惠券名称：{{item.Coupon_Subject}} 满{{item.Coupon_Condition}}减{{item.Coupon_Cash}}元
 
-          <template v-if="item.is_ok==0">
-            (已过期)
-          </template>
-        </div>
-      </template>
-      <template slot="status-column" slot-scope="props">
-        <span>{{props.row.status==1?'正常':'禁用'}}</span>
-      </template>
-      <template slot="operate-column" slot-scope="props">
-        <span @click="goEdit(props)" class="spans">编辑</span>
-        <!--          <span class="spans" @click="delProduct(props)">删除</span>-->
-      </template>
-    </fun-table>
-  </div>
+					<template v-if="item.is_ok==0">
+						(已过期)
+					</template>
+				</div>
+			</template>
+			<template slot="status-column" slot-scope="props">
+				<span>{{props.row.status==1?'正常':'禁用'}}</span>
+			</template>
+			<template slot="operate-column" slot-scope="props">
+				<span @click="goEdit(props)" class="spans">编辑</span>
+				<!--          <span class="spans" @click="delProduct(props)">删除</span>-->
+			</template>
+		</fun-table>
+	</div>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import UploadComponents from "@/components/comm/UploadComponents.vue";
-import {findArrayIdx} from '@/common/utils';
+import {Component, Vue} from 'vue-property-decorator'
+import UploadComponents from "@/components/comm/UploadComponents.vue"
+import {findArrayIdx} from '@/common/utils'
 import {getRightsCard} from '@/common/fetch'
 
 @Component({
@@ -229,252 +229,252 @@ export default class RightCard extends Vue {
 </script>
 
 <style lang="less" scoped>
-  .labelManagement {
-    padding: 20px;
-  }
+	.labelManagement {
+		padding: 20px;
+	}
 
-  .labelMain {
-    padding: 20px 0px;
+	.labelMain {
+		padding: 20px 0px;
 
-    .marginLR {
-      margin-left: 30px;
-    }
+		.marginLR {
+			margin-left: 30px;
+		}
 
-    .marginLRS {
-      margin-left: 30px;
-    }
-  }
+		.marginLRS {
+			margin-left: 30px;
+		}
+	}
 
-  .inputMyDa /deep/ .el-input__inner {
-    padding-left: 10px;
-  }
+	.inputMyDa /deep/ .el-input__inner {
+		padding-left: 10px;
+	}
 
-  .divFlex {
-    display: flex;
-  }
+	.divFlex {
+		display: flex;
+	}
 
-  .labelCenter {
-    display: flex;
+	.labelCenter {
+		display: flex;
 
-    .labelDiv {
-      font-size: 7px;
-      color: #BCBCBC;
-      margin-top: 25px;
-      margin-left: 12px;
-    }
-  }
+		.labelDiv {
+			font-size: 7px;
+			color: #BCBCBC;
+			margin-top: 25px;
+			margin-left: 12px;
+		}
+	}
 
-  .labelCenter /deep/ .el-form-item__label {
-    margin-top: 25px;
-  }
+	.labelCenter /deep/ .el-form-item__label {
+		margin-top: 25px;
+	}
 
-  .marginRight {
-    margin-right: 20px;
-    font-size: 8px;
-    color: #777777;
-  }
+	.marginRight {
+		margin-right: 20px;
+		font-size: 8px;
+		color: #777777;
+	}
 
-  .inputMargin {
-    margin-left: 10px;
-    margin-right: 6px;
-    width: 85px;
-  }
+	.inputMargin {
+		margin-left: 10px;
+		margin-right: 6px;
+		width: 85px;
+	}
 
-  .widthInput {
-    width: 85px;
-  }
+	.widthInput {
+		width: 85px;
+	}
 
-  .fontSize {
-    color: #BCBCBC;
-    font-size: 12px;
-    width: 630px;
-    margin-top: 10px;
-  }
+	.fontSize {
+		color: #BCBCBC;
+		font-size: 12px;
+		width: 630px;
+		margin-top: 10px;
+	}
 
-  .myCenter {
-    margin-top: 10px;
-    background-color: #F8F8F8;
-    padding: 11px 152px 21px 17px;
+	.myCenter {
+		margin-top: 10px;
+		background-color: #F8F8F8;
+		padding: 11px 152px 21px 17px;
 
-    .first {
-      margin-left: 18px;
-      margin-bottom: 15px;
-      background-color: #ffffff;
-      padding: 10px 50px 20px 16px;
+		.first {
+			margin-left: 18px;
+			margin-bottom: 15px;
+			background-color: #ffffff;
+			padding: 10px 50px 20px 16px;
 
-      .spans {
-        font-size: 12px;
-        color: #BCBCBC;
-        margin-left: 17px;
-      }
-    }
+			.spans {
+				font-size: 12px;
+				color: #BCBCBC;
+				margin-left: 17px;
+			}
+		}
 
-    .productRadio {
-      display: inline-block;
-      height: 32px;
-      line-height: 32px;
-      margin-left: 20px;
-    }
-  }
+		.productRadio {
+			display: inline-block;
+			height: 32px;
+			line-height: 32px;
+			margin-left: 20px;
+		}
+	}
 
-  .selects {
-    color: #428CF7;
-    font-size: 12px;
-    margin-left: 10px;
-    cursor: pointer;
-    display: inline-block;
-  }
+	.selects {
+		color: #428CF7;
+		font-size: 12px;
+		margin-left: 10px;
+		cursor: pointer;
+		display: inline-block;
+	}
 
-  .second {
-    padding: 5px 22px 12px 16px !important;
+	.second {
+		padding: 5px 22px 12px 16px !important;
 
-    .listLine {
-      height: 46px;
-      display: flex;
-      align-items: center;
-      border-bottom: 1px dotted #DBDBDB;
+		.listLine {
+			height: 46px;
+			display: flex;
+			align-items: center;
+			border-bottom: 1px dotted #DBDBDB;
 
-      .lineImg {
-        width: 30px;
-        height: 30px;
-      }
+			.lineImg {
+				width: 30px;
+				height: 30px;
+			}
 
-      .lineDiv {
-        color: #999999;
-        font-size: 12px;
-        margin-left: 14px;
-      }
-    }
-  }
+			.lineDiv {
+				color: #999999;
+				font-size: 12px;
+				margin-left: 14px;
+			}
+		}
+	}
 
-  .oneFont {
-    font-size: 14px;
-    margin-left: 8px;
-    color: #777777
-  }
+	.oneFont {
+		font-size: 14px;
+		margin-left: 8px;
+		color: #777777
+	}
 
-  .inputMy {
-    width: 75px;
-    margin-left: 24px
-  }
+	.inputMy {
+		width: 75px;
+		margin-left: 24px
+	}
 
-  .inputT {
-    margin-left: 20px;
+	.inputT {
+		margin-left: 20px;
 
-    & /deep/ .el-input__inner {
-      padding-right: 0px;
-    }
-  }
+		& /deep/ .el-input__inner {
+			padding-right: 0px;
+		}
+	}
 
-  .marginBo {
-    margin-bottom: 20px;
-  }
+	.marginBo {
+		margin-bottom: 20px;
+	}
 
-  .addSpan {
-    color: #428CF7;
-    font-size: 12px;
-    margin-left: 12px;
-    cursor: pointer;
-  }
+	.addSpan {
+		color: #428CF7;
+		font-size: 12px;
+		margin-left: 12px;
+		cursor: pointer;
+	}
 
-  .submit {
-    margin-left: 380px;
-    margin-top: 84px;
+	.submit {
+		margin-left: 380px;
+		margin-top: 84px;
 
-    .close {
-      margin-right: 20px;
-    }
-  }
+		.close {
+			margin-right: 20px;
+		}
+	}
 
-  .amu {
-    background-color: #F8F8F8;
-    width: 925px;
-    padding: 24px 95px 38px 42px;
-    box-sizing: border-box;
-    border: 1px solid #EEEEEE;
-    margin-top: 10px;
+	.amu {
+		background-color: #F8F8F8;
+		width: 925px;
+		padding: 24px 95px 38px 42px;
+		box-sizing: border-box;
+		border: 1px solid #EEEEEE;
+		margin-top: 10px;
 
-    .th {
-      background-color: #F2F7FF;
-      display: flex;
-      align-items: center;
-      height: 48px;
+		.th {
+			background-color: #F2F7FF;
+			display: flex;
+			align-items: center;
+			height: 48px;
 
-      .td {
-        text-align: center;
-        width: 220px;
-        border-right: 1px solid #EEEEEE;
+			.td {
+				text-align: center;
+				width: 220px;
+				border-right: 1px solid #EEEEEE;
 
-        &:last-child {
-          border: 0px;
-        }
-      }
-    }
+				&:last-child {
+					border: 0px;
+				}
+			}
+		}
 
-    .widthmbx {
-      width: 120px;
-    }
+		.widthmbx {
+			width: 120px;
+		}
 
-    .tr {
-      height: 60px;
-      display: flex;
-      align-items: center;
-      background-color: #ffffff;
-      border-top: 1px solid #EEEEEE;
+		.tr {
+			height: 60px;
+			display: flex;
+			align-items: center;
+			background-color: #ffffff;
+			border-top: 1px solid #EEEEEE;
 
-      .td {
-        width: 220px;
-        height: 60px;
-        line-height: 60px;
-        text-align: center;
-        border-right: 1px solid #EEEEEE;
+			.td {
+				width: 220px;
+				height: 60px;
+				line-height: 60px;
+				text-align: center;
+				border-right: 1px solid #EEEEEE;
 
-        &:last-child {
-          border: 0px;
-        }
-      }
-    }
-  }
+				&:last-child {
+					border: 0px;
+				}
+			}
+		}
+	}
 
-  /*赠品*/
-  .cardTitle {
-    display: flex;
-    align-items: center;
-  }
+	/*赠品*/
+	.cardTitle {
+		display: flex;
+		align-items: center;
+	}
 
-  .current {
-    cursor: pointer;
-    color: #79B0FF;
-    margin-left: 10px;
-  }
+	.current {
+		cursor: pointer;
+		color: #79B0FF;
+		margin-left: 10px;
+	}
 
-  .fixDisplay {
-    display: flex;
-    align-items: center;
-  }
+	.fixDisplay {
+		display: flex;
+		align-items: center;
+	}
 
-  .lst {
-    margin-left: 10px;
-    width: 100px;
-    overflow: hidden;
-    height: 17px;
-    line-height: 23px;
-    display: inline-block;
-  }
+	.lst {
+		margin-left: 10px;
+		width: 100px;
+		overflow: hidden;
+		height: 17px;
+		line-height: 23px;
+		display: inline-block;
+	}
 
-  /deep/ .el-table__row {
-    cursor: pointer;
-  }
+	/deep/ .el-table__row {
+		cursor: pointer;
+	}
 
-  .myProduct /deep/ .el-dialog {
-    height: 600px;
-    overflow: auto;
-  }
+	.myProduct /deep/ .el-dialog {
+		height: 600px;
+		overflow: auto;
+	}
 
-  .spans {
-    color: #428CF7;
-    margin-right: 4px;
-    cursor: pointer;
-  }
+	.spans {
+		color: #428CF7;
+		margin-right: 4px;
+		cursor: pointer;
+	}
 
 </style>

@@ -1,125 +1,125 @@
 <template>
-  <div class="padding15">
-    <div class="padding10-r">
-      <el-button @click="addDialogOpen" class="" size="small" type="primary">新建奖项</el-button>
+	<div class="padding15">
+		<div class="padding10-r">
+			<el-button @click="addDialogOpen" class="" size="small" type="primary">新建奖项</el-button>
 
-    </div>
-    <fun-table
-      :act="dataTableOpt.act"
-      :columns="dataTableOpt.columns"
-      :formSize="'small'"
-      :isSelect="dataTableOpt.isSelect"
-      :is_paginate="dataTableOpt.is_paginate"
-      ref="dataTable"
-    >
-      <template slot="time-column" slot-scope="props">
-        <div style="display: flex;align-items: center;">
-          {{props.row.statistics_start}}-{{props.row.statistics_end}}
-        </div>
-      </template>
+		</div>
+		<fun-table
+		:act="dataTableOpt.act"
+		:columns="dataTableOpt.columns"
+		:formSize="'small'"
+		:isSelect="dataTableOpt.isSelect"
+		:is_paginate="dataTableOpt.is_paginate"
+		ref="dataTable"
+		>
+			<template slot="time-column" slot-scope="props">
+				<div style="display: flex;align-items: center;">
+					{{props.row.statistics_start}}-{{props.row.statistics_end}}
+				</div>
+			</template>
 
-      <template slot="status-column" slot-scope="props">
-        <span :class="getStyleFn(props.row.status)">{{props.row.status|statusFilter}}</span>
-      </template>
-      <template slot="sha_statistics_level-column" slot-scope="props">
-        <span>{{props.row.sha_statistics_level|levelFilter}}</span>
-      </template>
-      <template slot="reward_rules-column" slot-scope="props">
-        <template v-for="(item,index) of props.row.reward_rules">
-          <el-tag class="line6" size="mini" style="margin-right: 6px">{{item.start}}
-            <template v-if="item.end>0">-{{item.end}}</template>
-            <template v-else>以上</template>
-          </el-tag>
-        </template>
-      </template>
-      <template slot="total_sales-column" slot-scope="props">
-        <span class="danger-color">￥{{props.row.total_sales}}</span>
-      </template>
-      <template slot="operate-column" slot-scope="props">
-        <!--        status=0 操作列显示 开始统计 编辑-->
-        <!--        status=1 操作列显示 编辑-->
-        <!--        status=2 操作列显示 查看详情 编辑-->
-        <template v-if="inArray(props.row.status,[0,1,2])">
-          <el-button @click="editFn(props.row)" size="mini" type="primary">编辑</el-button>
-          <span class="padding4-c"></span></template>
-        <template>
-          <el-button @click="toDetail(props.row)" size="mini" type="warning">查看详情</el-button>
-        </template>
-        <template v-if="inArray(props.row.status,[0])">
-          <el-button @click="startFn(props.row)" size="mini" type="green"
-                     v-loading="handleRowId==props.row.id">开始统计
-          </el-button>
-        </template>
+			<template slot="status-column" slot-scope="props">
+				<span :class="getStyleFn(props.row.status)">{{props.row.status|statusFilter}}</span>
+			</template>
+			<template slot="sha_statistics_level-column" slot-scope="props">
+				<span>{{props.row.sha_statistics_level|levelFilter}}</span>
+			</template>
+			<template slot="reward_rules-column" slot-scope="props">
+				<template v-for="(item,index) of props.row.reward_rules">
+					<el-tag class="line6" size="mini" style="margin-right: 6px">{{item.start}}
+						<template v-if="item.end>0">-{{item.end}}</template>
+						<template v-else>以上</template>
+					</el-tag>
+				</template>
+			</template>
+			<template slot="total_sales-column" slot-scope="props">
+				<span class="danger-color">￥{{props.row.total_sales}}</span>
+			</template>
+			<template slot="operate-column" slot-scope="props">
+				<!--        status=0 操作列显示 开始统计 编辑-->
+				<!--        status=1 操作列显示 编辑-->
+				<!--        status=2 操作列显示 查看详情 编辑-->
+				<template v-if="inArray(props.row.status,[0,1,2])">
+					<el-button @click="editFn(props.row)" size="mini" type="primary">编辑</el-button>
+					<span class="padding4-c"></span></template>
+				<template>
+					<el-button @click="toDetail(props.row)" size="mini" type="warning">查看详情</el-button>
+				</template>
+				<template v-if="inArray(props.row.status,[0])">
+					<el-button @click="startFn(props.row)" size="mini" type="green"
+					           v-loading="handleRowId==props.row.id">开始统计
+					</el-button>
+				</template>
 
-        <!--        <span style="cursor: pointer" class="color-red js-del">删除</span>-->
-      </template>
+				<!--        <span style="cursor: pointer" class="color-red js-del">删除</span>-->
+			</template>
 
-    </fun-table>
+		</fun-table>
 
-    <el-dialog
-      :visible.sync="addDialogInstance.innerVisible"
-      @close="addDialogCancel"
-      append-to-body
-      center
-      title="新建奖项"
-    >
-      <div class="container-wrap">
-        <el-form :model="addForm" :rules="addRules" class="form" label-width="100px" ref="addForm"
-                 status-icon>
-          <el-form-item label="奖项名称" prop="reward_name">
-            <el-input placeholder="请输入奖项名称" type="text" v-model="addForm.reward_name"></el-input>
-          </el-form-item>
-          <el-form-item label="统计时间" prop="time">
-            <!--            <div class="flex">-->
-            <!--              <el-input  v-model="addForm.statistics_start" placeholder="请输入大于0的整数" type="number" ></el-input>-->
-            <!--              <div class="w10"></div>-->
-            <!--              <el-input  v-model="addForm.statistics_end" placeholder="请输入大于0的整数" type="number" ></el-input>-->
-            <!--            </div>-->
-            <el-date-picker
-              align="right"
-              end-placeholder="结束日期"
-              range-separator="至"
-              start-placeholder="开始日期"
-              type="datetimerange"
-              v-model="addForm.time"
-              value-format="yyyy-MM-dd HH:mm:ss">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="统计规则" prop="rule_list"
-                        style="position:relative;padding-bottom: 36px">
-            <div :key="idx" class="rule-row flex line10"
-                 style="align-items: center" v-for="(row,idx) in addForm.rule_list">
-              <el-input placeholder="最小值,输入0则代表不限制" type="number"
-                        v-model.number="row.start"></el-input>
-              <div class="w10"></div>
-              <el-input :min="row.start" placeholder="最大值,输入0则代表不限制" type="number"
-                        v-model.number="row.end"></el-input>
-              <div class="w10"></div>
-              <i @click="removeRow(idx)" class="el-icon-delete font18" style="cursor: pointer"></i>
-            </div>
-            <div style="position: absolute;right: 0;">
-              <el-button @click="addRulesRow" size="mini" type="primary">添加</el-button>
-            </div>
-          </el-form-item>
+		<el-dialog
+		:visible.sync="addDialogInstance.innerVisible"
+		@close="addDialogCancel"
+		append-to-body
+		center
+		title="新建奖项"
+		>
+			<div class="container-wrap">
+				<el-form :model="addForm" :rules="addRules" class="form" label-width="100px" ref="addForm"
+				         status-icon>
+					<el-form-item label="奖项名称" prop="reward_name">
+						<el-input placeholder="请输入奖项名称" type="text" v-model="addForm.reward_name"></el-input>
+					</el-form-item>
+					<el-form-item label="统计时间" prop="time">
+						<!--            <div class="flex">-->
+						<!--              <el-input  v-model="addForm.statistics_start" placeholder="请输入大于0的整数" type="number" ></el-input>-->
+						<!--              <div class="w10"></div>-->
+						<!--              <el-input  v-model="addForm.statistics_end" placeholder="请输入大于0的整数" type="number" ></el-input>-->
+						<!--            </div>-->
+						<el-date-picker
+						align="right"
+						end-placeholder="结束日期"
+						range-separator="至"
+						start-placeholder="开始日期"
+						type="datetimerange"
+						v-model="addForm.time"
+						value-format="yyyy-MM-dd HH:mm:ss">
+						</el-date-picker>
+					</el-form-item>
+					<el-form-item label="统计规则" prop="rule_list"
+					              style="position:relative;padding-bottom: 36px">
+						<div :key="idx" class="rule-row flex line10"
+						     style="align-items: center" v-for="(row,idx) in addForm.rule_list">
+							<el-input placeholder="最小值,输入0则代表不限制" type="number"
+							          v-model.number="row.start"></el-input>
+							<div class="w10"></div>
+							<el-input :min="row.start" placeholder="最大值,输入0则代表不限制" type="number"
+							          v-model.number="row.end"></el-input>
+							<div class="w10"></div>
+							<i @click="removeRow(idx)" class="el-icon-delete font18" style="cursor: pointer"></i>
+						</div>
+						<div style="position: absolute;right: 0;">
+							<el-button @click="addRulesRow" size="mini" type="primary">添加</el-button>
+						</div>
+					</el-form-item>
 
-        </el-form>
-        <div style="text-align: center">
-          <el-button :loading="addDialogInstance.loading" @click="addFn" type="primary">提交
-          </el-button>
-          <el-button @click="resetFormFn">重置</el-button>
-        </div>
-      </div>
+				</el-form>
+				<div style="text-align: center">
+					<el-button :loading="addDialogInstance.loading" @click="addFn" type="primary">提交
+					</el-button>
+					<el-button @click="resetFormFn">重置</el-button>
+				</div>
+			</div>
 
-    </el-dialog>
-  </div>
+		</el-dialog>
+	</div>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {fun} from '../../common';
-import {emptyObject, objTranslate} from '../../common/utils';
+import {Component, Vue} from 'vue-property-decorator'
+import {fun} from '../../common'
+import {emptyObject, objTranslate} from '../../common/utils'
 import _ from 'underscore'
-import {beginDistributorStatistics, createdDistributorContribute} from '../../common/fetch';
+import {beginDistributorStatistics, createdDistributorContribute} from '../../common/fetch'
 
 @Component({
   mixins: [],
@@ -139,7 +139,7 @@ import {beginDistributorStatistics, createdDistributorContribute} from '../../co
   },
   filters: {
     levelFilter(val) {
-      if (val == 0) return '无限级';
+      if (val == 0) return '无限级'
       return val
     },
     statusFilter(val) {
@@ -222,12 +222,12 @@ export default class Contribute extends Vue {
     timeFn: (rule, value, callback) => {
       console.log(this.addForm)
       if (!this.addForm.statistics_end || !this.addForm.statistics_start) {
-        callback(new Error('两项均必填'));
+        callback(new Error('两项均必填'))
       } else {
         if (this.addForm.statistics_end <= this.addForm.statistics_start) {
-          callback(new Error('结束时间应该大于开始时间'));
+          callback(new Error('结束时间应该大于开始时间'))
         } else {
-          callback();
+          callback()
         }
 
       }
@@ -235,8 +235,8 @@ export default class Contribute extends Vue {
     rulesFn: (rule, value, callback) => {
 
       if (this.addForm.rule_list.length < 1) {
-        callback(new Error('请至少设置一个统计规则'));
-        return;
+        callback(new Error('请至少设置一个统计规则'))
+        return
       }
 
       let check = true
@@ -244,16 +244,16 @@ export default class Contribute extends Vue {
         if (rule.start > 0 || rule.end > 0) {
           if (rule.end && parseFloat(rule.start) >= parseFloat(rule.end)) {
             check = false
-            callback(new Error('左侧阈值应该小于右侧阈值'));
-            break;
+            callback(new Error('左侧阈值应该小于右侧阈值'))
+            break
           }
         } else {
           check = false
-          callback(new Error('每行阈值至少填写一个'));
-          break;
+          callback(new Error('每行阈值至少填写一个'))
+          break
         }
       }
-      check && callback();
+      check && callback()
     },
   }
   addRules = {
@@ -292,11 +292,11 @@ export default class Contribute extends Vue {
         setTimeout(() => {
           fun.success({msg: res.msg})
 
-          row.status = res.data.status;
+          row.status = res.data.status
         }, 500)
       }
     }).catch()
-    this.handleRowId = -1;
+    this.handleRowId = -1
 
   }
 
@@ -352,7 +352,7 @@ export default class Contribute extends Vue {
   async addFn() {
     if (this.addDialogInstance.loading) {
       fun.error({msg: '请求太快'})
-      return;
+      return
     }
     let formName = 'addForm'
     let formValidata = false
@@ -360,13 +360,13 @@ export default class Contribute extends Vue {
       if (valid) {
         formValidata = true
       } else {
-        console.log('error submit!!');
-        formValidata = false;
+        console.log('error submit!!')
+        formValidata = false
       }
-    });
-    if (!formValidata) return;
+    })
+    if (!formValidata) return
 
-    let {reward_name = '', statistics_start, statistics_end, rule_id} = this.addForm;
+    let {reward_name = '', statistics_start, statistics_end, rule_id} = this.addForm
     let reward_rules = this.addForm.rule_list.map(rule => {
       return {start: rule.start ? rule.start : 0, end: rule.end ? rule.end : 0}
     })
@@ -377,13 +377,13 @@ export default class Contribute extends Vue {
       statistics_end,
       reward_name,
       reward_rules: JSON.stringify(reward_rules)
-    };
+    }
     if (this.addDialogInstance.mode == 'edit') {
       postData.rule_id = rule_id
     }
     if (!emptyObject(postData, 1)) {
       fun.error({msg: '请正确填写信息'})
-      return;
+      return
     }
 
     this.addDialogInstance.loading = true
@@ -401,7 +401,7 @@ export default class Contribute extends Vue {
 
   resetFormFn() {
     let formName = 'addForm'
-    this.$refs[formName].resetFields();
+    this.$refs[formName].resetFields()
   }
 
 
@@ -410,15 +410,15 @@ export default class Contribute extends Vue {
 </script>
 
 <style lang="less" scoped>
-  /*.js-edit{*/
-  /*  cursor: pointer;*/
-  /*}*/
-  /*.js-del{*/
-  /*  cursor: pointer;*/
-  /*}*/
-  .el-icon-delete {
-    &:hover {
-      color: #F43131;
-    }
-  }
+	/*.js-edit{*/
+	/*  cursor: pointer;*/
+	/*}*/
+	/*.js-del{*/
+	/*  cursor: pointer;*/
+	/*}*/
+	.el-icon-delete {
+		&:hover {
+			color: #F43131;
+		}
+	}
 </style>

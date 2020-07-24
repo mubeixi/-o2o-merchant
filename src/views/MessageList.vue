@@ -1,55 +1,52 @@
 <template>
-  <div class="home-wrap">
-    <div class="padding10">
-      <el-button size="mini" class="" type="primary" @click="goAdd">新增公告</el-button>
-    </div>
-    <fun-table
-    :isSelect="false"
-    :_page="dataTableOpt.page"
-    :_pageSize="dataTableOpt.pageSize"
-    :_totalCount="dataTableOpt.totalCount"
-    :columns="dataTableOpt.columns"
-    :dataList="dataTableOpt.dataList"
-    :is_paginate="dataTableOpt.is_paginate"
-    @handleSizeChange="handleSizeChange"
-    @currentChange="currentChange"
-    >
-      <template slot="created_at-column" slot-scope="props">
-        <span>{{props.row.created_at|formatetime}}</span>
-      </template>
-      <template slot="updated_at-column" slot-scope="props">
-        <span>{{props.row.updated_at|formatetime}}</span>
-      </template>
-      <template slot="home_show-column" slot-scope="props">
-        <span>{{props.row.home_show==1?'是':'否'}}</span>
-      </template>
-      <template slot="operate-column" slot-scope="props">
-        <div class="flex">
-          <el-button size="mini" type="primary" @click="edit(props)" class="m-r-15">查看</el-button>
-          <el-button size="mini" type="danger" @click="del(props)" class="">删除</el-button>
-        </div>
-      </template>
-    </fun-table>
-<!--    <ul class="message-list" v-infinite-scroll="load" style="overflow:auto">-->
-<!--      <li v-for="(row,idx) in messageList" class="message-item">-->
-<!--        <span>{{row.title}}</span>-->
-<!--        <span>{{row.created_at|formatetime}}</span>-->
-<!--      </li>-->
-<!--    </ul>-->
-  </div>
+	<div class="home-wrap">
+		<div class="padding10">
+			<el-button size="mini" class="" type="primary" @click="goAdd">新增公告</el-button>
+		</div>
+		<fun-table
+		:isSelect="false"
+		:_page="dataTableOpt.page"
+		:_pageSize="dataTableOpt.pageSize"
+		:_totalCount="dataTableOpt.totalCount"
+		:columns="dataTableOpt.columns"
+		:dataList="dataTableOpt.dataList"
+		:is_paginate="dataTableOpt.is_paginate"
+		@handleSizeChange="handleSizeChange"
+		@currentChange="currentChange"
+		>
+			<template slot="created_at-column" slot-scope="props">
+				<span>{{props.row.created_at|formatetime}}</span>
+			</template>
+			<template slot="updated_at-column" slot-scope="props">
+				<span>{{props.row.updated_at|formatetime}}</span>
+			</template>
+			<template slot="home_show-column" slot-scope="props">
+				<span>{{props.row.home_show==1?'是':'否'}}</span>
+			</template>
+			<template slot="operate-column" slot-scope="props">
+				<div class="flex">
+					<el-button size="mini" type="primary" @click="edit(props)" class="m-r-15">查看</el-button>
+					<el-button size="mini" type="danger" @click="del(props)" class="">删除</el-button>
+				</div>
+			</template>
+		</fun-table>
+		<!--    <ul class="message-list" v-infinite-scroll="load" style="overflow:auto">-->
+		<!--      <li v-for="(row,idx) in messageList" class="message-item">-->
+		<!--        <span>{{row.title}}</span>-->
+		<!--        <span>{{row.created_at|formatetime}}</span>-->
+		<!--      </li>-->
+		<!--    </ul>-->
+	</div>
 </template>
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
-import {delBizMessage, getBizMessageList} from "../common/fetch";
-import {Exception} from "../common/Exception";
-import {fun} from "../common";
+import {delBizMessage, getBizMessageList} from "../common/fetch"
+import {Exception} from "../common/Exception"
+import {fun} from "../common"
 
 
 @Component({
-  components: {
-
-
-  }
+  components: {}
 })
 export default class MessageList extends Vue {
 
@@ -117,46 +114,55 @@ export default class MessageList extends Vue {
     this.dataTableOpt.page = val
     this.getList()
   }
-  goAdd(){
+
+  goAdd() {
     this.$router.push({
-      name:'MessageForm'
+      name: 'MessageForm'
     })
   }
-  edit(props){
+
+  edit(props) {
     const {id} = props.row
     this.$router.push({
-      name:'MessageForm',
-      query:{
+      name: 'MessageForm',
+      query: {
         id
       }
     })
   }
-  del(props){
-    const {id,idx} = props.row
+
+  del(props) {
+    const {id, idx} = props.row
 
     this.$confirm('确认要删除所选记录?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      delBizMessage({msg_id:id}).then(res=>{
+      delBizMessage({msg_id: id}).then(res => {
         this.getList()
-      }).catch(err=>{
-        fun.error({msg:err.msg})
+      }).catch(err => {
+        fun.error({msg: err.msg})
       })
     }).catch(() => {
 
-    });
+    })
 
   }
-  async getList () {
+
+  async getList() {
 
     try {
-      const res = await getBizMessageList({page:this.dataTableOpt.page,pageSize:this.dataTableOpt.pageSize}).catch(err=>{ throw Error(err.msg)})
+      const res = await getBizMessageList({
+        page: this.dataTableOpt.page,
+        pageSize: this.dataTableOpt.pageSize
+      }).catch(err => {
+        throw Error(err.msg)
+      })
       this.dataTableOpt.dataList = res.data
       this.dataTableOpt.totalCount = res.totalCount
 
-    }catch (e) {
+    } catch (e) {
       Exception.handle(e)
     }
   }
@@ -168,13 +174,14 @@ export default class MessageList extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.message-list{
-  padding: 15px;
-}
-.message-item{
-  padding: 10px;
-  border-bottom: 1px solid $fun-border-color;
-  display: flex;
-  justify-content: space-between;
-}
+	.message-list {
+		padding: 15px;
+	}
+
+	.message-item {
+		padding: 10px;
+		border-bottom: 1px solid $fun-border-color;
+		display: flex;
+		justify-content: space-between;
+	}
 </style>

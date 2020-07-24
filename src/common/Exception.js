@@ -1,4 +1,4 @@
-import {fun} from '@/common/index'
+import { fun } from '@/common/index'
 import { isDev } from '@/common/env'
 
 /**
@@ -30,19 +30,23 @@ function handle (e) {
     message = e
   }
   // 开发模式下，全部都弹出来
-  if (isDev) { type = 'modal'; message = '开发调试信息:' + message; console.log(e) }
-  if (type === 'toast') fun.info({msg:message})
-  if (type === 'modal') fun.warning({msg:message})
+  if (isDev) {
+    type = 'modal'
+    message = '开发调试信息:' + message
+    console.log(e)
+  }
+  if (type === 'toast') fun.info({ msg: message })
+  if (type === 'modal') fun.warning({ msg: message })
 
   return ({
     message,
     type,
-    icon
+    icon,
   })
 }
 
 Exception.prototype = {
-  constructor: Exception
+  constructor: Exception,
 }
 
 Exception.handle = handle

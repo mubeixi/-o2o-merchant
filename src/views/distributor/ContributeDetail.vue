@@ -1,96 +1,96 @@
 <template>
-  <div class="">
-    <el-tabs @tab-click="handleClick" v-model="activeName">
-      <el-tab-pane :label="getRuleText(rule.start,rule.end)" :name="''+idx"
-                   v-for="(rule,idx) in rule_list"></el-tab-pane>
-    </el-tabs>
-    <div class="info">
-      <div class="info-item">
-        <span class="label">奖励名称:</span><span class="val">{{info.name}}</span>
-      </div>
-      <div class="info-item">
-        <span class="label">统计时间:</span><span class="val">{{info.time}}</span>
-      </div>
-      <div class="info-item">
-        <span class="label">区间业绩:</span><span class="danger-color">￥{{info.total_sales}}</span>
-      </div>
-      <div class="info-item flex1 text-right padding-right-10">
-        <el-button @click="openDialog" size="small" type="success">发放奖励</el-button>
-      </div>
-    </div>
-    <fun-table
-      :columns="dataTableOpt.columns"
-      :dataList="dataTableOpt.dataList"
-      :formSize="'small'"
-      :isRow="true"
-      :isSelect="dataTableOpt.isSelect"
-      :is_paginate="dataTableOpt.is_paginate"
-      :pageSize="dataTableOpt.pageSize"
-      :totalCount="dataTableOpt.totalCount"
-      ref="dataTable"
-    >
+	<div class="">
+		<el-tabs @tab-click="handleClick" v-model="activeName">
+			<el-tab-pane :label="getRuleText(rule.start,rule.end)" :name="''+idx"
+			             v-for="(rule,idx) in rule_list"></el-tab-pane>
+		</el-tabs>
+		<div class="info">
+			<div class="info-item">
+				<span class="label">奖励名称:</span><span class="val">{{info.name}}</span>
+			</div>
+			<div class="info-item">
+				<span class="label">统计时间:</span><span class="val">{{info.time}}</span>
+			</div>
+			<div class="info-item">
+				<span class="label">区间业绩:</span><span class="danger-color">￥{{info.total_sales}}</span>
+			</div>
+			<div class="info-item flex1 text-right padding-right-10">
+				<el-button @click="openDialog" size="small" type="success">发放奖励</el-button>
+			</div>
+		</div>
+		<fun-table
+		:columns="dataTableOpt.columns"
+		:dataList="dataTableOpt.dataList"
+		:formSize="'small'"
+		:isRow="true"
+		:isSelect="dataTableOpt.isSelect"
+		:is_paginate="dataTableOpt.is_paginate"
+		:pageSize="dataTableOpt.pageSize"
+		:totalCount="dataTableOpt.totalCount"
+		ref="dataTable"
+		>
 
-      <template slot="send_status-column" slot-scope="props">
+			<template slot="send_status-column" slot-scope="props">
 
-        <template v-if="props.row.send_status == 1"><span class="color-green">已发放</span></template>
-        <template v-if="props.row.send_status == 0"><span class="graytext">未发放</span></template>
+				<template v-if="props.row.send_status == 1"><span class="color-green">已发放</span></template>
+				<template v-if="props.row.send_status == 0"><span class="graytext">未发放</span></template>
 
-      </template>
+			</template>
 
-    </fun-table>
+		</fun-table>
 
-    <el-dialog
-      :visible.sync="dialogInstance.innerVisible"
-      @close="addDialogCancel"
-      append-to-body
-      center
-      title="发放奖励"
-    >
-      <div class="container-wrap">
-        <el-form :model="formData" :rules="addRules" class="form" label-width="100px" ref="refForm"
-                 status-icon>
-          <el-form-item label="区间销售总额">
-            <el-input disabled readonly v-model="'￥'+info.total_sales"></el-input>
-          </el-form-item>
-          <el-form-item label="发放奖励" prop="total_money">
-            <el-input placeholder="请输入奖励金额" type="text" v-model="formData.total_money"></el-input>
-          </el-form-item>
-          <el-form-item label="统计规则" prop="rule_list"
-                        style="position:relative;padding-bottom: 36px">
-            <div :key="idx" class="rule-row flex line10"
-                 style="align-items: center" v-for="(row,idx) in formData.rule_list">
-              <el-input max="percent" min="0" type="number" v-model="row.val">
-                <template slot="prepend">
-                  <div style="width: 140px;overflow: hidden;font-size: 14px">
-                    {{getRuleText(rule_list[idx].start,rule_list[idx].end)}}
-                  </div>
-                </template>
-                <template slot="append">%</template>
-              </el-input>
-            </div>
-            <div class="text-right graytext2">最多剩余{{percent}}%可以分配</div>
-          </el-form-item>
+		<el-dialog
+		:visible.sync="dialogInstance.innerVisible"
+		@close="addDialogCancel"
+		append-to-body
+		center
+		title="发放奖励"
+		>
+			<div class="container-wrap">
+				<el-form :model="formData" :rules="addRules" class="form" label-width="100px" ref="refForm"
+				         status-icon>
+					<el-form-item label="区间销售总额">
+						<el-input disabled readonly v-model="'￥'+info.total_sales"></el-input>
+					</el-form-item>
+					<el-form-item label="发放奖励" prop="total_money">
+						<el-input placeholder="请输入奖励金额" type="text" v-model="formData.total_money"></el-input>
+					</el-form-item>
+					<el-form-item label="统计规则" prop="rule_list"
+					              style="position:relative;padding-bottom: 36px">
+						<div :key="idx" class="rule-row flex line10"
+						     style="align-items: center" v-for="(row,idx) in formData.rule_list">
+							<el-input max="percent" min="0" type="number" v-model="row.val">
+								<template slot="prepend">
+									<div style="width: 140px;overflow: hidden;font-size: 14px">
+										{{getRuleText(rule_list[idx].start,rule_list[idx].end)}}
+									</div>
+								</template>
+								<template slot="append">%</template>
+							</el-input>
+						</div>
+						<div class="text-right graytext2">最多剩余{{percent}}%可以分配</div>
+					</el-form-item>
 
-        </el-form>
-        <div style="text-align: center">
-          <el-button :loading="dialogInstance.loading" @click="subFn" type="primary">提交</el-button>
-        </div>
-      </div>
+				</el-form>
+				<div style="text-align: center">
+					<el-button :loading="dialogInstance.loading" @click="subFn" type="primary">提交</el-button>
+				</div>
+			</div>
 
-    </el-dialog>
-  </div>
+		</el-dialog>
+	</div>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {fun} from '../../common';
-import {emptyObject} from '../../common/utils';
+import {Component, Vue} from 'vue-property-decorator'
+import {fun} from '../../common'
+import {emptyObject} from '../../common/utils'
 import _ from 'underscore'
 import {
   beginDistributorStatistics,
   getDistributorContributeDetail,
   sendDistributorContributeMoney
-} from '../../common/fetch';
+} from '../../common/fetch'
 
 @Component({
   mixins: [],
@@ -199,8 +199,8 @@ export default class ContributeDetail extends Vue {
     rulesFn: (rule, value, callback) => {
       console.log(this.formData)
       if (this.formData.rule_list.length < 1) {
-        callback(new Error('请至少设置一个统计规则'));
-        return;
+        callback(new Error('请至少设置一个统计规则'))
+        return
       }
 
       let percent = 0
@@ -214,10 +214,10 @@ export default class ContributeDetail extends Vue {
       }
       console.log(percent)
       if (percent > 100) {
-        callback(new Error('各行总和应该小于等于100%'));
-        return;
+        callback(new Error('各行总和应该小于等于100%'))
+        return
       }
-      callback();
+      callback()
     },
   }
   addRules = {
@@ -231,10 +231,10 @@ export default class ContributeDetail extends Vue {
 
   getRuleText(start, end) {
     if (start && end) {
-      return start + '-' + end;
+      return start + '-' + end
     }
-    if (start && !end) return '>' + start;
-    if (!start && end) return '<' + end;
+    if (start && !end) return '>' + start
+    if (!start && end) return '<' + end
     return ''
   }
 
@@ -255,11 +255,11 @@ export default class ContributeDetail extends Vue {
         setTimeout(() => {
           fun.success({msg: res.msg})
 
-          row.status = res.data.status;
+          row.status = res.data.status
         }, 500)
       }
     }).catch()
-    this.handleRowId = -1;
+    this.handleRowId = -1
 
   }
 
@@ -288,7 +288,7 @@ export default class ContributeDetail extends Vue {
   async subFn() {
     if (this.dialogInstance.loading) {
       fun.error({msg: '请求太快'})
-      return;
+      return
     }
     let formName = 'refForm'
     let formValidata = false
@@ -296,13 +296,13 @@ export default class ContributeDetail extends Vue {
       if (valid) {
         formValidata = true
       } else {
-        console.log('error submit!!');
-        formValidata = false;
+        console.log('error submit!!')
+        formValidata = false
       }
-    });
+    })
     if (!formValidata) {
       fun.error({msg: '表单信息不符'})
-      return;
+      return
     }
 
 
@@ -311,11 +311,11 @@ export default class ContributeDetail extends Vue {
       rule_id: this.$route.query.id,
       total_money: this.formData.total_money,
       param: JSON.stringify(rules)
-    };
+    }
 
     if (!emptyObject(postData, 1)) {
       fun.error({msg: '请正确填写信息'})
-      return;
+      return
     }
 
     this.dialogInstance.loading = true
@@ -361,29 +361,29 @@ export default class ContributeDetail extends Vue {
 </script>
 
 <style lang="less" scoped>
-  .info {
-    display: flex;
-    align-items: center;
-    padding: 5px 0 20px 0;
+	.info {
+		display: flex;
+		align-items: center;
+		padding: 5px 0 20px 0;
 
-    .info-item {
-      margin-right: 20px;
+		.info-item {
+			margin-right: 20px;
 
-      .label {
-        color: #888;
-        margin-right: 3px;
-      }
+			.label {
+				color: #888;
+				margin-right: 3px;
+			}
 
-      .val {
-        color: #444;
-      }
+			.val {
+				color: #444;
+			}
 
-    }
-  }
+		}
+	}
 
-  .el-icon-delete {
-    &:hover {
-      color: #F43131;
-    }
-  }
+	.el-icon-delete {
+		&:hover {
+			color: #F43131;
+		}
+	}
 </style>

@@ -1,120 +1,113 @@
 <template>
-  <div class="home-wrap">
-    <div style="padding: 20px">
-      <!--      get_self_store_prod-->
-      <el-tabs @tab-click="handleClick" v-model="activeName">
-        <el-tab-pane label="出售中" name="1"></el-tab-pane>
-        <el-tab-pane label="已售完" name="2"></el-tab-pane>
-        <el-tab-pane label="已下架" name="3"></el-tab-pane>
-        <el-tab-pane label="待审核" name="4"></el-tab-pane>
-        <el-tab-pane label="已驳回" name="5"></el-tab-pane>
-      </el-tabs>
-      <div class="padding10">
-        <!--        <el-button size="mini" class="" type="primary" @click="goProduct">发布商品</el-button>-->
-        <el-button @click="batch(4)" class="" size="mini" type="primary">批量设置佣金</el-button>
-        <el-button @click="batch(3)" class="" size="mini" type="primary">批量重生二维码</el-button>
-        <el-button @click="batch(2)" class="" size="mini" type="primary">批量上架</el-button>
-        <el-button @click="batch(1)" class="" size="mini" type="primary">批量下架</el-button>
-        <el-button @click="batch(5)" class="" size="mini" type="primary">批量审核</el-button>
-        <el-button @click="batch(6)" class="" size="mini" type="primary">批量禁售</el-button>
-<!--        <el-button @click="batch(7)" class="" size="mini" type="primary">批量删除</el-button>-->
-      </div>
-      <fun-table
-        :_pageSize="dataTableOpt.pageSize"
-        :_totalCount="dataTableOpt.totalCount"
-        :act="dataTableOpt.act"
-        :columns="dataTableOpt.columns"
-        :dataList="dataTableOpt.dataList"
-        :formSize="'small'"
-        :isRow="true"
-        :is_paginate="dataTableOpt.is_paginate"
-        @currentChange="currentChange"
-        @handleSizeChange="handleSizeChange"
-        @reset="reset"
-        @selectVal="selectVal"
-        @submit="submit"
-      >
-        <template slot="Products_Name-column" slot-scope="props">
-          <div style="display: flex;align-items: center;margin-left: 10px">
-            <img :src="props.row.img_url" height="100px" width="90px">
-            <span style="margin-left: 10px">{{props.row.Products_Name}}</span>
-          </div>
-        </template>
-        <template slot="Products_Profit-column" slot-scope="props">
-          <span @click="dissetting(props.row.Products_ID)" class="spans" style="margin-right: 0px">查看详情</span>
-        </template>
-        <template slot="Products_Qrcode-column" slot-scope="props">
-          <el-image
-            :preview-src-list="imgPro"
-            :src="props.row.Products_Qrcode"
-            @click="changeImg(props.row.Products_Qrcode)"
-            style="width: 70px; height: 70px">
-          </el-image>
-          <!--          <img height="70px" width="70px" :src="props.row.Products_Qrcode">-->
-        </template>
-        <template slot="attr-column" slot-scope="props">
-          <div v-for="(item,index) of props.row.oattrs">
-            <el-tag style="width:80px;margin:0 auto;margin-bottom: 5px;display: block;">{{item}}
-            </el-tag>
-          </div>
-        </template>
-        <template slot="Products_PriceX-column" slot-scope="props">
-          <span>¥ {{props.row.Products_PriceX}}</span>
-        </template>
+	<div class="home-wrap">
+		<div style="padding: 20px">
+			<!--      get_self_store_prod-->
+			<el-tabs @tab-click="handleClick" v-model="activeName">
+				<el-tab-pane label="出售中" name="1"></el-tab-pane>
+				<el-tab-pane label="已售完" name="2"></el-tab-pane>
+				<el-tab-pane label="已下架" name="3"></el-tab-pane>
+				<el-tab-pane label="待审核" name="4"></el-tab-pane>
+				<el-tab-pane label="已驳回" name="5"></el-tab-pane>
+			</el-tabs>
+			<div class="padding10">
+				<!--        <el-button size="mini" class="" type="primary" @click="goProduct">发布商品</el-button>-->
+				<el-button @click="batch(4)" class="" size="mini" type="primary">批量设置佣金</el-button>
+				<el-button @click="batch(3)" class="" size="mini" type="primary">批量重生二维码</el-button>
+				<el-button @click="batch(2)" class="" size="mini" type="primary">批量上架</el-button>
+				<el-button @click="batch(1)" class="" size="mini" type="primary">批量下架</el-button>
+				<el-button @click="batch(5)" class="" size="mini" type="primary">批量审核</el-button>
+				<el-button @click="batch(6)" class="" size="mini" type="primary">批量禁售</el-button>
+				<!--        <el-button @click="batch(7)" class="" size="mini" type="primary">批量删除</el-button>-->
+			</div>
+			<fun-table
+			:_pageSize="dataTableOpt.pageSize"
+			:_totalCount="dataTableOpt.totalCount"
+			:act="dataTableOpt.act"
+			:columns="dataTableOpt.columns"
+			:dataList="dataTableOpt.dataList"
+			:formSize="'small'"
+			:isRow="true"
+			:is_paginate="dataTableOpt.is_paginate"
+			@currentChange="currentChange"
+			@handleSizeChange="handleSizeChange"
+			@reset="reset"
+			@selectVal="selectVal"
+			@submit="submit"
+			>
+				<template slot="Products_Name-column" slot-scope="props">
+					<div style="display: flex;align-items: center;margin-left: 10px">
+						<img :src="props.row.img_url" height="100px" width="90px">
+						<span style="margin-left: 10px">{{props.row.Products_Name}}</span>
+					</div>
+				</template>
+				<template slot="Products_Profit-column" slot-scope="props">
+					<span @click="dissetting(props.row.Products_ID)" class="spans" style="margin-right: 0px">查看详情</span>
+				</template>
+				<template slot="Products_Qrcode-column" slot-scope="props">
+					<el-image
+					:preview-src-list="imgPro"
+					:src="props.row.Products_Qrcode"
+					@click="changeImg(props.row.Products_Qrcode)"
+					style="width: 70px; height: 70px">
+					</el-image>
+					<!--          <img height="70px" width="70px" :src="props.row.Products_Qrcode">-->
+				</template>
+				<template slot="attr-column" slot-scope="props">
+					<div v-for="(item,index) of props.row.oattrs">
+						<el-tag style="width:80px;margin:0 auto;margin-bottom: 5px;display: block;">{{item}}
+						</el-tag>
+					</div>
+				</template>
+				<template slot="Products_PriceX-column" slot-scope="props">
+					<span>¥ {{props.row.Products_PriceX}}</span>
+				</template>
 
-        <template slot="Products_Sales-column" slot-scope="props">
-          <span>{{props.row.Products_Sales}}/{{props.row.Products_Count}}</span>
-        </template>
-        <template slot="operate-column" slot-scope="props">
-          <span @click="goEdit(props)" class="spans">查看</span>
-<!--          <span @click="delProduct(props)" class="spans">删除</span>-->
-          <span @click="agreePro(props)" class="spans"
-                v-if="Number(activeName)===4||Number(activeName)===5">审核</span>
-        </template>
-      </fun-table>
-    </div>
+				<template slot="Products_Sales-column" slot-scope="props">
+					<span>{{props.row.Products_Sales}}/{{props.row.Products_Count}}</span>
+				</template>
+				<template slot="operate-column" slot-scope="props">
+					<span @click="goEdit(props)" class="spans">查看</span>
+					<!--          <span @click="delProduct(props)" class="spans">删除</span>-->
+					<span @click="agreePro(props)" class="spans"
+					      v-if="Number(activeName)===4||Number(activeName)===5">审核</span>
+				</template>
+			</fun-table>
+		</div>
 
 
-    <el-dialog :visible.sync="settingShow" title="商品佣金详情">
-      <el-table :data="settingData">
-        <el-table-column align="center" label="序号" type="index" width="150"></el-table-column>
-        <el-table-column align="center" label="级别名称" property="level_name"
-                         width="200"></el-table-column>
-        <el-table-column align="center" label="佣金明细">
-          <template slot-scope="scope">
-            <div v-for="(item,index) of settingData[scope.$index].commisions">
-              {{item.label}}{{item.value}}(佣金比例的百分比)
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
+		<el-dialog :visible.sync="settingShow" title="商品佣金详情">
+			<el-table :data="settingData">
+				<el-table-column align="center" label="序号" type="index" width="150"></el-table-column>
+				<el-table-column align="center" label="级别名称" property="level_name"
+				                 width="200"></el-table-column>
+				<el-table-column align="center" label="佣金明细">
+					<template slot-scope="scope">
+						<div v-for="(item,index) of settingData[scope.$index].commisions">
+							{{item.label}}{{item.value}}(佣金比例的百分比)
+						</div>
+					</template>
+				</el-table-column>
+			</el-table>
+		</el-dialog>
 
-    <!--    <el-dialog-->
-    <!--      :visible.sync="centerDialogVisible"-->
-    <!--      modal-->
-    <!--      close-on-click-modal-->
-    <!--      custom-class="dialog"-->
-    <!--    >-->
-    <!--      <el-carousel :autoplay="false" arrow="always">-->
-    <!--        <el-carousel-item v-for="item in data" :key="item">-->
-    <!--          <img :src="item">-->
-    <!--        </el-carousel-item>-->
-    <!--    </el-carousel>-->
-    <!--    </el-dialog>-->
-  </div>
+		<!--    <el-dialog-->
+		<!--      :visible.sync="centerDialogVisible"-->
+		<!--      modal-->
+		<!--      close-on-click-modal-->
+		<!--      custom-class="dialog"-->
+		<!--    >-->
+		<!--      <el-carousel :autoplay="false" arrow="always">-->
+		<!--        <el-carousel-item v-for="item in data" :key="item">-->
+		<!--          <img :src="item">-->
+		<!--        </el-carousel-item>-->
+		<!--    </el-carousel>-->
+		<!--    </el-dialog>-->
+	</div>
 </template>
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
-import {
-  batchSetting,
-  bizProdList,
-  delProduct,
-  getProductCategory,
-  getShippingTemplate,
-  lookDissetting
-} from '@/common/fetch';
-import {createTmplArray, findArrayIdx, objTranslate, plainArray} from '@/common/utils';
+import {batchSetting, bizProdList, getProductCategory, getShippingTemplate, lookDissetting} from '@/common/fetch'
+import {createTmplArray, findArrayIdx, objTranslate, plainArray} from '@/common/utils'
 
 const getParentsCount = (arr, key, pkey, val, tempArr) => {
   var idx = false
@@ -122,7 +115,7 @@ const getParentsCount = (arr, key, pkey, val, tempArr) => {
     let item = arr[i]
     if (item[key] == val[pkey]) {
       idx = i
-      break;
+      break
     }
   }
   if (idx !== false) {
@@ -136,7 +129,7 @@ const restArr = (arr, key) => {
   plainArray(arr, key, plainArr)
   for (var i in plainArr) {
     let item = plainArr[i]
-    item.parent_count = 0;
+    item.parent_count = 0
     let tempArr = []
     if (item['Category_ParentID']) {
       getParentsCount(plainArr, 'Category_ID', 'Category_ParentID', item, tempArr)
@@ -296,7 +289,7 @@ export default class ProductList extends Vue {
   }
 
   handleClick() {
-    this.dataTableOpt.page=1
+    this.dataTableOpt.page = 1
     this.getProduct()
   }
 
@@ -373,14 +366,14 @@ export default class ProductList extends Vue {
             this.$message({
               message: res.msg,
               type: 'success'
-            });
+            })
             this.getProduct()
           }
         })
 
       }).catch(() => {
 
-      });
+      })
     } else if (type == 5) {
       this.$confirm('此操作将会审核，您确定吗？', '提示', {
         confirmButtonText: '确定',
@@ -392,14 +385,14 @@ export default class ProductList extends Vue {
             this.$message({
               message: res.msg,
               type: 'success'
-            });
+            })
             this.getProduct()
           }
         })
 
       }).catch(() => {
 
-      });
+      })
     } else if (type == 6) {
       this.$confirm('此操作将会禁售，您确定吗？', '提示', {
         confirmButtonText: '确定',
@@ -411,14 +404,14 @@ export default class ProductList extends Vue {
             this.$message({
               message: res.msg,
               type: 'success'
-            });
+            })
             this.getProduct()
           }
         })
 
       }).catch(() => {
 
-      });
+      })
     } else if (type == 7) {
       this.$confirm('此操作将会删除，您确定吗？', '提示', {
         confirmButtonText: '确定',
@@ -430,21 +423,21 @@ export default class ProductList extends Vue {
             this.$message({
               message: res.msg,
               type: 'success'
-            });
+            })
             this.getProduct()
           }
         })
 
       }).catch(() => {
 
-      });
+      })
     } else {
       batchSetting(data).then(res => {
         if (res.errorCode == 0) {
           this.$message({
             message: res.msg,
             type: 'success'
-          });
+          })
           this.getProduct()
         }
       })
@@ -455,25 +448,25 @@ export default class ProductList extends Vue {
   //删除
   delProduct(props) {
     let id = [props.row.Products_ID]
-    console.log(id,"sss")
+    console.log(id, "sss")
     this.$confirm('你确定要删除这个商品吗', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      batchSetting({ids: id,type:7}).then(res => {
+      batchSetting({ids: id, type: 7}).then(res => {
         if (res.errorCode == 0) {
           this.$message({
             message: '删除成功',
             type: 'success'
-          });
-          this.getProduct();
+          })
+          this.getProduct()
         }
       })
 
     }).catch(() => {
 
-    });
+    })
   }
 
   //跳转编辑页面
@@ -583,11 +576,11 @@ export default class ProductList extends Vue {
 }
 </script>
 <style lang="less" scoped>
-  .spans {
-    color: #428CF7;
-    margin-right: 4px;
-    cursor: pointer;
-  }
+	.spans {
+		color: #428CF7;
+		margin-right: 4px;
+		cursor: pointer;
+	}
 
 
 </style>

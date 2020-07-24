@@ -1,18 +1,18 @@
 <template>
-  <div class="page-wrap">
-    <div class="artice">
-      <div class="head">
-        <div class="title">{{info.title}}</div>
-        <div class="create_at">发布时间:{{info.create_at}}</div>
-      </div>
-      <div class="container" v-html="info.content"></div>
-    </div>
-  </div>
+	<div class="page-wrap">
+		<div class="artice">
+			<div class="head">
+				<div class="title">{{info.title}}</div>
+				<div class="create_at">发布时间:{{info.create_at}}</div>
+			</div>
+			<div class="container" v-html="info.content"></div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
 
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator'
 
 
 @Component({
@@ -127,29 +127,29 @@ export default class SystemNotice extends Vue {
 }
 </script>
 <style lang="less" scoped>
-  .artice {
-    width: 677px;
-    margin: 0 auto;
-    padding-top: 32px;
+	.artice {
+		width: 677px;
+		margin: 0 auto;
+		padding-top: 32px;
 
-    .head {
-      margin-bottom: 10px;
+		.head {
+			margin-bottom: 10px;
 
-      .title {
-        font-size: 22px;
-        line-height: 1.4;
-        margin-bottom: 14px;
-      }
+			.title {
+				font-size: 22px;
+				line-height: 1.4;
+				margin-bottom: 14px;
+			}
 
-      .create_at {
-        font-size: 15px;
-        color: rgba(0, 0, 0, .3);
-      }
-    }
+			.create_at {
+				font-size: 15px;
+				color: rgba(0, 0, 0, .3);
+			}
+		}
 
-    .container {
-      line-height: 1.4;
-    }
-  }
+		.container {
+			line-height: 1.4;
+		}
+	}
 </style>
 

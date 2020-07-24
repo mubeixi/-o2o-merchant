@@ -1,37 +1,36 @@
 <template>
-  <div ref='renderContent'>
+	<div ref='renderContent'>
 
-  </div>
+	</div>
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue} from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-property-decorator'
 
 
-    @Component({
-        filters:{
+@Component({
+  filters: {}
+})
 
-        }
-    })
+export default class MyRender extends Vue {
 
-    export default class MyRender extends Vue {
+  @Prop({
+    type: Object
+  })
+  row
 
-        @Prop({
-            type:Object
-        })
-        row
-
-        @Prop({
-            type:Function,
-            default:()=>{}
-        })
-        render
-
-        mounted(){
-            this.$refs.renderContent.innerHTML = this.render()
-
-        }
+  @Prop({
+    type: Function,
+    default: () => {
     }
+  })
+  render
+
+  mounted() {
+    this.$refs.renderContent.innerHTML = this.render()
+
+  }
+}
 
 </script>
 

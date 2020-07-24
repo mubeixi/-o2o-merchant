@@ -26,111 +26,111 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {mapActions, mapState} from 'vuex';
-import {objTranslate} from "../common/utils";
+import {Component, Vue} from 'vue-property-decorator'
+import {mapActions, mapState} from 'vuex'
+import {objTranslate} from "../common/utils"
 
 
 // 没有继承，是依靠vuex的数据。也不碍事啊
 @Component({
-	components: {},
-	props: {
-		isDiy: {
-			default: false,
-			type: Boolean
-		}
-		// eTitle:{type:String, default:'属性设置'}
-	},
-	data() {
-		return {
-			topOptions: [{
-				value: 'default',
-				label: '同城闪送 && 好店'
-			}, {
-				value: 'none',
-				label: '纯净页面'
-			}],
-			// form:{}
-		};
-	},
-	filters: {},
-	watch: {
-		// eTitle:{
-		//     immediate:true,
-		//     handler(val){
-		//         this.setComponentTitle({title:val,desc:''})
-		//     }
-		// }
-	},
-	computed: {
-		form: {
-			get() {
+  components: {},
+  props: {
+    isDiy: {
+      default: false,
+      type: Boolean
+    }
+    // eTitle:{type:String, default:'属性设置'}
+  },
+  data() {
+    return {
+      topOptions: [{
+        value: 'default',
+        label: '同城闪送 && 好店'
+      }, {
+        value: 'none',
+        label: '纯净页面'
+      }],
+      // form:{}
+    }
+  },
+  filters: {},
+  watch: {
+    // eTitle:{
+    //     immediate:true,
+    //     handler(val){
+    //         this.setComponentTitle({title:val,desc:''})
+    //     }
+    // }
+  },
+  computed: {
+    form: {
+      get() {
 
-				return Object.assign({topTheme:'default'}, this.$store.state.system)
-			},
-			set(nval) {
-				//this.setSystem(nval)
-			},
-		},
-		activeAttr: {
-			get() {
-				return this.$store.state.activeAttr;
-			},
-			set(nval) {
+        return Object.assign({topTheme: 'default'}, this.$store.state.system)
+      },
+      set(nval) {
+        //this.setSystem(nval)
+      },
+    },
+    activeAttr: {
+      get() {
+        return this.$store.state.activeAttr
+      },
+      set(nval) {
 
-				// this.setActiveAttr(navl)
-			},
-		},
-		...mapState(['tmplData']),
-	},
-	created() {
-		this.pageEl = this
-		//this.form = Object.assign({},this.$store.state.system);
-	},
+        // this.setActiveAttr(navl)
+      },
+    },
+    ...mapState(['tmplData']),
+  },
+  created() {
+    this.pageEl = this
+    //this.form = Object.assign({},this.$store.state.system);
+  },
 
-	methods: {
-		bindTopThemeChange(val) {
+  methods: {
+    bindTopThemeChange(val) {
       console.log(val)
       //this.$store.state.system.topTheme = val
 
-			this.setSystem(Object.assign(objTranslate(this.form),{topTheme:val}));
-		},
-		titleEv(val) {
-			console.log(val)
-			this.$store.state.system.title = val
+      this.setSystem(Object.assign(objTranslate(this.form), {topTheme: val}))
+    },
+    titleEv(val) {
+      console.log(val)
+      this.$store.state.system.title = val
 
-			console.log(this.$store.state.system.title)
+      console.log(this.$store.state.system.title)
 
-			console.log('文字改变了')
-		},
-		colorEv(val) {
-			// this.color1 = val
-			// this.clickObj.model = val
-			// this.currentData.model = val
+      console.log('文字改变了')
+    },
+    colorEv(val) {
+      // this.color1 = val
+      // this.clickObj.model = val
+      // this.currentData.model = val
 
-			this.$store.state.system.bgcolor = val
-			console.log(this.$store.state.system.bgcolor)
+      this.$store.state.system.bgcolor = val
+      console.log(this.$store.state.system.bgcolor)
 
-			console.log('颜色改变了')
+      console.log('颜色改变了')
 
-			// 用这个代替是一样的
+      // 用这个代替是一样的
 
-		},
-		colorClick(item) {
+    },
+    colorClick(item) {
 
-		},
-		...mapActions(['setActiveAttr', 'setEditStatus', 'setComponentTitle', 'setSystem']),
-	},
+    },
+    ...mapActions(['setActiveAttr', 'setEditStatus', 'setComponentTitle', 'setSystem']),
+  },
 
 })
 
 
 export default class CommonAttrComponent extends Vue {
 
-	// form = {
-	//   'bgcolor':'#ffffff',
-	//   'title':'首页'
-	// }
+  // form = {
+  //   'bgcolor':'#ffffff',
+  //   'title':'首页'
+  // }
 
 }
 </script>

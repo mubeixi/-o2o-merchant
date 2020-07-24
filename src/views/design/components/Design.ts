@@ -1,5 +1,5 @@
-import {randLenStr} from "../../../common/utils";
-import {fun} from "../../../common";
+import {randLenStr} from "../../../common/utils"
+import {fun} from "../../../common"
 
 const getDefaultDom = () => {
   return {
@@ -64,16 +64,16 @@ export class Design {
     let self = this
 
     //这里只允许搜索框拖拽
-    sortEl = document.querySelectorAll('.mobile > .js-single-dom');
-    console.log(sortEl);// 所有的元素，批量添加拖动事件监听
+    sortEl = document.querySelectorAll('.mobile > .js-single-dom')
+    console.log(sortEl)// 所有的元素，批量添加拖动事件监听
     Array.from(sortEl).map((v: any) => {
-      v.ondragstart = self.sortStart;
-      v.ondrag = self.sortDrag;
-      v.ondragend = self.sortDragend;
-      v.ondragenter = self.sortDragenter;
-      v.ondragover = self.sortDragover;
-      v.ondragleave = self.sortDragleave;
-    });
+      v.ondragstart = self.sortStart
+      v.ondrag = self.sortDrag
+      v.ondragend = self.sortDragend
+      v.ondragenter = self.sortDragenter
+      v.ondragover = self.sortDragover
+      v.ondragleave = self.sortDragleave
+    })
   }
 
   static sortStart(e) {
@@ -82,10 +82,10 @@ export class Design {
 
   static sortDrag(e) {
 
-    let TARGET = e.target;
-    const sectionEl = document.querySelectorAll('.canvas > section')[0];
+    let TARGET = e.target
+    const sectionEl = document.querySelectorAll('.canvas > section')[0]
 
-    if (!sectionEl) return;
+    if (!sectionEl) return
     let preBoundingClientRect = sectionEl.getBoundingClientRect()
 
     //在这里插入一下拖动搜索框的逻辑

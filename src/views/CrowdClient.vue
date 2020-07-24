@@ -1,194 +1,194 @@
 <template>
-  <div class="labelManagement">
-    <div class="labelMain">
-      <div class="crowdName" style="margin-bottom: 10px;">
-        我的人群
-      </div>
-      <el-tabs v-model="tabs">
-        <el-tab-pane label="自定义人群" name="first">
-          <div @click="crowdAdd" class="crowdAdd current">新建人群</div>
-          <el-table
-            :data="tableData"
-            border
-            class="wzw-tableS"
-            style="width: 80%">
-            <el-table-column
-              align="center"
-              label="人群名称"
-              prop="name"
-              width="230">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="人群定义"
-              prop="name"
-            >
-              <template slot-scope="scope">
-                <template v-for="(item,index) of tableData[scope.$index].conditions">
-                  <div class="divLeft" v-if="index==0">{{item}}</div>
-                </template>
-                <div @click="lookDetail(scope.$index)" class="divLeft curr"
-                     v-if="tableData[scope.$index].conditions">查看详情
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="人群数量"
-              prop="group_num"
-              width="140">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="更新时间"
-              prop="updated_at"
-              width="170">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="操作"
-              width="250"
-            >
-              <template slot-scope="scope">
+	<div class="labelManagement">
+		<div class="labelMain">
+			<div class="crowdName" style="margin-bottom: 10px;">
+				我的人群
+			</div>
+			<el-tabs v-model="tabs">
+				<el-tab-pane label="自定义人群" name="first">
+					<div @click="crowdAdd" class="crowdAdd current">新建人群</div>
+					<el-table
+					:data="tableData"
+					border
+					class="wzw-tableS"
+					style="width: 80%">
+						<el-table-column
+						align="center"
+						label="人群名称"
+						prop="name"
+						width="230">
+						</el-table-column>
+						<el-table-column
+						align="center"
+						label="人群定义"
+						prop="name"
+						>
+							<template slot-scope="scope">
+								<template v-for="(item,index) of tableData[scope.$index].conditions">
+									<div class="divLeft" v-if="index==0">{{item}}</div>
+								</template>
+								<div @click="lookDetail(scope.$index)" class="divLeft curr"
+								     v-if="tableData[scope.$index].conditions">查看详情
+								</div>
+							</template>
+						</el-table-column>
+						<el-table-column
+						align="center"
+						label="人群数量"
+						prop="group_num"
+						width="140">
+						</el-table-column>
+						<el-table-column
+						align="center"
+						label="更新时间"
+						prop="updated_at"
+						width="170">
+						</el-table-column>
+						<el-table-column
+						align="center"
+						label="操作"
+						width="250"
+						>
+							<template slot-scope="scope">
                 <span @click="showStep(tableData[scope.$index].id)"
                       class="spans current">操作</span><span class="spans">|</span><span
-                @click="ediT(tableData[scope.$index].id)" class="spans current">编辑</span><span
-                class="spans">|</span><span @click="delList(tableData[scope.$index].id)"
-                                            class="spans current">删除</span>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-tab-pane>
-        <!--        <el-tab-pane label="推荐人群" name="second">-->
-        <!--          <el-table-->
-        <!--            class="wzw-tableS"-->
-        <!--            :data="tableData"-->
-        <!--            border-->
-        <!--            style="width: 80%">-->
-        <!--            <el-table-column-->
-        <!--              prop="date"-->
-        <!--              label="人群名称"-->
-        <!--              align="center"-->
-        <!--              width="230">-->
-        <!--            </el-table-column>-->
-        <!--            <el-table-column-->
-        <!--              prop="name"-->
-        <!--              label="人群定义"-->
-        <!--              align="center"-->
-        <!--            >-->
-        <!--            </el-table-column>-->
-        <!--            <el-table-column-->
-        <!--              prop="address"-->
-        <!--              align="center"-->
-        <!--              label="推荐理由">-->
-        <!--            </el-table-column>-->
-        <!--            <el-table-column-->
-        <!--              prop="time"-->
-        <!--              align="center"-->
-        <!--              width="140"-->
-        <!--              label="人群数量">-->
-        <!--            </el-table-column>-->
-        <!--            <el-table-column-->
-        <!--              label="操作"-->
-        <!--              align="center"-->
-        <!--              width="140"-->
-        <!--            >-->
-        <!--              <template slot-scope="scope">-->
-        <!--                <span class="spans">短信群发</span></template>-->
-        <!--            </el-table-column>-->
-        <!--          </el-table>-->
-        <!--        </el-tab-pane>-->
-      </el-tabs>
-      <el-pagination
-        :page-size="pageSize"
-        :total="totalCount"
-        @current-change="currentChange"
-        background
-        class="pagination"
-        layout="prev, pager, next">
-      </el-pagination>
+							@click="ediT(tableData[scope.$index].id)" class="spans current">编辑</span><span
+							class="spans">|</span><span @click="delList(tableData[scope.$index].id)"
+                                          class="spans current">删除</span>
+							</template>
+						</el-table-column>
+					</el-table>
+				</el-tab-pane>
+				<!--        <el-tab-pane label="推荐人群" name="second">-->
+				<!--          <el-table-->
+				<!--            class="wzw-tableS"-->
+				<!--            :data="tableData"-->
+				<!--            border-->
+				<!--            style="width: 80%">-->
+				<!--            <el-table-column-->
+				<!--              prop="date"-->
+				<!--              label="人群名称"-->
+				<!--              align="center"-->
+				<!--              width="230">-->
+				<!--            </el-table-column>-->
+				<!--            <el-table-column-->
+				<!--              prop="name"-->
+				<!--              label="人群定义"-->
+				<!--              align="center"-->
+				<!--            >-->
+				<!--            </el-table-column>-->
+				<!--            <el-table-column-->
+				<!--              prop="address"-->
+				<!--              align="center"-->
+				<!--              label="推荐理由">-->
+				<!--            </el-table-column>-->
+				<!--            <el-table-column-->
+				<!--              prop="time"-->
+				<!--              align="center"-->
+				<!--              width="140"-->
+				<!--              label="人群数量">-->
+				<!--            </el-table-column>-->
+				<!--            <el-table-column-->
+				<!--              label="操作"-->
+				<!--              align="center"-->
+				<!--              width="140"-->
+				<!--            >-->
+				<!--              <template slot-scope="scope">-->
+				<!--                <span class="spans">短信群发</span></template>-->
+				<!--            </el-table-column>-->
+				<!--          </el-table>-->
+				<!--        </el-tab-pane>-->
+			</el-tabs>
+			<el-pagination
+			:page-size="pageSize"
+			:total="totalCount"
+			@current-change="currentChange"
+			background
+			class="pagination"
+			layout="prev, pager, next">
+			</el-pagination>
 
 
-      <el-dialog
-        :visible.sync="isStep"
-        @close="stepClose"
-        append-to-body
-        center
-        class="setting"
-        title="选择操作"
-        width="40%"
-      >
-        <!--          <div class="divLin">-->
-        <!--            <span class="curr" @click="goMessage">群发短信</span>-->
-        <!--            <span class="marginLe">此处是群发短信相关解释说明此处是群发短信解释说明</span>-->
-        <!--          </div>-->
+			<el-dialog
+			:visible.sync="isStep"
+			@close="stepClose"
+			append-to-body
+			center
+			class="setting"
+			title="选择操作"
+			width="40%"
+			>
+				<!--          <div class="divLin">-->
+				<!--            <span class="curr" @click="goMessage">群发短信</span>-->
+				<!--            <span class="marginLe">此处是群发短信相关解释说明此处是群发短信解释说明</span>-->
+				<!--          </div>-->
 
-        <div class="divLin">
-          <span @click="goStation" class="curr">群发站内信</span>
-          <span class="marginLe">此处是群发站内信相关解释说明</span>
-        </div>
+				<div class="divLin">
+					<span @click="goStation" class="curr">群发站内信</span>
+					<span class="marginLe">此处是群发站内信相关解释说明</span>
+				</div>
 
-        <div class="divLin">
-          <span @click="labelSetting" class="curr">设置标签</span>
-          <span class="marginLe">此处是设置标签相关解释说明此处是群发短信解释说明</span>
-        </div>
+				<div class="divLin">
+					<span @click="labelSetting" class="curr">设置标签</span>
+					<span class="marginLe">此处是设置标签相关解释说明此处是群发短信解释说明</span>
+				</div>
 
-        <div class="divLin">
-          <span @click="goCoupon" class="curr">赠送优惠券</span>
-          <span class="marginLe">此处是赠送优惠券相关解释说明此处是群发短信解释说明</span>
-        </div>
+				<div class="divLin">
+					<span @click="goCoupon" class="curr">赠送优惠券</span>
+					<span class="marginLe">此处是赠送优惠券相关解释说明此处是群发短信解释说明</span>
+				</div>
 
-        <div class="divLin">
-          <span @click="goGifts" class="curr">赠送赠品</span>
-          <span class="marginLe">此处是赠送赠品相关解释说明此处是群发短信解释说明</span>
-        </div>
-
-
-      </el-dialog>
+				<div class="divLin">
+					<span @click="goGifts" class="curr">赠送赠品</span>
+					<span class="marginLe">此处是赠送赠品相关解释说明此处是群发短信解释说明</span>
+				</div>
 
 
-      <el-dialog
-        :visible.sync="isLabel"
-        @close="labelClose"
-        append-to-body
-        center
-        class="setting"
-        title="设置标签"
-        width="30%"
-      >
-        <el-form size="small">
-          <el-form-item label="人群对象：">
-            <el-select placeholder="请选择" style="width: 200px" v-model="crowdValue">
-              <template v-for="(shop,shopIn) in crowdList">
-                <el-option :label="shop.group_name" :value="shop.id"></el-option>
-              </template>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item label="选择标签：">
-            <el-select placeholder="请选择" style="width: 200px" v-model="labelValue">
-              <template v-for="(label,labelIndex) in labelList">
-                <el-option :label="label.tag_name" :value="label.id"></el-option>
-              </template>
-            </el-select>
-          </el-form-item>
+			</el-dialog>
 
 
-          <el-button @click="labelClose" class="cancel" size="small">取消</el-button>
-          <el-button :loading="loading" @click="saveCrowd" class="spanButton" size="small"
-                     type="primary">保存
-          </el-button>
-        </el-form>
+			<el-dialog
+			:visible.sync="isLabel"
+			@close="labelClose"
+			append-to-body
+			center
+			class="setting"
+			title="设置标签"
+			width="30%"
+			>
+				<el-form size="small">
+					<el-form-item label="人群对象：">
+						<el-select placeholder="请选择" style="width: 200px" v-model="crowdValue">
+							<template v-for="(shop,shopIn) in crowdList">
+								<el-option :label="shop.group_name" :value="shop.id"></el-option>
+							</template>
+						</el-select>
+					</el-form-item>
 
-      </el-dialog>
+					<el-form-item label="选择标签：">
+						<el-select placeholder="请选择" style="width: 200px" v-model="labelValue">
+							<template v-for="(label,labelIndex) in labelList">
+								<el-option :label="label.tag_name" :value="label.id"></el-option>
+							</template>
+						</el-select>
+					</el-form-item>
 
 
-    </div>
-  </div>
+					<el-button @click="labelClose" class="cancel" size="small">取消</el-button>
+					<el-button :loading="loading" @click="saveCrowd" class="spanButton" size="small"
+					           type="primary">保存
+					</el-button>
+				</el-form>
+
+			</el-dialog>
+
+
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator'
 import {delCrowd, getCrowds, initCrowd, tagCrowd} from '@/common/fetch'
 
 @Component({
@@ -290,7 +290,7 @@ export default class AddProduct extends Vue {
         this.$message({
           message: res.msg,
           type: 'success'
-        });
+        })
         let that = this
         setTimeout(function () {
           that.isLabel = false
@@ -326,7 +326,7 @@ export default class AddProduct extends Vue {
     }
     this.$alert(arr, '人群定义', {
       dangerouslyUseHTMLString: true
-    });
+    })
   }
 
   currentChange(val) {
@@ -356,13 +356,13 @@ export default class AddProduct extends Vue {
           this.$message({
             message: res.msg,
             type: 'success'
-          });
-          this.getList();
+          })
+          this.getList()
         } else {
           this.$message({
             message: res.msg,
             type: 'error'
-          });
+          })
         }
       })
     }).catch(() => {
@@ -389,98 +389,98 @@ export default class AddProduct extends Vue {
 </script>
 
 <style lang="less" scoped>
-  @bgColor: #428CF7;
+	@bgColor: #428CF7;
 
-  .labelManagement {
-    background-color: #f6f6f6;
-    padding-top: 18px;
-    padding-left: 19px;
-    width: 100%;
-    box-sizing: border-box;
+	.labelManagement {
+		background-color: #f6f6f6;
+		padding-top: 18px;
+		padding-left: 19px;
+		width: 100%;
+		box-sizing: border-box;
 
-    .labelMain {
-      background-color: #FFFFFF;
-      width: 100%;
-      box-sizing: border-box;
-      padding-top: 30px;
-      padding-left: 24px;
-    }
-  }
+		.labelMain {
+			background-color: #FFFFFF;
+			width: 100%;
+			box-sizing: border-box;
+			padding-top: 30px;
+			padding-left: 24px;
+		}
+	}
 
-  .crowdName {
-    font-size: 16px;
-    color: #333333;
-    height: 50px;
-    line-height: 50px;
-    padding-left: 20px;
-    background-color: #F8F8F8;
-    margin-right: 100px;
-  }
+	.crowdName {
+		font-size: 16px;
+		color: #333333;
+		height: 50px;
+		line-height: 50px;
+		padding-left: 20px;
+		background-color: #F8F8F8;
+		margin-right: 100px;
+	}
 
-  .crowdAdd {
-    margin-bottom: 15px;
-    width: 80px;
-    height: 34px;
-    background: rgba(66, 140, 247, 1);
-    font-size: 14px;
-    color: #F3F3F3;
-    text-align: center;
-    line-height: 34px;
-    margin-top: 24px;
-  }
+	.crowdAdd {
+		margin-bottom: 15px;
+		width: 80px;
+		height: 34px;
+		background: rgba(66, 140, 247, 1);
+		font-size: 14px;
+		color: #F3F3F3;
+		text-align: center;
+		line-height: 34px;
+		margin-top: 24px;
+	}
 
-  .pagination {
-    padding-top: 73px;
-    margin-left: 30%;
-  }
+	.pagination {
+		padding-top: 73px;
+		margin-left: 30%;
+	}
 
-  .spans {
-    color: @bgColor;
-    margin-left: 2px;
-    margin-right: 2px;
-  }
+	.spans {
+		color: @bgColor;
+		margin-left: 2px;
+		margin-right: 2px;
+	}
 
-  .wzw-tableS th {
-    color: #333333 !important;
-    background-color: #F9FAFC !important;
-    border: none !important;
-    border-top: 1px solid #EAEAEA !important;
-    border-left: 1px solid #EAEAEA !important;
-  }
+	.wzw-tableS th {
+		color: #333333 !important;
+		background-color: #F9FAFC !important;
+		border: none !important;
+		border-top: 1px solid #EAEAEA !important;
+		border-left: 1px solid #EAEAEA !important;
+	}
 
-  .divLeft {
-    line-height: 20px;
-    text-align: left;
-    margin-left: 30px;
-  }
+	.divLeft {
+		line-height: 20px;
+		text-align: left;
+		margin-left: 30px;
+	}
 
-  .curr {
-    color: #428CF7;
-    cursor: pointer;
-  }
+	.curr {
+		color: #428CF7;
+		cursor: pointer;
+	}
 
-  .current {
-    cursor: pointer;
-  }
+	.current {
+		cursor: pointer;
+	}
 
-  .marginLe {
-    color: #9E9E9E;
-    margin-left: 20px;
-  }
+	.marginLe {
+		color: #9E9E9E;
+		margin-left: 20px;
+	}
 
-  .divLin {
-    height: 40px;
-    line-height: 40px;
-  }
+	.divLin {
+		height: 40px;
+		line-height: 40px;
+	}
 
-  .spanButton {
-    margin-top: 50px;
-    margin-left: 50px;
-  }
+	.spanButton {
+		margin-top: 50px;
+		margin-left: 50px;
+	}
 
-  .cancel {
-    margin-top: 50px;
-    margin-left: 90px;
-  }
+	.cancel {
+		margin-top: 50px;
+		margin-left: 90px;
+	}
 
 </style>

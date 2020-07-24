@@ -1,149 +1,149 @@
 <template>
-  <div class="labelManagement">
-    <div class="labelMain flex">
-      <div style="position: relative;margin-left: 300px">
-        <img :src="imgBase">
-        <div class="absoulate">
-          【{{signa}}】{{content}},退订回TD
-        </div>
-      </div>
-      <div class="floatRight">
-        <el-form size="small">
-          <el-form-item class="flexCenter" label="群发对象：">
-            <el-radio-group v-model="radioValue">
-              <el-radio label="0">
-                输入手机号
-              </el-radio>
-              <el-radio label="1">
-                按人群筛选
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item class="flexCenter" style="padding-left: 84px" v-if="radioValue==0">
-            <el-input
-              autosize
-              placeholder="仅支持大陆手机号，多个手机号请换行"
-              resize="none"
-              style="min-height: 85px;border: 0px;width: 200px"
-              type="textarea"
-              v-model="mobiles"></el-input>
-          </el-form-item>
-          <el-form-item class="flexCenter" style="padding-left: 84px" v-if="radioValue==1">
-            <el-select placeholder="请选择" style="width: 200px" v-model="crowdId">
-              <template v-for="(shop,shopIn) in crowdList">
-                <el-option :label="shop.name" :value="shop.id"></el-option>
-              </template>
-            </el-select>
-            <!--                <div class="error">当前可送达人数为0，请重新选择人群</div>-->
-          </el-form-item>
+	<div class="labelManagement">
+		<div class="labelMain flex">
+			<div style="position: relative;margin-left: 300px">
+				<img :src="imgBase">
+				<div class="absoulate">
+					【{{signa}}】{{content}},退订回TD
+				</div>
+			</div>
+			<div class="floatRight">
+				<el-form size="small">
+					<el-form-item class="flexCenter" label="群发对象：">
+						<el-radio-group v-model="radioValue">
+							<el-radio label="0">
+								输入手机号
+							</el-radio>
+							<el-radio label="1">
+								按人群筛选
+							</el-radio>
+						</el-radio-group>
+					</el-form-item>
+					<el-form-item class="flexCenter" style="padding-left: 84px" v-if="radioValue==0">
+						<el-input
+						autosize
+						placeholder="仅支持大陆手机号，多个手机号请换行"
+						resize="none"
+						style="min-height: 85px;border: 0px;width: 200px"
+						type="textarea"
+						v-model="mobiles"></el-input>
+					</el-form-item>
+					<el-form-item class="flexCenter" style="padding-left: 84px" v-if="radioValue==1">
+						<el-select placeholder="请选择" style="width: 200px" v-model="crowdId">
+							<template v-for="(shop,shopIn) in crowdList">
+								<el-option :label="shop.name" :value="shop.id"></el-option>
+							</template>
+						</el-select>
+						<!--                <div class="error">当前可送达人数为0，请重新选择人群</div>-->
+					</el-form-item>
 
-          <el-form-item class="flex" label="短信内容：">
-            <div class="messageBorder">
-              <div class="messageHeader">
-                <span @click="selectModel" class="current">选择模板</span> | <span @click="modelNew"
-                                                                               class="current">存为新模板</span>
-              </div>
-              <div class="messageInput">
-                <el-input
-                  autosize
-                  class="textarea"
-                  placeholder="此处为短信模板内容"
-                  resize="none"
-                  style="min-height: 85px;"
-                  type="textarea"
-                  v-model="content">
-                </el-input>
-              </div>
-            </div>
-          </el-form-item>
+					<el-form-item class="flex" label="短信内容：">
+						<div class="messageBorder">
+							<div class="messageHeader">
+								<span @click="selectModel" class="current">选择模板</span> | <span @click="modelNew"
+								                                                               class="current">存为新模板</span>
+							</div>
+							<div class="messageInput">
+								<el-input
+								autosize
+								class="textarea"
+								placeholder="此处为短信模板内容"
+								resize="none"
+								style="min-height: 85px;"
+								type="textarea"
+								v-model="content">
+								</el-input>
+							</div>
+						</div>
+					</el-form-item>
 
-          <el-form-item class="flex" label="短信签名：">
-            <span>【{{signa}}】</span><span @click="saveShow=true" class="colorF current"
-                                          v-if="!saveShow">修改</span>
-            <template v-if="saveShow">
-              <el-input style="display: inline-block;width: 100px" v-model="signaText"></el-input>
-              <span @click="saveValue" class="colorF current" style="margin-left: 10px">保存</span>
-              <span @click="saveShow=false" class="colorF current"
-                    style="margin-left: 10px">取消</span>
-            </template>
-          </el-form-item>
+					<el-form-item class="flex" label="短信签名：">
+						<span>【{{signa}}】</span><span @click="saveShow=true" class="colorF current"
+						                              v-if="!saveShow">修改</span>
+						<template v-if="saveShow">
+							<el-input style="display: inline-block;width: 100px" v-model="signaText"></el-input>
+							<span @click="saveValue" class="colorF current" style="margin-left: 10px">保存</span>
+							<span @click="saveShow=false" class="colorF current"
+							      style="margin-left: 10px">取消</span>
+						</template>
+					</el-form-item>
 
-          <el-form-item class="flex" label="发送时间：">
-            <el-radio-group v-model="times">
-              <el-radio class="radioTop" label="0">
-                立即发送
-              </el-radio>
-              <el-radio class="radioBottom" label="1">
-                定时发送
-                <el-date-picker
-                  class="dateTime"
-                  placeholder="选择日期时间"
-                  type="datetime"
-                  v-model="send_time"
-                  value-format="yyyy-MM-dd HH:mm:ss">
-                </el-date-picker>
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-
-
-        </el-form>
-      </div>
-    </div>
-    <div class="all">
-      <el-button @click="cancelPro" class="submits">取消</el-button>
-      <el-button :loading="loading" @click="saveData" style="margin-left: 100px" type="primary">保存
-      </el-button>
-    </div>
+					<el-form-item class="flex" label="发送时间：">
+						<el-radio-group v-model="times">
+							<el-radio class="radioTop" label="0">
+								立即发送
+							</el-radio>
+							<el-radio class="radioBottom" label="1">
+								定时发送
+								<el-date-picker
+								class="dateTime"
+								placeholder="选择日期时间"
+								type="datetime"
+								v-model="send_time"
+								value-format="yyyy-MM-dd HH:mm:ss">
+								</el-date-picker>
+							</el-radio>
+						</el-radio-group>
+					</el-form-item>
 
 
-    <el-dialog
-      :visible.sync="isModel"
-      @close="modelCancel"
-      append-to-body
-      class="setting"
-      title="选择模板"
-      width="50%"
-    >
-      <el-table
-        :data="templates"
-        @current-change="handleCurrentChange"
-        highlight-current-row
-        ref="singleTable"
-        style="width: 100%">
-        <el-table-column
-          type="index"
-          width="50">
-        </el-table-column>
-        <el-table-column
-          label="内容"
-          property="content"
-        >
-        </el-table-column>
+				</el-form>
+			</div>
+		</div>
+		<div class="all">
+			<el-button @click="cancelPro" class="submits">取消</el-button>
+			<el-button :loading="loading" @click="saveData" style="margin-left: 100px" type="primary">保存
+			</el-button>
+		</div>
 
-        <el-table-column
-          align="center"
-          label="删除"
-          width="100">
-          <template slot-scope="scope">
-            <el-button @click="handleClick(scope.$index)" size="small" type="text">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        :page-size="pageSize"
-        :total="totalCount"
-        @current-change="currentChange"
-        background
-        layout="prev, pager, next"
-        style="margin-top: 20px;text-align: center;">
-      </el-pagination>
-    </el-dialog>
-  </div>
+
+		<el-dialog
+		:visible.sync="isModel"
+		@close="modelCancel"
+		append-to-body
+		class="setting"
+		title="选择模板"
+		width="50%"
+		>
+			<el-table
+			:data="templates"
+			@current-change="handleCurrentChange"
+			highlight-current-row
+			ref="singleTable"
+			style="width: 100%">
+				<el-table-column
+				type="index"
+				width="50">
+				</el-table-column>
+				<el-table-column
+				label="内容"
+				property="content"
+				>
+				</el-table-column>
+
+				<el-table-column
+				align="center"
+				label="删除"
+				width="100">
+					<template slot-scope="scope">
+						<el-button @click="handleClick(scope.$index)" size="small" type="text">删除</el-button>
+					</template>
+				</el-table-column>
+			</el-table>
+			<el-pagination
+			:page-size="pageSize"
+			:total="totalCount"
+			@current-change="currentChange"
+			background
+			layout="prev, pager, next"
+			style="margin-top: 20px;text-align: center;">
+			</el-pagination>
+		</el-dialog>
+	</div>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator'
 
 import {addBatch, getCrowds, smsAddTemplate, smsDelTemplate, smsGetTemplates} from '@/common/fetch'
 
@@ -222,7 +222,7 @@ export default class AddProduct extends Vue {
           this.$message({
             type: 'success',
             message: res.msg
-          });
+          })
         }
         this.isModel = false
         this.modelQuery()
@@ -232,8 +232,8 @@ export default class AddProduct extends Vue {
       this.$message({
         type: 'info',
         message: '已取消删除'
-      });
-    });
+      })
+    })
   }
 
   //存为新模板
@@ -243,14 +243,14 @@ export default class AddProduct extends Vue {
         this.$message({
           type: 'success',
           message: res.msg
-        });
+        })
       }
     })
   }
 
   currentChange(val) {
-    this.page = val;
-    this.modelQuery();
+    this.page = val
+    this.modelQuery()
   }
 
   //保存
@@ -277,7 +277,7 @@ export default class AddProduct extends Vue {
         this.$message({
           type: 'success',
           message: res.msg
-        });
+        })
         let that = this
         setTimeout(function () {
           that.$router.push({
@@ -311,130 +311,130 @@ export default class AddProduct extends Vue {
 </script>
 
 <style lang="less" scoped>
-  @bgColor: #428CF7;
-  .labelManagement {
-    background-color: #f6f6f6;
-    padding-top: 18px;
-    padding-left: 19px;
-    width: 100%;
-    box-sizing: border-box;
+	@bgColor: #428CF7;
+	.labelManagement {
+		background-color: #f6f6f6;
+		padding-top: 18px;
+		padding-left: 19px;
+		width: 100%;
+		box-sizing: border-box;
 
-    .labelMain {
-      background-color: #FFFFFF;
-      width: 100%;
-      box-sizing: border-box;
-      padding-top: 70px;
-      padding-left: 24px;
-    }
-  }
+		.labelMain {
+			background-color: #FFFFFF;
+			width: 100%;
+			box-sizing: border-box;
+			padding-top: 70px;
+			padding-left: 24px;
+		}
+	}
 
-  .all {
-    background-color: #FFFFFF;
-    width: 100%;
-    padding-top: 100px;
-  }
+	.all {
+		background-color: #FFFFFF;
+		width: 100%;
+		padding-top: 100px;
+	}
 
-  .flex {
-    display: flex;
-  }
+	.flex {
+		display: flex;
+	}
 
-  .flexCenter {
-    display: flex;
-    align-items: center
-  }
+	.flexCenter {
+		display: flex;
+		align-items: center
+	}
 
-  .floatRight {
-    margin-left: 110px;
-  }
+	.floatRight {
+		margin-left: 110px;
+	}
 
-  .error {
-    color: #F43131;
-    font-size: 12px;
-  }
+	.error {
+		color: #F43131;
+		font-size: 12px;
+	}
 
-  .messageBorder {
-    width: 280px;
-    border: 1px solid #E4E4E4;
-    box-sizing: border-box;
-    padding-left: 10px;
-    padding-right: 10px;
-    min-height: 180px;
-    padding-bottom: 20px;
+	.messageBorder {
+		width: 280px;
+		border: 1px solid #E4E4E4;
+		box-sizing: border-box;
+		padding-left: 10px;
+		padding-right: 10px;
+		min-height: 180px;
+		padding-bottom: 20px;
 
-    .messageHeader {
-      height: 36px;
-      line-height: 36px;
-      font-size: 14px;
-      color: #428CF7;
-      border-bottom: 1px solid #E4E4E4;
-    }
+		.messageHeader {
+			height: 36px;
+			line-height: 36px;
+			font-size: 14px;
+			color: #428CF7;
+			border-bottom: 1px solid #E4E4E4;
+		}
 
-    .messageInput {
-      padding: 22px 10px 0px 10px;
-      font-size: 14px;
-      color: #666666;
-      line-height: 24px;
-    }
-  }
+		.messageInput {
+			padding: 22px 10px 0px 10px;
+			font-size: 14px;
+			color: #666666;
+			line-height: 24px;
+		}
+	}
 
-  .colorF {
-    color: @bgColor;
-  }
+	.colorF {
+		color: @bgColor;
+	}
 
-  .spanMarginLeft {
-    margin-left: 12px;
-    color: #999999;
-    font-size: 12px;
-  }
+	.spanMarginLeft {
+		margin-left: 12px;
+		color: #999999;
+		font-size: 12px;
+	}
 
-  .radioTop {
-    display: block;
-    margin-bottom: 15px;
-    padding-top: 8px
-  }
+	.radioTop {
+		display: block;
+		margin-bottom: 15px;
+		padding-top: 8px
+	}
 
-  .radioBottom {
-    display: block;
-    margin-bottom: 15px;
-  }
+	.radioBottom {
+		display: block;
+		margin-bottom: 15px;
+	}
 
-  .current {
-    cursor: pointer;
-  }
+	.current {
+		cursor: pointer;
+	}
 
-  .absoulate {
-    background-color: #e9e9ea;
-    width: 294px;
-    position: absolute;
-    top: 133px;
-    left: 29px;
-    min-height: 140px;
-    border-radius: 10px;
-    padding: 20px;
-    box-sizing: border-box;
-    font-size: 14px;
-    color: #333333;
-  }
+	.absoulate {
+		background-color: #e9e9ea;
+		width: 294px;
+		position: absolute;
+		top: 133px;
+		left: 29px;
+		min-height: 140px;
+		border-radius: 10px;
+		padding: 20px;
+		box-sizing: border-box;
+		font-size: 14px;
+		color: #333333;
+	}
 
-  .dateTime {
-    margin-left: 18px;
-    width: 180px;
+	.dateTime {
+		margin-left: 18px;
+		width: 180px;
 
-  }
+	}
 
-  .dateTime /deep/ input {
-    padding-right: 0px
-  }
+	.dateTime /deep/ input {
+		padding-right: 0px
+	}
 
-  .submits {
-    margin-left: 600px;
-  }
+	.submits {
+		margin-left: 600px;
+	}
 
-  .textarea /deep/ textarea {
-    border: 0px !important;
-  }
+	.textarea /deep/ textarea {
+		border: 0px !important;
+	}
 
-  /deep/ .el-table__row {
-    cursor: pointer;
-  }
+	/deep/ .el-table__row {
+		cursor: pointer;
+	}
 </style>

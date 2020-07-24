@@ -1,83 +1,83 @@
 <template>
-  <div class="wrap">
-    <div class="content">
-      <el-form :model="form" ref="form">
-        <div class="title">基本信息</div>
-        <el-form-item label="活动名称：">
-          {{vipDate.name}}
-        </el-form-item>
-        <el-form-item class="time" label="活动时间：">
-          每月 {{vipDate.act_time}}
-        </el-form-item>
-        <div class="title">权益</div>
-        <el-form-item label="会员分销等级规则：">
-          {{vipDate.right_rule}}
-          <el-table
-            :data="vipDate.rights"
-            class="wzw-table"
-            style="width: 100%"
-          >
-            <el-table-column
-              align="center"
-              label="会员身份"
-              prop="scope"
-              width="137">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="权益"
-              prop="right"
-              width="373">
-              <template slot-scope="scope">
-                <div style="text-align:center;width: 100%;">
-                  <div :key="index"
-                       class="userinput baoyou"
-                       v-for="(item,index) of vipDate.rights[scope.$index].rights.basic">
-                    {{item}}
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="礼包"
-              prop="gift"
-              width="376">
-              <template slot-scope="scope">
-                <div style="text-align:center;width: 100%">
-                  <div :key="ind"
-                       class="userinput baoyou" v-for="(it,ind) of vipDate.rights[scope.$index].rights.right">
-                    {{it}}
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-          </el-table>
+	<div class="wrap">
+		<div class="content">
+			<el-form :model="form" ref="form">
+				<div class="title">基本信息</div>
+				<el-form-item label="活动名称：">
+					{{vipDate.name}}
+				</el-form-item>
+				<el-form-item class="time" label="活动时间：">
+					每月 {{vipDate.act_time}}
+				</el-form-item>
+				<div class="title">权益</div>
+				<el-form-item label="会员分销等级规则：">
+					{{vipDate.right_rule}}
+					<el-table
+					:data="vipDate.rights"
+					class="wzw-table"
+					style="width: 100%"
+					>
+						<el-table-column
+						align="center"
+						label="会员身份"
+						prop="scope"
+						width="137">
+						</el-table-column>
+						<el-table-column
+						align="center"
+						label="权益"
+						prop="right"
+						width="373">
+							<template slot-scope="scope">
+								<div style="text-align:center;width: 100%;">
+									<div :key="index"
+									     class="userinput baoyou"
+									     v-for="(item,index) of vipDate.rights[scope.$index].rights.basic">
+										{{item}}
+									</div>
+								</div>
+							</template>
+						</el-table-column>
+						<el-table-column
+						align="center"
+						label="礼包"
+						prop="gift"
+						width="376">
+							<template slot-scope="scope">
+								<div style="text-align:center;width: 100%">
+									<div :key="ind"
+									     class="userinput baoyou" v-for="(it,ind) of vipDate.rights[scope.$index].rights.right">
+										{{it}}
+									</div>
+								</div>
+							</template>
+						</el-table-column>
+					</el-table>
 
 
-        </el-form-item>
-        <div class="title">通知配置</div>
-        <el-form-item class="is-open-msg">
-          <template v-if="vipDate.sms_content">启用短信通知：{{vipDate.sms_content}}</template>
-          <template v-if="!vipDate.sms_content">未启用短信通知</template>
-        </el-form-item>
-        <div class="title">时间设置</div>
-        <el-form-item class="time-choose" label="发放权益、通知时间：">
-          {{vipDate.notify_rule}}
-        </el-form-item>
-        <div class="title">计划异常提醒</div>
-        <el-form-item label="提醒方式：">
-          通过短信提醒我
-          <div class="recive-number">
-            <span>接收短信的手机号：{{vipDate.mobile}}</span>
-          </div>
-        </el-form-item>
-        <div class="bottomFixed">
-          <el-button @click="closeThis" class="close" size="small">返回</el-button>
-        </div>
-      </el-form>
-    </div>
-  </div>
+				</el-form-item>
+				<div class="title">通知配置</div>
+				<el-form-item class="is-open-msg">
+					<template v-if="vipDate.sms_content">启用短信通知：{{vipDate.sms_content}}</template>
+					<template v-if="!vipDate.sms_content">未启用短信通知</template>
+				</el-form-item>
+				<div class="title">时间设置</div>
+				<el-form-item class="time-choose" label="发放权益、通知时间：">
+					{{vipDate.notify_rule}}
+				</el-form-item>
+				<div class="title">计划异常提醒</div>
+				<el-form-item label="提醒方式：">
+					通过短信提醒我
+					<div class="recive-number">
+						<span>接收短信的手机号：{{vipDate.mobile}}</span>
+					</div>
+				</el-form-item>
+				<div class="bottomFixed">
+					<el-button @click="closeThis" class="close" size="small">返回</el-button>
+				</div>
+			</el-form>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -189,7 +189,7 @@ export default class DayMark extends Vue {
       gift: '232'
     }
   ]
-  vipDate = [];
+  vipDate = []
   moreruleData = [
     {
       level: 'VIP1',
@@ -206,9 +206,9 @@ export default class DayMark extends Vue {
   }
 
   created() {
-    let id = this.$route.query.id;
+    let id = this.$route.query.id
     getScene({id: id}).then(res => {
-      this.vipDate = res.data;
+      this.vipDate = res.data
     })
   }
 
@@ -216,210 +216,210 @@ export default class DayMark extends Vue {
 </script>
 
 <style lang="less" scoped>
-  html, body {
-    height: 100%;
-  }
+	html, body {
+		height: 100%;
+	}
 
-  .wrap {
-    height: 100%;
-    background: #f6f6f6;
-    padding: 20px 0 0 20px;
+	.wrap {
+		height: 100%;
+		background: #f6f6f6;
+		padding: 20px 0 0 20px;
 
-    .content {
-      color: #666;
-      height: 100%;
-      background: #fff;
-      padding: 25px 0 0 25px;
+		.content {
+			color: #666;
+			height: 100%;
+			background: #fff;
+			padding: 25px 0 0 25px;
 
-      .title {
-        color: #333;
-        font-size: 16px;
-        height: 50px;
-        line-height: 50px;
-        padding-left: 20px;
-        margin-bottom: 20px;
-        background: #F8F8F8;
-        margin-right: 50px;
-      }
+			.title {
+				color: #333;
+				font-size: 16px;
+				height: 50px;
+				line-height: 50px;
+				padding-left: 20px;
+				margin-bottom: 20px;
+				background: #F8F8F8;
+				margin-right: 50px;
+			}
 
-      /deep/ .el-form-item__label {
-        padding-left: 20px;
-      }
+			/deep/ .el-form-item__label {
+				padding-left: 20px;
+			}
 
-      /deep/ .input-name {
-        width: 353px;
-        height: 40px;
-        line-height: 40px;
-      }
+			/deep/ .input-name {
+				width: 353px;
+				height: 40px;
+				line-height: 40px;
+			}
 
-      .time {
-        /deep/ .el-input__inner {
-          width: 140px;
-          height: 40px;
-          padding: 0 27px;
-        }
+			.time {
+				/deep/ .el-input__inner {
+					width: 140px;
+					height: 40px;
+					padding: 0 27px;
+				}
 
-        /deep/ .el-date-editor.el-input {
-          width: 140px;
-          height: 40px;
-        }
-      }
+				/deep/ .el-date-editor.el-input {
+					width: 140px;
+					height: 40px;
+				}
+			}
 
-      .line {
-        display: inline-block;
-        width: 14px;
-        height: 1px;
-        margin: 0 10px;
-        background: #B4B4B4;
-        margin-bottom: 5px;
-      }
+			.line {
+				display: inline-block;
+				width: 14px;
+				height: 1px;
+				margin: 0 10px;
+				background: #B4B4B4;
+				margin-bottom: 5px;
+			}
 
-      .rule-radio {
-        /deep/ .el-radio {
-          display: block;
-        }
-      }
+			.rule-radio {
+				/deep/ .el-radio {
+					display: block;
+				}
+			}
 
-      /deep/ .el-radio__label {
-        line-height: 40px;
-      }
+			/deep/ .el-radio__label {
+				line-height: 40px;
+			}
 
-      .is-open-msg {
-        padding-left: 20px;
+			.is-open-msg {
+				padding-left: 20px;
 
-        .peizhi {
-          color: #79B0FF;
-          margin-left: 20px;
-        }
-      }
+				.peizhi {
+					color: #79B0FF;
+					margin-left: 20px;
+				}
+			}
 
-      .recive-number {
-        padding-left: 100px;
+			.recive-number {
+				padding-left: 100px;
 
-        .el-input {
-          width: 167px;
-          height: 35px;
-          margin-left: 8px;
+				.el-input {
+					width: 167px;
+					height: 35px;
+					margin-left: 8px;
 
-          .el-input__inner {
-            height: 35px;
-          }
-        }
-      }
+					.el-input__inner {
+						height: 35px;
+					}
+				}
+			}
 
-      .time-choose {
-        .el-select {
-          width: 100px;
-          height: 30px;
-          margin: 0 10px 0 13px;
+			.time-choose {
+				.el-select {
+					width: 100px;
+					height: 30px;
+					margin: 0 10px 0 13px;
 
-          & .el-input__inner {
-            height: 30px;
-          }
-        }
-      }
+					& .el-input__inner {
+						height: 30px;
+					}
+				}
+			}
 
-      .submit {
-        .el-button--primary {
-          margin-left: 102px;
-          margin-top: 97px;
-          width: 146px;
-          height: 46px;
-        }
-      }
+			.submit {
+				.el-button--primary {
+					margin-left: 102px;
+					margin-top: 97px;
+					width: 146px;
+					height: 46px;
+				}
+			}
 
-      /deep/ .el-table td {
-        padding: 0 !important;
-      }
+			/deep/ .el-table td {
+				padding: 0 !important;
+			}
 
-      .baoyou {
-        padding-top: 5px;
-        padding-bottom: 5px;
-      }
+			.baoyou {
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
 
-      .songjifen {
-        margin-top: 34px;
-        margin-bottom: 18px;
-      }
+			.songjifen {
+				margin-top: 34px;
+				margin-bottom: 18px;
+			}
 
-      .xiaofei {
-        margin-bottom: 15px;
-      }
+			.xiaofei {
+				margin-bottom: 15px;
+			}
 
-      .song {
-        margin-bottom: 24px;
-      }
+			.song {
+				margin-bottom: 24px;
+			}
 
-      .jifenbei {
-        margin-bottom: 74px;
-      }
+			.jifenbei {
+				margin-bottom: 74px;
+			}
 
-      .userinput,
-      .giftbag {
-        .el-checkbox {
-          margin-right: 12px;
-        }
+			.userinput,
+			.giftbag {
+				.el-checkbox {
+					margin-right: 12px;
+				}
 
-        .el-input {
-          width: 69px;
-          height: 30px;
-        }
+				.el-input {
+					width: 69px;
+					height: 30px;
+				}
 
-        /deep/ .el-input__inner {
-          height: 30px;
-          line-height: 30px;
-        }
+				/deep/ .el-input__inner {
+					height: 30px;
+					line-height: 30px;
+				}
 
-        .el-select {
-          width: 75px;
-          height: 30px;
-          line-height: 30px;
-          margin-right: 12px;
-        }
+				.el-select {
+					width: 75px;
+					height: 30px;
+					line-height: 30px;
+					margin-right: 12px;
+				}
 
-        /deep/ .el-input__suffix {
-          top: 6px !important;
-        }
-      }
+				/deep/ .el-input__suffix {
+					top: 6px !important;
+				}
+			}
 
-      /deep/ .el-table td {
-        border-top: 1px solid #EBEEF5;
-        border-left: 1px solid #EBEEF5;
-        border-bottom: 0;
-      }
-    }
-  }
+			/deep/ .el-table td {
+				border-top: 1px solid #EBEEF5;
+				border-left: 1px solid #EBEEF5;
+				border-bottom: 0;
+			}
+		}
+	}
 
-  .bottomFixed {
-    position: fixed;
-    padding: 10px 0;
-    box-sizing: border-box;
-    bottom: 0;
-    width: 100%;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    background-color: #fff;
-    box-shadow: 0 -3px 5px #eee;
-    z-index: 1;
-    transition: right .2s ease;
+	.bottomFixed {
+		position: fixed;
+		padding: 10px 0;
+		box-sizing: border-box;
+		bottom: 0;
+		width: 100%;
+		display: -ms-flexbox;
+		display: flex;
+		-ms-flex-align: center;
+		align-items: center;
+		-ms-flex-pack: center;
+		justify-content: center;
+		background-color: #fff;
+		box-shadow: 0 -3px 5px #eee;
+		z-index: 1;
+		transition: right .2s ease;
 
-    .close {
-      /*width:62px;*/
-      /*height:32px;*/
-      /*line-height: 32px;*/
-      /*text-align: center;*/
-      /*cursor: pointer;*/
-      /*border-radius:5px;*/
-      /*margin-top: 50px;*/
-      /*display: inline-block;*/
-      font-size: 16px;
-      background-color: #428CF7;
-      color: #FFFFFF;
-      margin: 0 auto;
-    }
-  }
+		.close {
+			/*width:62px;*/
+			/*height:32px;*/
+			/*line-height: 32px;*/
+			/*text-align: center;*/
+			/*cursor: pointer;*/
+			/*border-radius:5px;*/
+			/*margin-top: 50px;*/
+			/*display: inline-block;*/
+			font-size: 16px;
+			background-color: #428CF7;
+			color: #FFFFFF;
+			margin: 0 auto;
+		}
+	}
 </style>
