@@ -1,26 +1,26 @@
 <template>
-  <div>
-    <div class="component-title">
-      <div class="component-title__header"><span class="component-title__tip"></span><span
-        class="component-title__name">素材模板</span></div>
-      <!--      <div class="component-title__msg">选择合适的模板直接使用</div>-->
-    </div>
-    <div class="tmpl-list" v-loading="loadingTmpl">
-      <vue-scroll :ops="ops">
-        <div :key="idx" :style="{marginRight:(idx+1)%2==0?'0':''}" @click="selectTmpl(tmpl.id)" class="tmpl-item"
-             v-for="(tmpl,idx) in tmpls">
-          <div :style="{backgroundImage:'url('+tmpl.img+')'}" class="tmpl-item-cover"></div>
-          <div @click.stop="delTmplFn(tmpl.id)" class="del-btn">删除模板</div>
-        </div>
-      </vue-scroll>
+	<div>
+		<div class="component-title">
+			<div class="component-title__header"><span class="component-title__tip"></span><span
+			class="component-title__name">素材模板</span></div>
+			<!--      <div class="component-title__msg">选择合适的模板直接使用</div>-->
+		</div>
+		<div class="tmpl-list" v-loading="loadingTmpl">
+			<vue-scroll :ops="ops">
+				<div :key="idx" :style="{marginRight:(idx+1)%2==0?'0':''}" @click="selectTmpl(tmpl.id)" class="tmpl-item"
+				     v-for="(tmpl,idx) in tmpls">
+					<div :style="{backgroundImage:'url('+tmpl.img+')'}" class="tmpl-item-cover"></div>
+					<div @click.stop="delTmplFn(tmpl.id)" class="del-btn">删除模板</div>
+				</div>
+			</vue-scroll>
 
-    </div>
-  </div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
-import {delPoster, getPosterDetail, getPosterList} from "../../../common/fetch";
+import {delPoster, getPosterDetail, getPosterList} from "../../../common/fetch"
 
 @Component
 export default class TemplateList extends Vue {
@@ -63,7 +63,7 @@ export default class TemplateList extends Vue {
       })
     }).catch(() => {
 
-    });
+    })
   }
 
 
@@ -102,89 +102,89 @@ export default class TemplateList extends Vue {
 
 <style lang="less" scoped>
 
-  .component-title {
-    padding: 10px 16px;
-    /*border-bottom: 1px solid #f2f4f6;*/
+	.component-title {
+		padding: 10px 16px;
+		/*border-bottom: 1px solid #f2f4f6;*/
 
-    .component-title__header {
-      display: flex;
-      align-items: center;
+		.component-title__header {
+			display: flex;
+			align-items: center;
 
-      .component-title__tip {
-        width: 2px;
-        height: 16px;
-        background: #409EFF;
-      }
+			.component-title__tip {
+				width: 2px;
+				height: 16px;
+				background: #409EFF;
+			}
 
-      .component-title__name {
-        padding-left: 10px;
-        color: #333;
-      }
-    }
+			.component-title__name {
+				padding-left: 10px;
+				color: #333;
+			}
+		}
 
-    .component-title__msg {
-      color: #666;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-  }
+		.component-title__msg {
+			color: #666;
+			font-size: 14px;
+			margin-top: 10px;
+		}
+	}
 
-  .tmpl-list {
-    /*display: flex;*/
-    /*flex-wrap: wrap;*/
-    margin: 0 auto;
-    width: 320px;
-    height: calc(100vh - 50px);
+	.tmpl-list {
+		/*display: flex;*/
+		/*flex-wrap: wrap;*/
+		margin: 0 auto;
+		width: 320px;
+		height: calc(100vh - 50px);
 
-    .tmpl-item {
-      float: left;
-      width: 146px;
-      height: 256px;
-      margin: 5px 10px 10px 0px;
-      cursor: pointer;
-      box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-      position: relative;
-      background-color: rgba(0, 0, 0, 0.05);
+		.tmpl-item {
+			float: left;
+			width: 146px;
+			height: 256px;
+			margin: 5px 10px 10px 0px;
+			cursor: pointer;
+			box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+			position: relative;
+			background-color: rgba(0, 0, 0, 0.05);
 
-      &:hover {
-        .tmpl-item-cover {
-          background-size: 110% 110%;
-        }
+			&:hover {
+				.tmpl-item-cover {
+					background-size: 110% 110%;
+				}
 
-        .del-btn {
-          visibility: visible;
-        }
-      }
+				.del-btn {
+					visibility: visible;
+				}
+			}
 
-      .del-btn {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        padding: 0 20px;
-        color: #444;
-        border: 1px solid #fff;
-        background: #fff;
-        line-height: 32px;
-        height: 32px;
-        white-space: nowrap;
-        text-align: center;
-        font-size: 14px;
+			.del-btn {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				padding: 0 20px;
+				color: #444;
+				border: 1px solid #fff;
+				background: #fff;
+				line-height: 32px;
+				height: 32px;
+				white-space: nowrap;
+				text-align: center;
+				font-size: 14px;
 
-        visibility: hidden;
-      }
+				visibility: hidden;
+			}
 
-      .tmpl-item-cover {
-        /*position: absolute;*/
-        width: 100%;
-        height: 100%;
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        background-position: center;
-        transition: all .2s;
-      }
-    }
-  }
+			.tmpl-item-cover {
+				/*position: absolute;*/
+				width: 100%;
+				height: 100%;
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
+				background-position: center;
+				transition: all .2s;
+			}
+		}
+	}
 
 
 </style>

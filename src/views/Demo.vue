@@ -1,14 +1,14 @@
 <template>
-  <div class="home-wrap">
-    <div style="margin: 90px">
-      31231231
-      <wzw-tinymce></wzw-tinymce>
-    </div>
-  </div>
+	<div class="home-wrap">
+		<div style="margin: 90px">
+			31231231
+			<wzw-tinymce></wzw-tinymce>
+		</div>
+	</div>
 </template>
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
-import WzwTinymce from "../components/editor/WzwTinymce.vue";
+import WzwTinymce from "../components/editor/WzwTinymce.vue"
 
 
 @Component({

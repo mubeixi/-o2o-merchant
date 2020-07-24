@@ -29,11 +29,13 @@
 					</el-form-item>
 
 					<el-form-item v-if="item.type==='textarea'" :label="item.label">
-						<el-input @input="bindInputEvent($event,idx)" :required="item.required" type="textarea" v-model="item.value"></el-input>
+						<el-input @input="bindInputEvent($event,idx)" :required="item.required" type="textarea"
+						          v-model="item.value"></el-input>
 						<div class="form-desc">{{item.desc}}</div>
 					</el-form-item>
 
-					<el-form-item v-if="item.type==='img'" :label="item.label" :required="item.required" @click="setActiveIdx(idx)">
+					<el-form-item v-if="item.type==='img'" :label="item.label" :required="item.required"
+					              @click="setActiveIdx(idx)">
 						<upload-img-components
 						:idx2="idx"
 						:limit="item.limit"
@@ -56,55 +58,52 @@
 </template>
 
 <script>
-import {Component, Vue,Watch} from 'vue-property-decorator'
-import { findArrayIdx, objTranslate } from '@/common/utils'
-import {domain} from '@/common/utils'
+import { Component, Vue } from 'vue-property-decorator'
+import { domain, findArrayIdx, objTranslate } from '@/common/utils'
 import UploadImgComponents from '@/components/diy/tool/UploadImgComponents'
-
-
 
 @Component({
   name: 'diy-form-format',
   components: { UploadImgComponents },
   props: {
-    labelWidth:{
-      type:String,
-      default:'120px'
+    labelWidth: {
+      type: String,
+      default: '120px',
     },
-    formSize:{
-      type:String,
-      default:'small'
+    formSize: {
+      type: String,
+      default: 'small',
     },
-    imgSize:{
-      type:String,
-      default:'mini'
+    imgSize: {
+      type: String,
+      default: 'mini',
     },
     eid: {
       type: String,
-      require: true
+      require: true,
     },
     // 编辑模式
     action: {
       type: String,
-      default: 'add'
+      default: 'add',
     },
     // 编辑模式
     isedit: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 显示模式
     isshow: {
       type: Boolean,
-      default: false
+      default: false,
     },
     forms: {
       type: Array,
-      require: true
-    }
+      require: true,
+    },
   },
 })
-export default class DiyFormFormat extends Vue{
+export default class DiyFormFormat extends Vue {
 
   idx = null
   formList = []
@@ -114,59 +113,62 @@ export default class DiyFormFormat extends Vue{
     this.idx = idx
   }
 
-  setVal (val, idx,column='value') {
+  setVal (val, idx, column = 'value') {
 
-    const _idx = idx>=0 ?idx:this.idx
+    const _idx = idx >= 0 ? idx : this.idx
     this.$set(this.formList[_idx], column, val)
-	  this.refreshData()
+    this.refreshData()
   }
 
-
-  refreshData(){
+  refreshData () {
     const formList = this.formList
     if (Array.isArray(formList) && formList.length > 0) {
       this.$emit('update', objTranslate(formList))
     }
   }
 
+  upImgSuccess (res, idx) {
 
-
-  upImgSuccess (res,idx) {
-
-	  if(this.formList[idx].limit>1){
+    if (this.formList[idx].limit > 1) {
       var imgList = []
-      if(this.formList[idx].value){
+      if (this.formList[idx].value) {
         imgList = this.formList[idx].value.split(',')
       }
 
       imgList.push(res.data.path)
       // console.log(imgList)
-      this.setVal(imgList.join('|'),idx)
-      this.setVal(imgs.length,idx,'count')
-	  }else{
-      this.setVal(res.data.path,idx)
-      this.setVal(1,idx,'count')
-	  }
+      this.setVal(imgList.join('|'), idx)
+      this.setVal(imgs.length, idx, 'count')
+    } else {
+      this.setVal(res.data.path, idx)
+      this.setVal(1, idx, 'count')
+    }
 
   }
 
+  getDomain = (str) => domain(str)
 
-
-  getDomain = (str)=>domain(str)
-
-  openPop(name) {
+  openPop (name) {
     this.$refs[name].show()
   }
-  updateAddress(data) {
+
+  updateAddress (data) {
     // console.log(data)
     this.setVal(data.strArr.join(''))
   }
-  getData() {
+
+  getData () {
     // console.log('formList is', this.formList)
     // return objTranslate(this.formList)
   }
-  openAddressChoose() {
-    const rt = {province: '北京', city: '北京', area: '西山', town: '香山公园'}
+
+  openAddressChoose () {
+    const rt = {
+      province: '北京',
+      city: '北京',
+      area: '西山',
+      town: '香山公园',
+    }
     showLoading('获取地址')
     setTimeout(() => {
       hideLoading()
@@ -179,33 +181,36 @@ export default class DiyFormFormat extends Vue{
   //   this.setVal(this.formList[this.idx].options[val])
   // }
 
-  bindRadioChange(e,idx){
+  bindRadioChange (e, idx) {
     const val = e
     this.setVal(val, idx)
   }
 
-  bindInputEvent(e, idx) {
+  bindInputEvent (e, idx) {
     // console.log(e,idx)
     const val = e
     this.setVal(val, idx)
   }
 
-  addressCall({province, city, area, town}) {
+  addressCall ({ province, city, area, town }) {
     // const val = e.$wx.detail.value
-    this.setVal(Object.values({province, city, area, town}).join(' '))
+    this.setVal(Object.values({
+      province,
+      city,
+      area,
+      town,
+    }).join(' '))
   }
 
-  taggleHide(idx,statusVal){
+  taggleHide (idx, statusVal) {
     // console.log(idx,statusVal)
-	  if(statusVal === undefined){
-      this.$set(this.formList[idx],'hide',!this.formList[idx].hide)
-	  }else{
-      this.$set(this.formList[idx],'hide',statusVal)
-	  }
+    if (statusVal === undefined) {
+      this.$set(this.formList[idx], 'hide', !this.formList[idx].hide)
+    } else {
+      this.$set(this.formList[idx], 'hide', statusVal)
+    }
 
   }
-
-
 
   // @Watch('formList',{deep: true, immediate: true })
   // handlerFn(newVal) {
@@ -215,7 +220,7 @@ export default class DiyFormFormat extends Vue{
   //   }
   // }
 
-  created(){
+  created () {
 
     const _arr = objTranslate(this.forms)
     // console.log(_arr)
@@ -223,7 +228,6 @@ export default class DiyFormFormat extends Vue{
     if (Array.isArray(_arr) && _arr.length > 0) {
       this.formList = _arr.map(row => {
         // 只有picker是要特殊处理的
-
 
         if (row.type === 'picker' && this.action === 'edit') {
           // 下标
@@ -235,7 +239,7 @@ export default class DiyFormFormat extends Vue{
 
         if (row.type === 'radio') {
           // 下标
-          const selectOptIdx = findArrayIdx(row.options,{val:row.value})
+          const selectOptIdx = findArrayIdx(row.options, { val: row.value })
           if (selectOptIdx !== false) {
             row.value = row.options[selectOptIdx].label
           }
@@ -263,10 +267,10 @@ export default class DiyFormFormat extends Vue{
 }
 </script>
 <style lang="scss" scoped>
-.form-desc{
-	color: #999;
-	font-size: 13px;
-	margin-top: 6px;
-	line-height: 18px;
-}
+	.form-desc {
+		color: #999;
+		font-size: 13px;
+		margin-top: 6px;
+		line-height: 18px;
+	}
 </style>

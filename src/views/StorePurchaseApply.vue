@@ -1,53 +1,53 @@
 <template>
-  <div class="home-wrap" v-infinite-scroll="loadInfo">
-    <div class="container">
-      <div class="tabs" style="background: white;">
-        <el-tabs @tab-click="handleClick" v-model="status">
-          <el-tab-pane :label="tab.label" :name="tab.val"
-                       v-for="(tab,idx) in tabConf"></el-tab-pane>
-          <!--          <el-tab-pane label="已售完" name="2"></el-tab-pane>-->
-          <!--          <el-tab-pane label="已下架" name="3"></el-tab-pane>-->
-        </el-tabs>
-      </div>
-      <div class="lists">
-        <div class="padding15-r graytext2 text-center" v-if="applys.length<1">暂无数据</div>
-        <div :key="idx1" class="item" v-for="(apply,idx1) in applys">
-          <div class="head flex">
-            <div class="info flex flex1">
-              <div :style="{backgroundImage:'url('+apply.supplier_img+')'}" class="store-pic"></div>
-              <div class="store-title">{{apply.supplier_name}}</div>
-              <div class="action">(<span @click="showStore(apply.active_id)" class="action-item">查看信息</span>
-                <template v-if="inArray(apply.Order_Status,[20,22,25])">
-                  <span class="padding4-c">/</span><span @click="changeChannel(apply)"
-                                                         class="action-item">修改渠道</span>
-                </template>
+	<div class="home-wrap" v-infinite-scroll="loadInfo">
+		<div class="container">
+			<div class="tabs" style="background: white;">
+				<el-tabs @tab-click="handleClick" v-model="status">
+					<el-tab-pane :label="tab.label" :name="tab.val"
+					             v-for="(tab,idx) in tabConf"></el-tab-pane>
+					<!--          <el-tab-pane label="已售完" name="2"></el-tab-pane>-->
+					<!--          <el-tab-pane label="已下架" name="3"></el-tab-pane>-->
+				</el-tabs>
+			</div>
+			<div class="lists">
+				<div class="padding15-r graytext2 text-center" v-if="applys.length<1">暂无数据</div>
+				<div :key="idx1" class="item" v-for="(apply,idx1) in applys">
+					<div class="head flex">
+						<div class="info flex flex1">
+							<div :style="{backgroundImage:'url('+apply.supplier_img+')'}" class="store-pic"></div>
+							<div class="store-title">{{apply.supplier_name}}</div>
+							<div class="action">(<span @click="showStore(apply.active_id)" class="action-item">查看信息</span>
+								<template v-if="inArray(apply.Order_Status,[20,22,25])">
+									<span class="padding4-c">/</span><span @click="changeChannel(apply)"
+									                                       class="action-item">修改渠道</span>
+								</template>
 
-                )
-              </div>
-              <div class="order_no">进货单号: {{apply.Order_ID}}</div>
-            </div>
-            <div class="status">
+								)
+							</div>
+							<div class="order_no">进货单号: {{apply.Order_ID}}</div>
+						</div>
+						<div class="status">
               <span
-                class="status-text danger-color padding10-c font14">{{apply.Order_Status_desc}}</span>
-              <el-tooltip :content="apply.reason" class="" effect="dark" placement="top"
-                          v-if="apply.reason">
-                <i class="el-icon-warning-outline danger-color padding10-c"></i>
-              </el-tooltip>
-              <i @click="delApply(apply,idx1)" class="el-icon-delete-solid"
-                 title="删除订单" v-if="inArray(apply.Order_Status,[20,26])"></i>
-            </div>
-          </div>
-          <table cellspacing="0"
-                 class="purchases"
-                 v-if="apply && apply.prod_list"
-                 v-loading="ajax_idx===idx1">
-            <tr :key="idx2" class="goods-list" v-for="(item,idx2) in apply.prod_list">
-              <td class="goods">
-                <div :style="{backgroundImage:'url('+item.prod_img+')'}" class="l"></div>
-                <div class="c">
-                  <div class="title line10">{{item.prod_name}}</div>
-                  <div class="spec-key graytext font14">{{item.attr_info.attr_name}}</div>
-                  <div class="numbox graytext">
+              class="status-text danger-color padding10-c font14">{{apply.Order_Status_desc}}</span>
+							<el-tooltip :content="apply.reason" class="" effect="dark" placement="top"
+							            v-if="apply.reason">
+								<i class="el-icon-warning-outline danger-color padding10-c"></i>
+							</el-tooltip>
+							<i @click="delApply(apply,idx1)" class="el-icon-delete-solid"
+							   title="删除订单" v-if="inArray(apply.Order_Status,[20,26])"></i>
+						</div>
+					</div>
+					<table cellspacing="0"
+					       class="purchases"
+					       v-if="apply && apply.prod_list"
+					       v-loading="ajax_idx===idx1">
+						<tr :key="idx2" class="goods-list" v-for="(item,idx2) in apply.prod_list">
+							<td class="goods">
+								<div :style="{backgroundImage:'url('+item.prod_img+')'}" class="l"></div>
+								<div class="c">
+									<div class="title line10">{{item.prod_name}}</div>
+									<div class="spec-key graytext font14">{{item.attr_info.attr_name}}</div>
+									<div class="numbox graytext">
                     <span class="handle" v-if="inArray(apply.Order_Status,[20,22,25])">
                       <span @click="minusFn(apply,item,idx1)" class="minus">
                         <i class="el-icon-minus icon"></i>
@@ -58,253 +58,254 @@
                         <i class="el-icon-plus icon"></i>
                       </span>
                     </span>
-                    <span v-else>数量：{{item.prod_count}}</span>
-                    <el-tooltip :content="item.prod_count_change_desc" class="" effect="dark"
-                                placement="top" v-if="item.prod_count_change_desc">
-                      <i class="el-icon-warning-outline danger-color padding10-c font18"></i>
-                    </el-tooltip>
+										<span v-else>数量：{{item.prod_count}}</span>
+										<el-tooltip :content="item.prod_count_change_desc" class="" effect="dark"
+										            placement="top" v-if="item.prod_count_change_desc">
+											<i class="el-icon-warning-outline danger-color padding10-c font18"></i>
+										</el-tooltip>
 
-                  </div>
-                </div>
-                <div class="r font14">单价:<span class="danger-color">￥<span class="price-num font16">{{item.prod_price}}</span></span>
-                </div>
-              </td>
-              <td :rowspan="apply.prod_list.length" class="price-box" v-if="idx2===0">
-                <div class="text-center">
-                  <div class="total line6">总计:<span class="danger-color">￥<span
-                    class="total_num font18">{{apply.Order_TotalPrice}}</span></span></div>
-                  <div class="postage font14 graytext">(含运费￥{{apply.Order_Shipping.Price}})</div>
-                </div>
-              </td>
-              <td :rowspan="apply.prod_list.length" class="actions text-center" v-if="idx2===0">
+									</div>
+								</div>
+								<div class="r font14">单价:<span class="danger-color">￥<span
+								class="price-num font16">{{item.prod_price}}</span></span>
+								</div>
+							</td>
+							<td :rowspan="apply.prod_list.length" class="price-box" v-if="idx2===0">
+								<div class="text-center">
+									<div class="total line6">总计:<span class="danger-color">￥<span
+									class="total_num font18">{{apply.Order_TotalPrice}}</span></span></div>
+									<div class="postage font14 graytext">(含运费￥{{apply.Order_Shipping.Price}})</div>
+								</div>
+							</td>
+							<td :rowspan="apply.prod_list.length" class="actions text-center" v-if="idx2===0">
 
-                <!--                <div class="line10" v-if="apply.is_change_stock && inArray(apply.Order_Status,[20,22,25])">-->
-                <!--                  <el-button size="small" @click="showPayDialog(apply,idx1)" class="acion-btn" type="primary">保存库存变动</el-button>-->
-                <!--                </div>-->
-                <div class="line10" v-if="inArray(apply.Order_Status,[20])">
-                  <el-popover
-                    placement="top"
-                    trigger="manual"
-                    v-model="apply.payVisible"
-                    width="160"
-                  >
-                    <p>是否支付此订单?</p>
-                    <div style="text-align: right; margin: 0">
-                      <el-button @click="apply.payVisible = false" size="mini" type="text">取消
-                      </el-button>
-                      <el-button @click="payApply(apply,idx1)" size="mini" type="primary">确定
-                      </el-button>
-                    </div>
-                    <el-button @click.prevent="apply.payVisible = true" class="acion-btn"
-                               size="small" slot="reference"
-                               type="success">支付
-                    </el-button>
-                  </el-popover>
+								<!--                <div class="line10" v-if="apply.is_change_stock && inArray(apply.Order_Status,[20,22,25])">-->
+								<!--                  <el-button size="small" @click="showPayDialog(apply,idx1)" class="acion-btn" type="primary">保存库存变动</el-button>-->
+								<!--                </div>-->
+								<div class="line10" v-if="inArray(apply.Order_Status,[20])">
+									<el-popover
+									placement="top"
+									trigger="manual"
+									v-model="apply.payVisible"
+									width="160"
+									>
+										<p>是否支付此订单?</p>
+										<div style="text-align: right; margin: 0">
+											<el-button @click="apply.payVisible = false" size="mini" type="text">取消
+											</el-button>
+											<el-button @click="payApply(apply,idx1)" size="mini" type="primary">确定
+											</el-button>
+										</div>
+										<el-button @click.prevent="apply.payVisible = true" class="acion-btn"
+										           size="small" slot="reference"
+										           type="success">支付
+										</el-button>
+									</el-popover>
 
-                </div>
-                <div class="line10" v-if="inArray(apply.Order_Status,[21])">
-                  <el-popover
-                    placement="top"
-                    trigger="manual"
-                    v-model="apply.recallVisible"
-                    width="160"
-                  >
-                    <p>撤回该批发订单?</p>
-                    <div style="text-align: right; margin: 0">
-                      <el-button @click="apply.recallVisible = false" size="mini" type="text">取消
-                      </el-button>
-                      <el-button @click="recallApply(apply,idx1)" size="mini" type="primary">确定
-                      </el-button>
-                    </div>
-                    <el-button @click.prevent="apply.recallVisible = true" class="acion-btn"
-                               size="small" slot="reference"
-                               type="warning">撤回
-                    </el-button>
-                  </el-popover>
-                </div>
-                <div class="line10" v-if="inArray(apply.Order_Status,[23])">
-                  <el-popover
-                    placement="top"
-                    trigger="manual"
-                    v-model="apply.completedVisible"
-                    width="160"
-                  >
-                    <p>是否确认收货?</p>
-                    <div style="text-align: right; margin: 0">
-                      <el-button @click="apply.completedVisible = false" size="mini" type="text">
-                        取消
-                      </el-button>
-                      <el-button @click="completed(apply,idx1)" size="mini" type="primary">确定
-                      </el-button>
-                    </div>
-                    <el-button @click.prevent="apply.completedVisible = true" class="acion-btn line8"
-                               size="small" slot="reference" type="primary">确认收货
-                    </el-button>
+								</div>
+								<div class="line10" v-if="inArray(apply.Order_Status,[21])">
+									<el-popover
+									placement="top"
+									trigger="manual"
+									v-model="apply.recallVisible"
+									width="160"
+									>
+										<p>撤回该批发订单?</p>
+										<div style="text-align: right; margin: 0">
+											<el-button @click="apply.recallVisible = false" size="mini" type="text">取消
+											</el-button>
+											<el-button @click="recallApply(apply,idx1)" size="mini" type="primary">确定
+											</el-button>
+										</div>
+										<el-button @click.prevent="apply.recallVisible = true" class="acion-btn"
+										           size="small" slot="reference"
+										           type="warning">撤回
+										</el-button>
+									</el-popover>
+								</div>
+								<div class="line10" v-if="inArray(apply.Order_Status,[23])">
+									<el-popover
+									placement="top"
+									trigger="manual"
+									v-model="apply.completedVisible"
+									width="160"
+									>
+										<p>是否确认收货?</p>
+										<div style="text-align: right; margin: 0">
+											<el-button @click="apply.completedVisible = false" size="mini" type="text">
+												取消
+											</el-button>
+											<el-button @click="completed(apply,idx1)" size="mini" type="primary">确定
+											</el-button>
+										</div>
+										<el-button @click.prevent="apply.completedVisible = true" class="acion-btn line8"
+										           size="small" slot="reference" type="primary">确认收货
+										</el-button>
 
-                  </el-popover>
+									</el-popover>
 
 
-                  <div @click.prevent="showLogistics(apply)" class="font12 graytext2 logistics"
-                       v-if="apply.Order_ShippingID">查看物流
-                  </div>
-                </div>
-                <!--如果在修改库存，则隐藏重新提交按钮。只有先保存库存，才出现-->
-                <!--                && !apply.is_change_stock-->
-                <div class="line10" v-if="inArray(apply.Order_Status,[22,25])">
-                  <el-popover
-                    placement="top"
-                    trigger="manual"
-                    v-model="apply.submitVisible"
-                    width="160"
-                  >
-                    <p>确认提交?</p>
-                    <div style="text-align: right; margin: 0">
-                      <el-button @click="apply.submitVisible = false" size="mini" type="text">取消
-                      </el-button>
-                      <el-button @click="submitAplly(apply,idx1)" size="mini" type="primary">确定
-                      </el-button>
-                    </div>
-                    <el-button @click.prevent="apply.submitVisible = true" class="acion-btn"
-                               size="small" slot="reference" type="success">重新提交
-                    </el-button>
+									<div @click.prevent="showLogistics(apply)" class="font12 graytext2 logistics"
+									     v-if="apply.Order_ShippingID">查看物流
+									</div>
+								</div>
+								<!--如果在修改库存，则隐藏重新提交按钮。只有先保存库存，才出现-->
+								<!--                && !apply.is_change_stock-->
+								<div class="line10" v-if="inArray(apply.Order_Status,[22,25])">
+									<el-popover
+									placement="top"
+									trigger="manual"
+									v-model="apply.submitVisible"
+									width="160"
+									>
+										<p>确认提交?</p>
+										<div style="text-align: right; margin: 0">
+											<el-button @click="apply.submitVisible = false" size="mini" type="text">取消
+											</el-button>
+											<el-button @click="submitAplly(apply,idx1)" size="mini" type="primary">确定
+											</el-button>
+										</div>
+										<el-button @click.prevent="apply.submitVisible = true" class="acion-btn"
+										           size="small" slot="reference" type="success">重新提交
+										</el-button>
 
-                  </el-popover>
+									</el-popover>
 
-                </div>
-                <div class="line10" v-if="inArray(apply.Order_Status,[20,21,25])">
-                  <el-popover
-                    placement="top"
-                    trigger="manual"
-                    v-model="apply.cancelVisible"
-                    width="160"
-                  >
-                    <p>是否取消该订单?</p>
-                    <div style="text-align: right; margin: 0">
-                      <el-button @click="apply.cancelVisible = false" size="mini" type="text">取消
-                      </el-button>
-                      <el-button @click="cancelApply(apply,idx1)" size="mini" type="primary">确定
-                      </el-button>
-                    </div>
-                    <el-button @click.prevent="apply.cancelVisible = true" class="acion-btn"
-                               size="small" slot="reference" type="danger">取消
-                    </el-button>
+								</div>
+								<div class="line10" v-if="inArray(apply.Order_Status,[20,21,25])">
+									<el-popover
+									placement="top"
+									trigger="manual"
+									v-model="apply.cancelVisible"
+									width="160"
+									>
+										<p>是否取消该订单?</p>
+										<div style="text-align: right; margin: 0">
+											<el-button @click="apply.cancelVisible = false" size="mini" type="text">取消
+											</el-button>
+											<el-button @click="cancelApply(apply,idx1)" size="mini" type="primary">确定
+											</el-button>
+										</div>
+										<el-button @click.prevent="apply.cancelVisible = true" class="acion-btn"
+										           size="small" slot="reference" type="danger">取消
+										</el-button>
 
-                  </el-popover>
+									</el-popover>
 
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </div>
-    <logistics-info ref="logistics" />
-    <el-dialog
-      :close-on-click-modal="false"
-      :visible.sync="payDialogInstance.innerVisible"
-      @close="payDialogCancel"
-      append-to-body
-      center
-      title="订单支付"
-      width="500px"
-    >
-      <div class="container-wrap">
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<logistics-info ref="logistics" />
+		<el-dialog
+		:close-on-click-modal="false"
+		:visible.sync="payDialogInstance.innerVisible"
+		@close="payDialogCancel"
+		append-to-body
+		center
+		title="订单支付"
+		width="500px"
+		>
+			<div class="container-wrap">
 
-        <el-form :model="payDialogInstance" :rules="payRules" class="form" label-width="100px"
-                 ref="payForm">
-          <el-form-item label="付款信息" v-if="payDialogInstance.tip">
-            <div v-html="payDialogInstance.tip"></div>
-          </el-form-item>
-          <el-form-item :error="payDialogInstance.pwdError" label="支付密码" prop="pwd">
-            <el-input placeholder="请输入支付密码" type="password"
-                      v-model="payDialogInstance.pwd"></el-input>
-          </el-form-item>
-        </el-form>
-        <div style="text-align: right">
-          <el-button :loading="payDialogInstance.loading" @click="payDialogInstance.callFn"
-                     type="success">{{payDialogInstance.loading?'正在支付':'确认收货'}}
-          </el-button>
-        </div>
-      </div>
+				<el-form :model="payDialogInstance" :rules="payRules" class="form" label-width="100px"
+				         ref="payForm">
+					<el-form-item label="付款信息" v-if="payDialogInstance.tip">
+						<div v-html="payDialogInstance.tip"></div>
+					</el-form-item>
+					<el-form-item :error="payDialogInstance.pwdError" label="支付密码" prop="pwd">
+						<el-input placeholder="请输入支付密码" type="password"
+						          v-model="payDialogInstance.pwd"></el-input>
+					</el-form-item>
+				</el-form>
+				<div style="text-align: right">
+					<el-button :loading="payDialogInstance.loading" @click="payDialogInstance.callFn"
+					           type="success">{{payDialogInstance.loading?'正在支付':'确认收货'}}
+					</el-button>
+				</div>
+			</div>
 
-    </el-dialog>
-    <el-dialog
-      :visible.sync="channelDialogInstance.innerVisible"
-      @close="channelDialogCancel"
-      append-to-body
-      center
-      class="channel-container-wrap"
-      title="切换渠道"
-      width="848px"
-    >
-      <div class="container-wrap">
-        <el-form class="form" label-width="100px">
-          <el-form-item label="进货渠道:" prop="channel">
-            <el-select placeholder="请选择类型" style="width: 100%"
-                       v-model="channelDialogInstance.channel">
-              <template v-for="(item,idx) of channelDialogInstance.channels">
-                <el-option :label="item.name" :value="item.val"></el-option>
-              </template>
-            </el-select>
-          </el-form-item>
-          <el-form-item label=" " prop="store_no" v-show="channelDialogInstance.channel!='shop'">
-            <div class="flex">
-              <el-input placeholder="请输入门店编码" v-model="channelDialogInstance.store_no"></el-input>
-              <div class="w10"></div>
-              <el-button @click="dialogStoreShow=true">筛选门店</el-button>
-            </div>
+		</el-dialog>
+		<el-dialog
+		:visible.sync="channelDialogInstance.innerVisible"
+		@close="channelDialogCancel"
+		append-to-body
+		center
+		class="channel-container-wrap"
+		title="切换渠道"
+		width="848px"
+		>
+			<div class="container-wrap">
+				<el-form class="form" label-width="100px">
+					<el-form-item label="进货渠道:" prop="channel">
+						<el-select placeholder="请选择类型" style="width: 100%"
+						           v-model="channelDialogInstance.channel">
+							<template v-for="(item,idx) of channelDialogInstance.channels">
+								<el-option :label="item.name" :value="item.val"></el-option>
+							</template>
+						</el-select>
+					</el-form-item>
+					<el-form-item label=" " prop="store_no" v-show="channelDialogInstance.channel!='shop'">
+						<div class="flex">
+							<el-input placeholder="请输入门店编码" v-model="channelDialogInstance.store_no"></el-input>
+							<div class="w10"></div>
+							<el-button @click="dialogStoreShow=true">筛选门店</el-button>
+						</div>
 
-          </el-form-item>
-        </el-form>
-        <div @click="changeApplyChannel" class="btn">确定</div>
-      </div>
+					</el-form-item>
+				</el-form>
+				<div @click="changeApplyChannel" class="btn">确定</div>
+			</div>
 
-    </el-dialog>
-    <el-dialog
-      :visible.sync="storeDialogInstance.innerVisible"
-      @close="storeDialogCancel"
-      append-to-body
-      center
-      class="innerDislog"
-      title="店铺信息"
-      width="460px"
-    >
-      <div class="dialog-container">
-        <div class="row">
-          <div class="label">门店名称:</div>
-          <div class="text">{{storeDialogInstance.info.Stores_Name}}</div>
-        </div>
-        <div class="row">
-          <div class="label">门店电话:</div>
-          <div class="text">{{storeDialogInstance.info.Stores_Telephone}}</div>
-        </div>
-        <div class="row">
-          <div class="label">门店地址:</div>
-          <div class="text">
-            {{storeDialogInstance.info.Stores_Province_name}}{{storeDialogInstance.info.Stores_City_name}}{{storeDialogInstance.info.Stores_Area_name}}{{storeDialogInstance.info.Stores_Address}}
-            <a :href="storeDialogInstance.info.open" target="_blank"
-               v-if="storeDialogInstance.info.open"><i class="el-icon-location"
-                                                        style="font-size: 20px;color:#F43131;" /></a>
-          </div>
-        </div>
-      </div>
+		</el-dialog>
+		<el-dialog
+		:visible.sync="storeDialogInstance.innerVisible"
+		@close="storeDialogCancel"
+		append-to-body
+		center
+		class="innerDislog"
+		title="店铺信息"
+		width="460px"
+		>
+			<div class="dialog-container">
+				<div class="row">
+					<div class="label">门店名称:</div>
+					<div class="text">{{storeDialogInstance.info.Stores_Name}}</div>
+				</div>
+				<div class="row">
+					<div class="label">门店电话:</div>
+					<div class="text">{{storeDialogInstance.info.Stores_Telephone}}</div>
+				</div>
+				<div class="row">
+					<div class="label">门店地址:</div>
+					<div class="text">
+						{{storeDialogInstance.info.Stores_Province_name}}{{storeDialogInstance.info.Stores_City_name}}{{storeDialogInstance.info.Stores_Area_name}}{{storeDialogInstance.info.Stores_Address}}
+						<a :href="storeDialogInstance.info.open" target="_blank"
+						   v-if="storeDialogInstance.info.open"><i class="el-icon-location"
+						                                           style="font-size: 20px;color:#F43131;" /></a>
+					</div>
+				</div>
+			</div>
 
-    </el-dialog>
-    <bind-store-component
-      :get_top="1"
-      :self_store_id="self_store_id"
-      :show="dialogStoreShow"
-      :single="true"
-      @cancel="bindStoreCancel"
-      @success="bindStoreSuccessCall"
-      top="15vh"
-    />
-  </div>
+		</el-dialog>
+		<bind-store-component
+		:get_top="1"
+		:self_store_id="self_store_id"
+		:show="dialogStoreShow"
+		:single="true"
+		@cancel="bindStoreCancel"
+		@success="bindStoreSuccessCall"
+		top="15vh"
+		/>
+	</div>
 </template>
 
 <script lang="ts">
 
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator'
 
 import {
   calcApplyMoneyCount,
@@ -318,10 +319,10 @@ import {
   recallStorePurchaseApply,
   store_pifa_order_completed,
   subStorePurchaseApply
-} from '../common/fetch';
-import {findArrayIdx} from '@/common/utils';
-import {fun} from '@/common';
-import Cookies from 'js-cookie';
+} from '../common/fetch'
+import {findArrayIdx} from '@/common/utils'
+import {fun} from '@/common'
+import Cookies from 'js-cookie'
 
 import BindStoreComponent from '../components/comm/BindStoreComponent'
 import LogisticsInfo from '@/components/comm/LogisticsInfo'
@@ -446,7 +447,7 @@ export default class StorePurchaseApply extends Vue {
     for (var goods of apply.prod_list) {
       if (goods.prod_count < 1) {
         fun.error({msg: '产品至少选择1个'})
-        return;
+        return
       }
       if (goods.attr_id) {
         prod_attr[goods.prod_id] = {[goods.attr_id]: goods.prod_count}
@@ -511,7 +512,7 @@ export default class StorePurchaseApply extends Vue {
       console.log('表单校验结果', valid)
       if (valid) checkRT = true
     })
-    if (!checkRT) return;
+    if (!checkRT) return
 
     let {idx, pwd} = this.payDialogInstance
     //
@@ -613,7 +614,7 @@ export default class StorePurchaseApply extends Vue {
       })
     }).catch(() => {
 
-    });
+    })
 
 
   }
@@ -730,7 +731,7 @@ export default class StorePurchaseApply extends Vue {
       goods.prod_count = oldVal
       e.target.value = oldVal
       fun.error({msg: '最少请设置1'})
-      return;
+      return
     }
     console.log(e.target.value)
 
@@ -792,7 +793,7 @@ export default class StorePurchaseApply extends Vue {
     // apply.is_change_stock = true
     if (goods.prod_count < 2) {
       fun.error({msg: '数量最低选择1'})
-      return;
+      return
     }
 
     let Attr_ID = null
@@ -841,12 +842,12 @@ export default class StorePurchaseApply extends Vue {
   async changeApplyChannel() {
 
     if (!this.channelDialogInstance.channel) {
-      fun.error({msg: '渠道必选'});
-      return;
+      fun.error({msg: '渠道必选'})
+      return
     }
     if (this.channelDialogInstance.channel === 'store' && !this.channelDialogInstance.store_no) {
-      fun.error({msg: '门店编码必填'});
-      return;
+      fun.error({msg: '门店编码必填'})
+      return
     }
 
     let rt = false
@@ -859,7 +860,7 @@ export default class StorePurchaseApply extends Vue {
     }).catch(e => {
       fun.error({msg: '门店编码不正确'})
     })
-    if (!rt) return;
+    if (!rt) return
 
     let postData = {
       purchase_type: this.channelDialogInstance.channel,
@@ -895,7 +896,7 @@ export default class StorePurchaseApply extends Vue {
   showStore(store_id) {
     if (!store_id) {
       fun.error({msg: '该订单为向平台进货'})
-      return;
+      return
     }
 
     let idx = findArrayIdx(this.stores, {Stores_ID: store_id})
@@ -926,11 +927,11 @@ export default class StorePurchaseApply extends Vue {
 
 
       let rt = res.data.map(item => {
-        item.recallVisible = false;//显示撤回按钮
-        item.cancelVisible = false;//取消
-        item.submitVisible = false;//重新提交
-        item.completedVisible = false; //确认收货
-        item.payVisible = false;//支付
+        item.recallVisible = false//显示撤回按钮
+        item.cancelVisible = false//取消
+        item.submitVisible = false//重新提交
+        item.completedVisible = false //确认收货
+        item.payVisible = false//支付
         for (var goods of item.prod_list) {
           if (goods.attr_info) {
             goods.attr_info = JSON.parse(goods.attr_info)
@@ -950,7 +951,7 @@ export default class StorePurchaseApply extends Vue {
       //长度为0停止了
       if (res.data.length === 0) {
         this.paginate.finish = true
-        return;
+        return
       }
 
       this.paginate.page++
@@ -978,227 +979,227 @@ export default class StorePurchaseApply extends Vue {
 }
 </script>
 <style lang="stylus">
-  .channel-container-wrap
-    box-shadow 0 0 49px 14px rgba(0, 37, 157, 0.15)
+	.channel-container-wrap
+		box-shadow 0 0 49px 14px rgba(0, 37, 157, 0.15)
 
-    .container-wrap
-      padding-bottom 20px
+		.container-wrap
+			padding-bottom 20px
 
-    .form
-      margin 30px 245px 100px 147px
+		.form
+			margin 30px 245px 100px 147px
 
-    .btn
-      margin 0 auto
-      width 420px
-      height 50px
-      line-height 50px
-      background #F43131
-      border-radius 6px
-      color white
-      text-align center
-      font-size 18px
-      cursor pointer
+		.btn
+			margin 0 auto
+			width 420px
+			height 50px
+			line-height 50px
+			background #F43131
+			border-radius 6px
+			color white
+			text-align center
+			font-size 18px
+			cursor pointer
 </style>
 <style lang="less" scoped>
-  .dialog-container {
-    .row {
-      display: flex;
-      margin-bottom: 10px;
+	.dialog-container {
+		.row {
+			display: flex;
+			margin-bottom: 10px;
 
-      .label {
-        color: #999;
-        width: 72px;
-      }
+			.label {
+				color: #999;
+				width: 72px;
+			}
 
-      .text {
-        color: #444;
-      }
-    }
-  }
+			.text {
+				color: #444;
+			}
+		}
+	}
 
-  .home-wrap {
-    position: absolute;
-    height: 100vh;
-    width: 100%;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    background: #fff;
+	.home-wrap {
+		position: absolute;
+		height: 100vh;
+		width: 100%;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		background: #fff;
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
+		&::-webkit-scrollbar {
+			display: none;
+		}
+	}
 
-  .container {
-    padding: 20px;
-    /*width: 1200px;*/
-    /*margin: 30px auto;*/
-    position: relative;
+	.container {
+		padding: 20px;
+		/*width: 1200px;*/
+		/*margin: 30px auto;*/
+		position: relative;
 
-    .lists {
+		.lists {
 
-      .item {
-        border: 1px solid #EDEDED;
-        margin-bottom: 30px;
+			.item {
+				border: 1px solid #EDEDED;
+				margin-bottom: 30px;
 
-        .head {
-          height: 65px;
-          background: #f8f8f8;
-          align-items: center;
-          padding: 0 15px;
+				.head {
+					height: 65px;
+					background: #f8f8f8;
+					align-items: center;
+					padding: 0 15px;
 
-          .info {
-            align-items: center;
-            font-size: 14px;
+					.info {
+						align-items: center;
+						font-size: 14px;
 
-            .store-pic {
-              width: 50px;
-              height: 50px;
-              border-radius: 50%;
-              background-size: cover;
-              background-repeat: no-repeat;
-              background-position: center;
-              margin-right: 15px;
-            }
+						.store-pic {
+							width: 50px;
+							height: 50px;
+							border-radius: 50%;
+							background-size: cover;
+							background-repeat: no-repeat;
+							background-position: center;
+							margin-right: 15px;
+						}
 
-            .store-title {
-              margin-right: 15px;
-              color: #333;
-            }
+						.store-title {
+							margin-right: 15px;
+							color: #333;
+						}
 
-            .action {
-              color: #F43131;
+						.action {
+							color: #F43131;
 
-              .action-item {
-                text-decoration: underline;
-                cursor: pointer;
-              }
-            }
+							.action-item {
+								text-decoration: underline;
+								cursor: pointer;
+							}
+						}
 
-            .order_no {
-              margin-left: 30px;
-              color: #666;
-            }
-          }
+						.order_no {
+							margin-left: 30px;
+							color: #666;
+						}
+					}
 
-          .status {
-            .el-icon-delete-solid {
-              cursor: pointer;
-              color: #999;
+					.status {
+						.el-icon-delete-solid {
+							cursor: pointer;
+							color: #999;
 
-              &:hover {
-                color: #F43131;
-              }
-            }
-          }
-        }
+							&:hover {
+								color: #F43131;
+							}
+						}
+					}
+				}
 
-        .purchases {
-          border-collapse: collapse;
-          width: 100%;
-          background: white;
+				.purchases {
+					border-collapse: collapse;
+					width: 100%;
+					background: white;
 
-          .goods-list {
+					.goods-list {
 
-            &:last-child {
-              .goods {
-                border-bottom: none;
-              }
+						&:last-child {
+							.goods {
+								border-bottom: none;
+							}
 
-            }
+						}
 
-            .goods {
-              display: flex;
-              align-items: center;
-              padding: 15px;
-              border-bottom: 1px solid #EDEDED;
+						.goods {
+							display: flex;
+							align-items: center;
+							padding: 15px;
+							border-bottom: 1px solid #EDEDED;
 
-              .l {
-                width: 100px;
-                height: 100px;
-                background-size: cover;
-                background-repeat: no-repeat;
-                background-color: #f2f2f2;
-                background-position: center;
-              }
+							.l {
+								width: 100px;
+								height: 100px;
+								background-size: cover;
+								background-repeat: no-repeat;
+								background-color: #f2f2f2;
+								background-position: center;
+							}
 
-              .c {
-                flex: 1;
-                padding: 0 15px;
+							.c {
+								flex: 1;
+								padding: 0 15px;
 
-                .numbox {
-                  margin-top: 25px;
-                  display: flex;
-                  align-items: center;
+								.numbox {
+									margin-top: 25px;
+									display: flex;
+									align-items: center;
 
-                  .handle {
-                    background: #f2f2f2;
-                    height: 34px;
-                    display: flex;
-                    align-items: center;
-                    width: 104px;
+									.handle {
+										background: #f2f2f2;
+										height: 34px;
+										display: flex;
+										align-items: center;
+										width: 104px;
 
-                    .input {
-                      width: 40px;
-                      height: 24px;
-                      line-height: 24px;
-                      outline: none;
-                      padding: 0 4px;
-                      box-sizing: border-box;
-                      text-align: center;
-                    }
+										.input {
+											width: 40px;
+											height: 24px;
+											line-height: 24px;
+											outline: none;
+											padding: 0 4px;
+											box-sizing: border-box;
+											text-align: center;
+										}
 
-                    .plus, .minus {
-                      text-align: center;
-                      display: block;
-                      line-height: 34px;
-                      width: 34px;
-                      height: 34px;
-                      cursor: pointer;
+										.plus, .minus {
+											text-align: center;
+											display: block;
+											line-height: 34px;
+											width: 34px;
+											height: 34px;
+											cursor: pointer;
 
-                      .icon {
+											.icon {
 
-                      }
-                    }
+											}
+										}
 
-                    .minus {
+										.minus {
 
-                    }
+										}
 
-                    .plus {
+										.plus {
 
-                    }
-                  }
-                }
-              }
+										}
+									}
+								}
+							}
 
-              .r {
-                width: 120px;
-                text-align: right;
-              }
-            }
-          }
+							.r {
+								width: 120px;
+								text-align: right;
+							}
+						}
+					}
 
-          .price-box {
-            width: 226px;
-            border-left: 1px solid #EDEDED;
-            border-right: 1px solid #EDEDED;
-            /*flex-grow: 1*/
-            /*height: 100%;*/
-          }
+					.price-box {
+						width: 226px;
+						border-left: 1px solid #EDEDED;
+						border-right: 1px solid #EDEDED;
+						/*flex-grow: 1*/
+						/*height: 100%;*/
+					}
 
-          .actions {
-            width: 184px;
+					.actions {
+						width: 184px;
 
-            .logistics {
-              cursor: pointer;
-            }
-          }
+						.logistics {
+							cursor: pointer;
+						}
+					}
 
-        }
+				}
 
-      }
-    }
-  }
+			}
+		}
+	}
 </style>
 

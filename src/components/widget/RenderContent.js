@@ -3,7 +3,6 @@ export const RenderContent = {
     option: Object
   },
   render (h) {
-
     if (this.option.render) {
       return this.option.render(h, this.option.scope)
     }
@@ -17,7 +16,7 @@ export const RenderContent = {
       return <span>{val}</span>
     }
     if (column.type === 'index') {
-        value = $index + 1
+      value = $index + 1
     }
     if (!value && value !== 0) {
       value = '-'

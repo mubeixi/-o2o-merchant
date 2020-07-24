@@ -1,130 +1,130 @@
 <template>
-  <div class="mainVip">
-    <div class="wrap">
-      <div class="firstChart marginB">
-        <div class="firstTitle">
-          <div class="titleFont">商品类目销售分析</div>
-          <div class="titleButton">
-            <el-button @click="proOutput" size="small" type="primary">导出数据</el-button>
+	<div class="mainVip">
+		<div class="wrap">
+			<div class="firstChart marginB">
+				<div class="firstTitle">
+					<div class="titleFont">商品类目销售分析</div>
+					<div class="titleButton">
+						<el-button @click="proOutput" size="small" type="primary">导出数据</el-button>
 
-            <div class="buttonRadio">
-              <div :class="f_current == 1 ? 'selected' : ''" @click="getLastday(1,'stat',1)"
-                   class="radioDiv">昨天
-              </div>
-              <div :class="f_current == 2 ? 'selected' : ''" @click="getLastday(7,'stat',1)"
-                   class="radioDiv">最近7天
-              </div>
-              <div :class="f_current == 3 ? 'selected' : ''" @click="getLastday(30,'stat',1)"
-                   class="radioDiv">最近30天
-              </div>
-            </div>
+						<div class="buttonRadio">
+							<div :class="f_current == 1 ? 'selected' : ''" @click="getLastday(1,'stat',1)"
+							     class="radioDiv">昨天
+							</div>
+							<div :class="f_current == 2 ? 'selected' : ''" @click="getLastday(7,'stat',1)"
+							     class="radioDiv">最近7天
+							</div>
+							<div :class="f_current == 3 ? 'selected' : ''" @click="getLastday(30,'stat',1)"
+							     class="radioDiv">最近30天
+							</div>
+						</div>
 
-            <el-date-picker
-              @change="statHandle"
-              placeholder="请选择日期"
-              size="small"
-              style="width: 130px"
-              type="date"
-              v-model="start_time"
-              value-format="yyyy-MM-dd"
-            ></el-date-picker>
-          </div>
-        </div>
-        <div ref="chart" style="width: 100%;height: 580px"></div>
-        <div class="fourTable">
-          <div class="fourTableAll">
-            <div class="th">
-              <div class="td">分类名称</div>
-              <div @click="countToggleHandle" class="td">销售数量<span class="arrow">{{countToggle?'↑':'↓'}}</span>
-              </div>
-              <div class="td">数量比例</div>
-              <div class="td">销售金额</div>
-              <div class="td">金额比例</div>
-            </div>
-            <div :key="index" class="tr" v-for="(item,index) of protypelist">
-              <div class="td">{{item.Category_Name}}</div>
-              <div class="td">{{item.sales_count}}</div>
-              <div class="td">{{item.sales_count_prop}}%</div>
-              <div class="td">{{item.sales_money}}</div>
-              <div class="td">{{item.sales_money_prop}}%</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="firstChart marginB">
-        <div class="firstTitle">
-          <div class="titleFont">商品销售情况</div>
-          <div class="titleButton">
-            <el-button @click="outputHandle" size="small" type="primary">导出数据</el-button>
+						<el-date-picker
+						@change="statHandle"
+						placeholder="请选择日期"
+						size="small"
+						style="width: 130px"
+						type="date"
+						v-model="start_time"
+						value-format="yyyy-MM-dd"
+						></el-date-picker>
+					</div>
+				</div>
+				<div ref="chart" style="width: 100%;height: 580px"></div>
+				<div class="fourTable">
+					<div class="fourTableAll">
+						<div class="th">
+							<div class="td">分类名称</div>
+							<div @click="countToggleHandle" class="td">销售数量<span class="arrow">{{countToggle?'↑':'↓'}}</span>
+							</div>
+							<div class="td">数量比例</div>
+							<div class="td">销售金额</div>
+							<div class="td">金额比例</div>
+						</div>
+						<div :key="index" class="tr" v-for="(item,index) of protypelist">
+							<div class="td">{{item.Category_Name}}</div>
+							<div class="td">{{item.sales_count}}</div>
+							<div class="td">{{item.sales_count_prop}}%</div>
+							<div class="td">{{item.sales_money}}</div>
+							<div class="td">{{item.sales_money_prop}}%</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="firstChart marginB">
+				<div class="firstTitle">
+					<div class="titleFont">商品销售情况</div>
+					<div class="titleButton">
+						<el-button @click="outputHandle" size="small" type="primary">导出数据</el-button>
 
-            <div class="buttonRadio">
-              <div :class="s_current == 1 ? 'selected' : ''" @click="getLastday(1,'sale',2)"
-                   class="radioDiv">昨天
-              </div>
-              <div :class="s_current == 2 ? 'selected' : ''" @click="getLastday(7,'sale',2)"
-                   class="radioDiv">最近7天
-              </div>
-              <div :class="s_current == 3 ? 'selected' : ''" @click="getLastday(30,'sale',2)"
-                   class="radioDiv">最近30天
-              </div>
-            </div>
+						<div class="buttonRadio">
+							<div :class="s_current == 1 ? 'selected' : ''" @click="getLastday(1,'sale',2)"
+							     class="radioDiv">昨天
+							</div>
+							<div :class="s_current == 2 ? 'selected' : ''" @click="getLastday(7,'sale',2)"
+							     class="radioDiv">最近7天
+							</div>
+							<div :class="s_current == 3 ? 'selected' : ''" @click="getLastday(30,'sale',2)"
+							     class="radioDiv">最近30天
+							</div>
+						</div>
 
-            <el-date-picker
-              @change="salesTimeHandle"
-              placeholder="请选择日期"
-              size="small"
-              style="width: 130px"
-              type="date"
-              v-model="sale_time"
-              value-format="yyyy-MM-dd"
-            ></el-date-picker>
-          </div>
-        </div>
-        <div class="fourTable fiveTable">
-          <div class="fourTableAll">
-            <div class="th">
-              <div class="td" style="width: 28% !important;">商品名称</div>
-              <div @click="moneyToggleHandle" class="td tq">浏览量<span class="arrow">{{moneyToggle?'↓':'↑'}}</span>
-              </div>
-              <div class="td tq">浏览人数</div>
-              <div class="td tq">付款人数</div>
-              <div class="td tq">单品转换率</div>
-              <div class="td tq">销售数量</div>
-              <div class="td tq">销售金额</div>
-            </div>
-            <div :key="index" class="tr" v-for="(item,index) of proSalesList">
-              <div @click="goDetail(item.Products_ID)" class="td tds"
-                   style="width: 28% !important;">{{item.Products_Name}}
-              </div>
-              <div class="td tq">{{item.view_count}}</div>
-              <div class="td tq">{{item.view_user_count}}</div>
-              <div class="td tq">{{item.pay_user_count}}</div>
-              <div class="td tq">{{item.conversion_rate}}%</div>
-              <div class="td tq">{{item.sales_count}}</div>
-              <div class="td tq">￥{{item.sales_money}}</div>
-            </div>
+						<el-date-picker
+						@change="salesTimeHandle"
+						placeholder="请选择日期"
+						size="small"
+						style="width: 130px"
+						type="date"
+						v-model="sale_time"
+						value-format="yyyy-MM-dd"
+						></el-date-picker>
+					</div>
+				</div>
+				<div class="fourTable fiveTable">
+					<div class="fourTableAll">
+						<div class="th">
+							<div class="td" style="width: 28% !important;">商品名称</div>
+							<div @click="moneyToggleHandle" class="td tq">浏览量<span class="arrow">{{moneyToggle?'↓':'↑'}}</span>
+							</div>
+							<div class="td tq">浏览人数</div>
+							<div class="td tq">付款人数</div>
+							<div class="td tq">单品转换率</div>
+							<div class="td tq">销售数量</div>
+							<div class="td tq">销售金额</div>
+						</div>
+						<div :key="index" class="tr" v-for="(item,index) of proSalesList">
+							<div @click="goDetail(item.Products_ID)" class="td tds"
+							     style="width: 28% !important;">{{item.Products_Name}}
+							</div>
+							<div class="td tq">{{item.view_count}}</div>
+							<div class="td tq">{{item.view_user_count}}</div>
+							<div class="td tq">{{item.pay_user_count}}</div>
+							<div class="td tq">{{item.conversion_rate}}%</div>
+							<div class="td tq">{{item.sales_count}}</div>
+							<div class="td tq">￥{{item.sales_money}}</div>
+						</div>
 
-          </div>
-          <el-pagination
-            :current-page="page"
-            :total="sale_total"
-            @current-change="getCurrent"
-            @next-click="getNext"
-            @prev-click="getPrev"
-            background
-            layout="prev, pager, next"
-            style="width:100%;text-align:right;margin-top:40px;">
-          </el-pagination>
-        </div>
-      </div>
-    </div>
-  </div>
+					</div>
+					<el-pagination
+					:current-page="page"
+					:total="sale_total"
+					@current-change="getCurrent"
+					@next-click="getNext"
+					@prev-click="getPrev"
+					background
+					layout="prev, pager, next"
+					style="width:100%;text-align:right;margin-top:40px;">
+					</el-pagination>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
-import {systemProdCateSales, systemProdSales} from "@/common/fetch";
-import {notSortBy, sortBy} from '@/common/utils';
+import {Component, Vue} from "vue-property-decorator"
+import {systemProdCateSales, systemProdSales} from "@/common/fetch"
+import {notSortBy, sortBy} from '@/common/utils'
 
 @Component({
   mixins: [],
@@ -177,7 +177,7 @@ export default class ProductStatistics extends Vue {
               //自定义颜色
               var colorList = [
                 '#F77A8C', '#6DD6D0', '#5E5D95', '#9AC0F3', '#6E7788', '#9AC0F3', '#F9F45B', '#ED84B8', '#A3B1C9', '#ED8493', '#85E8E8', '#6E7788', '#F8904A', '#70CC8B', '#F1C087',
-              ];
+              ]
               return colorList[params.dataIndex]
             }
           }
@@ -211,7 +211,7 @@ export default class ProductStatistics extends Vue {
               //自定义颜色
               var colorList = [
                 '#F77A8C', '#6DD6D0', '#5E5D95', '#9AC0F3', '#6E7788', '#9AC0F3', '#F9F45B', '#ED84B8', '#A3B1C9', '#ED8493', '#85E8E8', '#6E7788', '#F8904A', '#70CC8B', '#F1C087',
-              ];
+              ]
               return colorList[params.dataIndex]
             }
           }
@@ -241,59 +241,59 @@ export default class ProductStatistics extends Vue {
       if (number == 30) this.s_current = 3
     }
 
-    let date = new Date();
+    let date = new Date()
     let yestdayTime = date.getTime() - number * 24 * 3600 * 1000
-    let year = new Date(yestdayTime).getFullYear();
-    let month = new Date(yestdayTime).getMonth() + 1;
-    let day = new Date(yestdayTime).getDate();
+    let year = new Date(yestdayTime).getFullYear()
+    let month = new Date(yestdayTime).getMonth() + 1
+    let day = new Date(yestdayTime).getDate()
     let lastTime = year + '-' + this.add0(month) + '-' + this.add0(day)
     if (type == 'stat') {
-      this.start_time = lastTime;
-      this.systemProdCateSales();
+      this.start_time = lastTime
+      this.systemProdCateSales()
     } else if (type == 'sale') {
       this.sale_time = lastTime
-      this.systemProdSales();
+      this.systemProdSales()
     }
   }
 
   // 销售数据导出
   outputHandle() {
-    this.systemProdSales('output');
+    this.systemProdSales('output')
   }
 
   // 总数据导出
   proOutput() {
-    this.systemProdCateSales('output');
+    this.systemProdCateSales('output')
   }
 
   getCurrent(e) {
-    this.page = e;
-    this.systemProdSales();
+    this.page = e
+    this.systemProdSales()
   }
 
   getPrev(e) {
-    this.page = e;
-    this.systemProdSales();
+    this.page = e
+    this.systemProdSales()
   }
 
   getNext(e) {
-    this.page = e;
-    this.systemProdSales();
+    this.page = e
+    this.systemProdSales()
   }
 
   statHandle() {
     this.f_current = 0
-    this.systemProdCateSales();
+    this.systemProdCateSales()
   }
 
   salesTimeHandle() {
     this.s_current = 0
-    this.page = 1;
-    this.systemProdSales();
+    this.page = 1
+    this.systemProdSales()
   }
 
   countToggleHandle() {
-    this.countToggle = !this.countToggle;
+    this.countToggle = !this.countToggle
     if (this.countToggle) {
       // 向下排序，销量从高到低
       this.protypelist.sort(sortBy('sales_count'))
@@ -313,17 +313,17 @@ export default class ProductStatistics extends Vue {
   }
 
   moneyToggleHandle() {
-    this.moneyToggle = !this.moneyToggle;
-    this.page = 1;
-    this.systemProdSales();
+    this.moneyToggle = !this.moneyToggle
+    this.page = 1
+    this.systemProdSales()
   }
 
   initEcharts() {
     this.option.legend.data = this.names
-    this.option.series[0].data = this.sales_count;
-    this.option.series[1].data = this.sales_money;
-    let myChart = this.$echarts.init(this.$refs.chart);
-    myChart.setOption(this.option);
+    this.option.series[0].data = this.sales_count
+    this.option.series[1].data = this.sales_money
+    let myChart = this.$echarts.init(this.$refs.chart)
+    myChart.setOption(this.option)
   }
 
   systemProdCateSales(arg = "") {
@@ -334,16 +334,16 @@ export default class ProductStatistics extends Vue {
     if (arg === 'output') {
       console.log('output')
       systemProdCateSales(postData, {loading: true}).then(res => {
-        res.data.file_path && window.open(res.data.file_path, '_self');
+        res.data.file_path && window.open(res.data.file_path, '_self')
       })
-      return;
+      return
     } else {
       systemProdCateSales(postData, {loading: true}).then(res => {
-        this.protypelist = res.data.list;
-        this.names = res.data.name;
-        this.sales_count = res.data.sales_count;
-        this.sales_money = res.data.sales_money;
-        this.initEcharts();
+        this.protypelist = res.data.list
+        this.names = res.data.name
+        this.sales_count = res.data.sales_count
+        this.sales_money = res.data.sales_money
+        this.initEcharts()
       }, err => {
       })
     }
@@ -360,12 +360,12 @@ export default class ProductStatistics extends Vue {
     }
     if (arg === 'output') {
       systemProdSales(postData, {loading: true}).then(res => {
-        res.data.file_path && window.open(res.data.file_path, '_self');
+        res.data.file_path && window.open(res.data.file_path, '_self')
       })
-      return;
+      return
     } else {
       systemProdSales(postData, {loading: true}).then(res => {
-        this.proSalesList = res.data.list;
+        this.proSalesList = res.data.list
         this.sale_total = res.totalCount
       })
     }
@@ -373,178 +373,178 @@ export default class ProductStatistics extends Vue {
 
   mounted() {
     // 基于准备好的dom，初始化echarts实例
-    let myChart = this.$echarts.init(this.$refs.chart);
-    myChart.setOption(this.option);
-    this.systemProdCateSales();
-    this.systemProdSales();
+    let myChart = this.$echarts.init(this.$refs.chart)
+    myChart.setOption(this.option)
+    this.systemProdCateSales()
+    this.systemProdSales()
   }
 }
 </script>
 
 <style lang="less" scoped>
-  .mainVip {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 39px 14% 54px 16%;
-  }
+	.mainVip {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 39px 14% 54px 16%;
+	}
 
-  .wrap {
-    min-width: 1200px;
-  }
+	.wrap {
+		min-width: 1200px;
+	}
 
-  .arrow {
-    font-size: 18px;
-    font-weight: 700;
-    margin-left: 5px;
-  }
+	.arrow {
+		font-size: 18px;
+		font-weight: 700;
+		margin-left: 5px;
+	}
 
-  .arrow.up {
-    transform: rotate(180deg);
-  }
+	.arrow.up {
+		transform: rotate(180deg);
+	}
 
-  .firstChart {
-    width: 100%;
-    background-color: #ffffff;
-    border: 1px solid #e4e4e4;
-  }
+	.firstChart {
+		width: 100%;
+		background-color: #ffffff;
+		border: 1px solid #e4e4e4;
+	}
 
-  //title
-  .firstTitle {
-    background-color: #f3f3f3;
-    width: 100%;
-    height: 50px;
-    display: flex;
-    justify-content: space-between;
+	//title
+	.firstTitle {
+		background-color: #f3f3f3;
+		width: 100%;
+		height: 50px;
+		display: flex;
+		justify-content: space-between;
 
-    .titleFont {
-      font-size: 14px;
-      color: #666666;
-      height: 50px;
-      line-height: 50px;
-      padding-left: 21px;
-    }
+		.titleFont {
+			font-size: 14px;
+			color: #666666;
+			height: 50px;
+			line-height: 50px;
+			padding-left: 21px;
+		}
 
-    .titleButton {
-      display: flex;
-      align-items: center;
-      height: 50px;
-      padding-right: 30px;
+		.titleButton {
+			display: flex;
+			align-items: center;
+			height: 50px;
+			padding-right: 30px;
 
-      .selectClass {
-        width: 100px;
-        margin-left: 15px;
-      }
+			.selectClass {
+				width: 100px;
+				margin-left: 15px;
+			}
 
-      .selectDate {
-        margin-left: 15px;
-        width: 128px;
-      }
+			.selectDate {
+				margin-left: 15px;
+				width: 128px;
+			}
 
-      .buttonRadio {
-        height: 30px;
-        width: 260px;
-        border: 1px solid #dcdcdc;
-        box-sizing: border-box;
-        display: flex;
-        align-items: center;
-        background-color: #ffffff;
-        margin-left: 15px;
-        margin-right: 9px;
+			.buttonRadio {
+				height: 30px;
+				width: 260px;
+				border: 1px solid #dcdcdc;
+				box-sizing: border-box;
+				display: flex;
+				align-items: center;
+				background-color: #ffffff;
+				margin-left: 15px;
+				margin-right: 9px;
 
-        .radioDiv {
-          width: 86px;
-          height: 30px;
-          cursor: pointer;
-          line-height: 30px;
-          text-align: center;
-          border-right: 1px solid #dcdcdc;
-          font-size: 12px;
-          color: #666666;
-        }
-      }
-    }
-  }
+				.radioDiv {
+					width: 86px;
+					height: 30px;
+					cursor: pointer;
+					line-height: 30px;
+					text-align: center;
+					border-right: 1px solid #dcdcdc;
+					font-size: 12px;
+					color: #666666;
+				}
+			}
+		}
+	}
 
-  .marginB {
-    margin-bottom: 30px;
-  }
+	.marginB {
+		margin-bottom: 30px;
+	}
 
-  .fourTable {
-    padding: 50px 84px 69px 84px;
-    width: 100%;
-    box-sizing: border-box;
+	.fourTable {
+		padding: 50px 84px 69px 84px;
+		width: 100%;
+		box-sizing: border-box;
 
-    .fourTableAll {
-      width: 100%;
-      border: 1px solid #e4e4e4;
-      font-size: 14px;
-      color: #666666;
+		.fourTableAll {
+			width: 100%;
+			border: 1px solid #e4e4e4;
+			font-size: 14px;
+			color: #666666;
 
-      .th {
-        height: 50px;
-        font-weight: bold;
-        background-color: #F9FAFC;
-        display: flex;
-      }
+			.th {
+				height: 50px;
+				font-weight: bold;
+				background-color: #F9FAFC;
+				display: flex;
+			}
 
-      .tr {
-        height: 50px;
-        display: flex;
-        border-top: 1px solid #e4e4e4;
-      }
+			.tr {
+				height: 50px;
+				display: flex;
+				border-top: 1px solid #e4e4e4;
+			}
 
-      .td {
-        display: flex;
-        width: 20%;
-        height: 50px;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        border-right: 1px solid #e4e4e4;
+			.td {
+				display: flex;
+				width: 20%;
+				height: 50px;
+				justify-content: center;
+				align-items: center;
+				text-align: center;
+				border-right: 1px solid #e4e4e4;
 
-        &:last-child {
-          border-right: 0px;
-        }
-      }
-    }
+				&:last-child {
+					border-right: 0px;
+				}
+			}
+		}
 
-  }
+	}
 
-  .fiveTable {
-    padding: 40px 50px 50px 50px;
+	.fiveTable {
+		padding: 40px 50px 50px 50px;
 
-    .fourTableAll {
-      .td {
-        width: 16%;
+		.fourTableAll {
+			.td {
+				width: 16%;
 
-        &:first-child {
-          width: 220px;
-        }
-      }
-    }
-  }
+				&:first-child {
+					width: 220px;
+				}
+			}
+		}
+	}
 
-  //title
-  .selected {
-    background: #409eff !important;
-    color: #fff !important;
-  }
+	//title
+	.selected {
+		background: #409eff !important;
+		color: #fff !important;
+	}
 
-  .tds {
-    box-sizing: border-box !important;
-    line-height: 50px !important;
-    height: 50px !important;
-    overflow: hidden !important;
-    text-align: left !important;
-    display: block !important;
-    padding-left: 5px !important;
-    padding-right: 5px !important;
-    cursor: pointer;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+	.tds {
+		box-sizing: border-box !important;
+		line-height: 50px !important;
+		height: 50px !important;
+		overflow: hidden !important;
+		text-align: left !important;
+		display: block !important;
+		padding-left: 5px !important;
+		padding-right: 5px !important;
+		cursor: pointer;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 
-  .tq {
-    width: 12% !important;
-  }
+	.tq {
+		width: 12% !important;
+	}
 </style>

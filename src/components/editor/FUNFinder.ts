@@ -1,9 +1,12 @@
-import store from "../../store";
+import store from "../../store"
+
 let finderDialogInstance = store.state.finderDialogInstance
-const noop = ()=>{}
+const noop = () => {
+}
+
 export class FUNFinder {
 
-  constructor(opt){
+  constructor(opt) {
 
   }
 
@@ -13,14 +16,14 @@ export class FUNFinder {
    * @param editor
    * @param callFn
    */
-  static open({options={},editor=null,callFn=noop}){
+  static open({options = {}, editor = null, callFn = noop}) {
 
 
     finderDialogInstance.callFn = callFn
 
-    let {limit=false,allow=['image','media']} = options;
+    let {limit = false, allow = ['image', 'media']} = options
 
-    if(limit){
+    if (limit) {
       finderDialogInstance.limit = limit
     }
     //默认允许图片和视频
