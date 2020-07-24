@@ -48,8 +48,8 @@
 			<div style="width: 20px"></div>
 			<div class="col">
 				<div>
-					<el-button :size="size" @click="submit" type="primary">搜索</el-button>
-					<el-button :size="size" @click="resets">重置</el-button>
+					<el-button :size="size" @click="submit()" type="primary">搜索</el-button>
+					<el-button :size="size" @click="reset()">重置</el-button>
 				</div>
 			</div>
 		</div>
@@ -95,6 +95,7 @@ export default class FunSearch extends Vue {
   }
 
   reset(is_init) {
+    console.log(is_init)
     //重置没反应
     //this.$emit('reset');
     this.columnsData = []
@@ -127,9 +128,10 @@ export default class FunSearch extends Vue {
     })
 
 
-    // if(!is_init){
-    //     this.$emit('reset');
-    // }
+    if(!is_init){
+      console.log(is_init)
+        this.$emit('reset');
+    }
 
 
   }
