@@ -169,7 +169,7 @@
 			@closeDialog="closeDialogs"
 			@currentChange="currentChangess"
 			@handleSizeChange="handleSizeChanges"
-			@reset="resets"
+			@reset="resetByGoods"
 			@selectVal="selectValByProduct"
 			@submit="submits"
 			ref="productTableRef"
@@ -565,12 +565,12 @@ export default class FreeSetting extends Vue {
   }
 
   //重置
-  resets() {
+  resetByGoods() {
     console.log("11111111")
     for (let it in this.productTableOpts.columns) {
       this.productTableOpts.columns[it].value = ''
     }
-    this.selectGoodsIds = []
+    // this.selectGoodsIds = []
     this.getProductList()
   }
 

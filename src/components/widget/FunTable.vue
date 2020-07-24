@@ -363,6 +363,7 @@ export default class FunTable extends Vue {
   }
 
   reset() {
+    console.log('resetresetresetresetreset')
     this.$emit('reset')
   }
 
