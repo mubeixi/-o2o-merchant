@@ -84,7 +84,7 @@
 							<div @click="changeStatus(index)" class="tui-btn disableds" v-if="item.checked">取消推荐
 							</div>
 							<div @click="changeStatus(index)" class="tui-btn " v-else>推荐</div>
-							<el-tooltip class="item" content="Top Left 提示文字" effect="dark" placement="top-start"
+							<el-tooltip class="item" content="推荐商品优先显示" effect="dark" placement="top-start"
 							            v-if="!item.checked">
 								<img src="@/assets/img/wen.png" style="margin-left: auto">
 							</el-tooltip>
@@ -156,6 +156,7 @@
 		top="5vh"
 		>
 			<fun-table
+        :_page="productTableOpts.page"
 			:_pageSize="productTableOpts.pageSize"
 			:_totalCount="productTableOpts.totalCount"
 			:is_paginate="productTableOpts.is_paginate"
@@ -173,7 +174,7 @@
 			@selectVal="selectValByProduct"
 			@submit="submits"
 			ref="productTableRef"
-			v-if="productDialogShow"
+			:is_ShowTable="productDialogShow"
 			vkey="Products_ID"
 			>
 				<template slot="Products_Name-column" slot-scope="props">
@@ -512,6 +513,7 @@ export default class FreeSetting extends Vue {
   }
 
   openPro() {
+    this.getProductList()
     this.productDialogShow = true
     // this.selectGoodsIds = []
     // this.productDatas.map(item => {
@@ -541,6 +543,33 @@ export default class FreeSetting extends Vue {
     //重置一下
     this.tempProductIds = get_arr_column(selectRowList, 'Products_ID')
     this.tempProductList = selectRowList.concat([])
+
+
+    //新增  为了  他选过第一页 然后切换到第二页  第一页勾中的就掉了
+    for(let item of selectRowList){
+      const proIndex=this.selectGoodsIds.indexOf(item.Products_ID)
+      if(proIndex==-1){
+        this.selectGoodsIds.push(item.Products_ID)
+      }
+    }
+    //合并
+    var tempList = this.productDatas.concat(this.tempProductList)
+    //去重吧
+    var result = []
+    for (var key in this.selectGoodsIds) {
+      for (var row of tempList) {
+        if (row.Products_ID == this.selectGoodsIds[key]) {
+          result.push(row)
+          break
+        }
+
+      }
+
+    }
+    this.productDatas = result
+
+    //新增结束
+
 
     // for (let item of val) {
     //   this.tempProductIds.push(item)
@@ -786,7 +815,7 @@ export default class FreeSetting extends Vue {
 	}
 
 	.give-div {
-		width: 566px;
+		width: 700px;
 		padding: 4px 20px 24px 20px;
 		background-color: #F9F9F9;
 		font-size: 12px;
