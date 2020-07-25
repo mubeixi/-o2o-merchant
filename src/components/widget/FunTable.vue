@@ -1,5 +1,5 @@
 <template>
-	<div class="fun-table-plugin">
+	<div class="fun-table-plugin" v-if="is_ShowTable">
 		<slot name="topToolBar"></slot>
 		<div class="section filter">
 			<fun-search :size="formSize" :columns="columns" @submit="filterFn" @reset="reset">
@@ -164,6 +164,11 @@ export default class FunTable extends Vue {
     return row[columName]
   }
 
+  @Prop({
+    type: Boolean,
+    default: true
+  })
+  is_ShowTable //是否显示
 
   @Prop({
 	  type:Function,
