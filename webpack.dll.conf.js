@@ -5,25 +5,25 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const vendors = [
   [
-    'vue', 'vuex', 'vue-resource','echarts','element-ui','fabric','html2canvas','qrcode.vue','vue-router','vue-class-component','vue-lazyload','js-cookie'
+    'vue', 'vuex', 'vue-resource','vue-router','vue-class-component','vue-lazyload'
   ],
-  //  [
-  //   'echarts'
-  // ], [
-  //   'element-ui'
-  // ],[
-  //   'fabric','html2canvas','qrcode.vue'
-  // ]
+   [
+    'echarts'
+  ], [
+    'element-ui'
+  ],[
+    'fabric','html2canvas','qrcode.vue','js-cookie'
+  ]
 ]
 
 // dll文件存放的目录
 const dllPath = './build/dll'
 module.exports = {
   entry: { // 多入口，单入口情况，只需写一个，key值自定义，value值为数组
-    // vue: vendors[0],
-    // echarts: vendors[1],
-    // elementUI: vendors[2],
-    libs: vendors[0],
+    vue: vendors[0],
+    echarts: vendors[1],
+    elementUI: vendors[2],
+    libs: vendors[3],
   },
   output: {
     path: path.join(__dirname, dllPath),

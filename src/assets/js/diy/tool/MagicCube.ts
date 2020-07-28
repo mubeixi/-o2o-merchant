@@ -192,7 +192,7 @@ class MagicCube {
 
     let IDX = this.selects.length;//每个人选择下标作为index
     //加入列表,错误会报错终止运行
-    this.add_selects({x, y, x1, y1, IDX});
+    this.add_selects({x, y, x1, y1, IDX,tooltip:''});
 
     return true;
 

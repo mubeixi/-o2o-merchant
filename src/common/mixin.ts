@@ -1,8 +1,8 @@
-import {login,getUsersInfo} from "@/common/fetch";
-import {ls,ss} from '@/common/tool/ls';
-import {GetQueryByString} from "@/common/utils";
-import Cookies from 'js-cookie';
-import {isDev} from "./env";
+import {getUsersInfo} from "@/common/fetch"
+import {ss} from '@/common/tool/ls'
+import {GetQueryByString} from "@/common/utils"
+import Cookies from 'js-cookie'
+import {isDev} from "./env"
 
 
 /**
@@ -12,20 +12,21 @@ export const doLoginMixin = {
 
   created() {
 
-    if(!isDev){
-      if(!Cookies.get('Users_ID')){
-        this.$fun.error({msg:'需要登录'});
-        setTimeout(()=>{
-          location.href = '/member/login.php';
-        },1000)
+    if (!isDev) {
+      if (!Cookies.get('Users_ID')) {
+        this.$fun.error({msg: '需要登录'})
+        setTimeout(() => {
+          location.href = '/member/login.php'
+        }, 1000)
       }
     }
 
-    if(isDev){
+    if (isDev) {
       Cookies.set('Users_ID', 'wkbq6nc2kc')
       Cookies.set('Stores_Bind_User_ID', '297')//为了区分其他的user_id，所以弄了这个代表店铺的user_id
       Cookies.set('Stores_ID', '36')
-      Cookies.set('access_token', 'vMryruYjRPOY59k8n9EIZc4nZhqkThmP')//手动写hack
+      Cookies.set('access_token', 'sgHpcbaLC3FPQRtTHCZZq9GPvae5nn3v')//手动写hack
+
     }
     // if (isDev && !Cookies.get('access_token')) {
     //   let mockLoginAccount = {Account: 'admin', Password: '123456'}
@@ -45,7 +46,6 @@ export const doLoginMixin = {
     //     Cookies.set('access_token', res.data.access_token)//手动写hack
     //   }).catch()
     // }
-
 
 
   }
@@ -81,12 +81,10 @@ export const tmplDiyMixin = {
     }
 
 
-
-
     //走ss这样会每次重新打开页面，就会获取数据
     if (!ss.get('Shop_Info')) {
 
-      await getUsersInfo({}, {}).then((res:{data:any}) => {
+      await getUsersInfo({}, {}).then((res: { data: any }) => {
         ss.set('Shop_Info', {
           ShopName: res.data.ShopName,
           ShopLogo: res.data.ShopLogo,

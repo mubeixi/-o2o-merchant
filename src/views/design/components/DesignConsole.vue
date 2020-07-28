@@ -1,138 +1,138 @@
 <template>
-  <div
-    @contextmenu.prevent="contextmenuFn($event)"
-    class="wrap"
-  >
-    <div class="attr-bar">
-      <div class="left">
-        <el-dropdown class="item">
-          <div class="el-dropdown-link">
-            背景色<i class="el-icon-arrow-down el-icon--right"></i>
-          </div>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>
-              <el-color-picker
-                @change="colorEvByBg"
-                class="inputcolor fun-color-pick"
-              />
-            </el-dropdown-item>
+	<div
+	@contextmenu.prevent="contextmenuFn($event)"
+	class="wrap"
+	>
+		<div class="attr-bar">
+			<div class="left">
+				<el-dropdown class="item">
+					<div class="el-dropdown-link">
+						背景色<i class="el-icon-arrow-down el-icon--right"></i>
+					</div>
+					<el-dropdown-menu slot="dropdown">
+						<el-dropdown-item>
+							<el-color-picker
+							@change="colorEvByBg"
+							class="inputcolor fun-color-pick"
+							/>
+						</el-dropdown-item>
 
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-      <div class="right">
+					</el-dropdown-menu>
+				</el-dropdown>
+			</div>
+			<div class="right">
 
-        <!--        <el-dropdown class="item" @command="setFontFn">-->
-        <!--          <div class="el-dropdown-link">切换字体<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i></div>-->
-        <!--          <el-dropdown-menu slot="dropdown">-->
-        <!--            <el-dropdown-item :command="font.fontFamily" v-for="(font,idx) in fontList">{{font.text}}</el-dropdown-item>-->
+				<!--        <el-dropdown class="item" @command="setFontFn">-->
+				<!--          <div class="el-dropdown-link">切换字体<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i></div>-->
+				<!--          <el-dropdown-menu slot="dropdown">-->
+				<!--            <el-dropdown-item :command="font.fontFamily" v-for="(font,idx) in fontList">{{font.text}}</el-dropdown-item>-->
 
-        <!--          </el-dropdown-menu>-->
-        <!--        </el-dropdown>-->
-        <el-dropdown @command="setFontSizeFn" class="item">
-          <div class="el-dropdown-link">文字大小<i class="el-icon-arrow-down el-icon--right"></i></div>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item :command="size" v-for="(size,idx) in fontSize">{{size}}
-            </el-dropdown-item>
-            <div class="padding10-c flex">
-              <el-input size="mini" style="width: 60px;" type="text" v-model="fontSizeVal" />
-              <div class="padding4-c"></div>
-              <el-button @click="setFontSizeVal" size="mini" type="primary">确认</el-button>
-            </div>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <el-dropdown @command="fabricForwardFn" class="item">
-          <div class="el-dropdown-link">
-            图层<i class="el-icon-arrow-down el-icon--right"></i>
-          </div>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="forWard">上移一层</el-dropdown-item>
-            <el-dropdown-item command="backWard">下移一层</el-dropdown-item>
-            <el-dropdown-item command="toFront">移至顶端</el-dropdown-item>
-            <el-dropdown-item command="toBack">移至底端</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <el-dropdown class="item">
-          <div class="el-dropdown-link">
-            颜色<i class="el-icon-arrow-down el-icon--right"></i>
-          </div>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>
-              <el-color-picker
-                @change="colorEv"
-                class="inputcolor fun-color-pick"
-              />
-            </el-dropdown-item>
+				<!--          </el-dropdown-menu>-->
+				<!--        </el-dropdown>-->
+				<el-dropdown @command="setFontSizeFn" class="item">
+					<div class="el-dropdown-link">文字大小<i class="el-icon-arrow-down el-icon--right"></i></div>
+					<el-dropdown-menu slot="dropdown">
+						<el-dropdown-item :command="size" v-for="(size,idx) in fontSize">{{size}}
+						</el-dropdown-item>
+						<div class="padding10-c flex">
+							<el-input size="mini" style="width: 60px;" type="text" v-model="fontSizeVal" />
+							<div class="padding4-c"></div>
+							<el-button @click="setFontSizeVal" size="mini" type="primary">确认</el-button>
+						</div>
+					</el-dropdown-menu>
+				</el-dropdown>
+				<el-dropdown @command="fabricForwardFn" class="item">
+					<div class="el-dropdown-link">
+						图层<i class="el-icon-arrow-down el-icon--right"></i>
+					</div>
+					<el-dropdown-menu slot="dropdown">
+						<el-dropdown-item command="forWard">上移一层</el-dropdown-item>
+						<el-dropdown-item command="backWard">下移一层</el-dropdown-item>
+						<el-dropdown-item command="toFront">移至顶端</el-dropdown-item>
+						<el-dropdown-item command="toBack">移至底端</el-dropdown-item>
+					</el-dropdown-menu>
+				</el-dropdown>
+				<el-dropdown class="item">
+					<div class="el-dropdown-link">
+						颜色<i class="el-icon-arrow-down el-icon--right"></i>
+					</div>
+					<el-dropdown-menu slot="dropdown">
+						<el-dropdown-item>
+							<el-color-picker
+							@change="colorEv"
+							class="inputcolor fun-color-pick"
+							/>
+						</el-dropdown-item>
 
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-    </div>
+					</el-dropdown-menu>
+				</el-dropdown>
+			</div>
+		</div>
 
-    <!--    @keyup.delete="delCanvasElFn"-->
-    <div
-      @dragover.prevent
-      @drop="dropEv"
-      class="mobile"
-      element-loading-background="rgba(0, 0, 0, 0.5)"
-      element-loading-spinner="el-icon-loading"
-      element-loading-text="加载资源"
-      id="mobile"
-      v-loading="loadingImageInstance"
-    >
+		<!--    @keyup.delete="delCanvasElFn"-->
+		<div
+		@dragover.prevent
+		@drop="dropEv"
+		class="mobile"
+		element-loading-background="rgba(0, 0, 0, 0.5)"
+		element-loading-spinner="el-icon-loading"
+		element-loading-text="加载资源"
+		id="mobile"
+		v-loading="loadingImageInstance"
+		>
 
-      <canvas height="587px" id="canvas" width="404px"></canvas>
+			<canvas height="587px" id="canvas" width="404px"></canvas>
 
-      <div class="removeModal" ref="removeModal" v-show="removePosition.show">
-        <h4>您确定要删除这个组件吗？</h4>
-        <p>
-          <input @click="removeElement" class="ok" type="button" value="确定" />
-          <input @click="removePosition.show = false" class="on" type="button" value="取消" />
-        </p>
-      </div>
-      <ul @mousedown.stop="hideRightMenu" class="contextmenuRight" ref="rightMenu">
-        <li class="menuList" type="showRemovePrompt">删除</li>
-      </ul>
+			<div class="removeModal" ref="removeModal" v-show="removePosition.show">
+				<h4>您确定要删除这个组件吗？</h4>
+				<p>
+					<input @click="removeElement" class="ok" type="button" value="确定" />
+					<input @click="removePosition.show = false" class="on" type="button" value="取消" />
+				</p>
+			</div>
+			<ul @mousedown.stop="hideRightMenu" class="contextmenuRight" ref="rightMenu">
+				<li class="menuList" type="showRemovePrompt">删除</li>
+			</ul>
 
 
-    </div>
+		</div>
 
-    <div class="handle">
-      <el-button @click="saveData" size="small" type="primary">保存</el-button>
-      <el-button @click="clearCanvas" size="small">重置</el-button>
-      <el-button @click="preData" size="small" v-if="is_dev">查看数据</el-button>
-      <!--      <div class="preBox" >-->
-      <!--        <el-button @click="saveData(0,1)" size="small">预览</el-button>-->
-      <!--        <div class="tooltip" v-show="centerDialogVisible" @click="centerDialogVisible=false">-->
-      <!--          <div class="qrcode"><qrcode-vue :value="preUrl" size="200" level="H"></qrcode-vue></div>-->
-      <!--          <div class="font12" style="line-height: 20px;height: 20px">扫一扫预览</div>-->
-      <!--        </div>-->
-      <!--      </div>-->
-    </div>
-  </div>
+		<div class="handle">
+			<el-button @click="saveData" size="small" type="primary">保存</el-button>
+			<el-button @click="clearCanvas" size="small">重置</el-button>
+			<el-button @click="preData" size="small" v-if="is_dev">查看数据</el-button>
+			<!--      <div class="preBox" >-->
+			<!--        <el-button @click="saveData(0,1)" size="small">预览</el-button>-->
+			<!--        <div class="tooltip" v-show="centerDialogVisible" @click="centerDialogVisible=false">-->
+			<!--          <div class="qrcode"><qrcode-vue :value="preUrl" size="200" level="H"></qrcode-vue></div>-->
+			<!--          <div class="font12" style="line-height: 20px;height: 20px">扫一扫预览</div>-->
+			<!--        </div>-->
+			<!--      </div>-->
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
 // import SingleDom from './SingleDom'
-import {fabric} from 'fabric';
+import {fabric} from 'fabric'
 import FontFaceObserver from 'fontfaceobserver'
 
-import {domain, formatTime} from "../../../common/utils";
-import {addPoster, uploadImgByBase64} from "../../../common/fetch";
-import {isDev} from "../../../common/env";
-import {headimgBase64, qrcodeBase64} from "./img";
-import {fun} from "../../../common";
+import {domain, formatTime} from "../../../common/utils"
+import {addPoster, uploadImgByBase64} from "../../../common/fetch"
+import {isDev} from "../../../common/env"
+import {headimgBase64, qrcodeBase64} from "./img"
+import {fun} from "../../../common"
 
 window.canvasInstance = {}
 
 function colorRgb(hex) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
 
   let r = parseInt(result[1], 16),
     g = parseInt(result[2], 16),
-    b = parseInt(result[3], 16);
-  return result ? `rgb(${r},${g},${b})` : null;
+    b = parseInt(result[3], 16)
+  return result ? `rgb(${r},${g},${b})` : null
 
 }
 
@@ -162,9 +162,9 @@ function colorRgb(hex) {
 function createImgElement(url) {
   return new Promise((resolve, reject) => {
 
-    var img = new Image();
-    img.src = url;//微信头像地址
-    img.setAttribute('crossOrigin', 'anonymous');    // 重点
+    var img = new Image()
+    img.src = url//微信头像地址
+    img.setAttribute('crossOrigin', 'anonymous')    // 重点
     img.onload = function (res) {
       console.log(res, img)
       resolve(img)
@@ -185,19 +185,19 @@ const fabricForward = function (_this, style) {
   const canvas: any = _this.canvasInstance
   console.log(canvas.getActiveObject())
   if (style == 'forWard') {
-    canvas.bringForward(canvas.getActiveObject());
+    canvas.bringForward(canvas.getActiveObject())
 
   }
   if (style == 'backWard') {
-    canvas.sendBackwards(canvas.getActiveObject());
+    canvas.sendBackwards(canvas.getActiveObject())
 
   }
   if (style == 'toFront') {
-    canvas.bringToFront(canvas.getActiveObject());
+    canvas.bringToFront(canvas.getActiveObject())
 
   }
   if (style == 'toBack') {
-    canvas.sendToBack(canvas.getActiveObject());
+    canvas.sendToBack(canvas.getActiveObject())
 
   }
   canvas.renderAll()
@@ -240,24 +240,24 @@ export default class DesignConsole extends Vue {
 
   clearCanvas() {
 
-    this.canvasInstance.clear();
+    this.canvasInstance.clear()
   }
 
   setFontFn(font) {
 
     const canvas = this.canvasInstance
     //canvas.getActiveObject().set("fontFamily","方正小篆体");
-    var myfont = new FontFaceObserver(font);
+    var myfont = new FontFaceObserver(font)
     myfont.load().then(() => {
       // when font is loaded, use it.
 
       let selectEl = canvas.getActiveObject()
-      selectEl && selectEl.set('fontFamily', font);
-      canvas.renderAll();
+      selectEl && selectEl.set('fontFamily', font)
+      canvas.renderAll()
 
     }).catch(function (e) {
-      console.log(e);
-    });
+      console.log(e)
+    })
   }
 
   setFontSizeVal() {
@@ -268,8 +268,8 @@ export default class DesignConsole extends Vue {
   setFontSizeFn(size) {
     const canvas = this.canvasInstance
     let selectEl = canvas.getActiveObject()
-    selectEl && selectEl.set('fontSize', size);
-    canvas.renderAll();
+    selectEl && selectEl.set('fontSize', size)
+    canvas.renderAll()
   }
 
   colorEvByBg(val) {
@@ -282,11 +282,11 @@ export default class DesignConsole extends Vue {
 
   setStyle(object, styleName, value) {
     if (object.setSelectionStyles && object.isEditing) {
-      var style = {};
-      style[styleName] = value;
-      object.setSelectionStyles(style);
+      var style = {}
+      style[styleName] = value
+      object.setSelectionStyles(style)
     } else {
-      object[styleName] = value;
+      object[styleName] = value
     }
   }
 
@@ -295,10 +295,10 @@ export default class DesignConsole extends Vue {
     const canvas = this.canvasInstance
     let selectEl = canvas.getActiveObject()
     console.log(selectEl)
-    selectEl && selectEl.set('fill', val);//this.setStyle(selectEl,'fill',val)
-    canvas.renderAll();
+    selectEl && selectEl.set('fill', val)//this.setStyle(selectEl,'fill',val)
+    canvas.renderAll()
     //canvas.bringForward(canvas.getActiveObject());
-    console.log('颜色改变了', val);
+    console.log('颜色改变了', val)
 
   }
 
@@ -319,7 +319,7 @@ export default class DesignConsole extends Vue {
       cornerStyle: 'circle',
       borderDashArray: [3, 3],
       // strokeDashArray:[5,5]
-    });
+    })
 
     //带上标签，方便后面导出object_list的时候，用于替换
     obj.toObject = (function (toObject) {
@@ -334,9 +334,9 @@ export default class DesignConsole extends Vue {
           padding: 6,
           cornerStyle: 'circle',
           borderDashArray: [3, 3]
-        });
-      };
-    })(obj.toObject);
+        })
+      }
+    })(obj.toObject)
 
     // obj.on('selected',(res)=>{
     //
@@ -352,7 +352,7 @@ export default class DesignConsole extends Vue {
   saveBgImg(base64Data) {
 
     return new Promise(((resolve, reject) => {
-      let data = {image: base64Data};
+      let data = {image: base64Data}
 
       uploadImgByBase64(data).then(res => {
         resolve(res.data.path)
@@ -365,7 +365,7 @@ export default class DesignConsole extends Vue {
 
   preData() {
     let canvas = this.canvasInstance
-    canvas.discardActiveObject().renderAll();
+    canvas.discardActiveObject().renderAll()
 
     let canvasData = canvas.toDatalessJSON()
     console.log('查看数据', canvasData)
@@ -374,7 +374,7 @@ export default class DesignConsole extends Vue {
   async saveData() {
 
     let canvas = this.canvasInstance
-    canvas.discardActiveObject().renderAll();
+    canvas.discardActiveObject().renderAll()
     console.log(canvas.getObjects())
     let canvasData = canvas.toDatalessJSON()
     console.log('保存数据', canvasData)
@@ -389,7 +389,7 @@ export default class DesignConsole extends Vue {
       // let base64Url = await this.canvasToImage()
       // //上传base64获取背景图
       // let bgImgPath = await this.saveBgImg(base64Url)
-      let bgImgPath = ' ';
+      let bgImgPath = ' '
 
       const wrap = JSON.stringify({
         width: 404,
@@ -451,13 +451,13 @@ export default class DesignConsole extends Vue {
 
       this.restRight(rightCheck)
 
-    });
+    })
 
 
   }
 
   refreshWrap() {
-    this.canvasInstance.renderAll();
+    this.canvasInstance.renderAll()
   }
 
   restRight(rightCheck) {
@@ -472,16 +472,16 @@ export default class DesignConsole extends Vue {
     switch (direction) {
       case 'up':
         transform = {top: --el.top}
-        break;
+        break
       case 'left':
         transform = {lfet: --el.left}
-        break;
+        break
       case 'right':
         transform = {left: ++el.left}
         break
       case 'down':
         transform = {top: ++el.top}
-        break;
+        break
     }
 
     el.set(transform)
@@ -493,22 +493,22 @@ export default class DesignConsole extends Vue {
     // this.showContextMenu(event, {});
     let canvas = this.canvasInstance
     //var pointer = canvas.getPointer(event);
-    var objects = canvas.getObjects();
+    var objects = canvas.getObjects()
     for (var i = objects.length - 1; i >= 0; i--) {
-      var object = objects[i];
+      var object = objects[i]
       var objectData = object.toObject()
       //判断该对象是否在鼠标点击处
       //占位图像没用
       if (objectData.fun_is_area === false && canvas.containsPoint(event, object)) {
         //选中该对象
-        canvas.setActiveObject(object).renderAll();
+        canvas.setActiveObject(object).renderAll()
         //显示菜单
-        this.showContextMenu(event, object);
-        break;
+        this.showContextMenu(event, object)
+        break
       }
     }
 
-    return false;
+    return false
   }
 
   //右键菜单项点击
@@ -516,12 +516,12 @@ export default class DesignConsole extends Vue {
     //定义右键菜单项
 
     //右键菜单显示位置
-    this.$refs.rightMenu.style.display = 'block';
-    this.$refs.rightMenu.style.left = `${e.clientX}px`;
-    this.$refs.rightMenu.style.top = `${e.clientY}px`;
+    this.$refs.rightMenu.style.display = 'block'
+    this.$refs.rightMenu.style.left = `${e.clientX}px`
+    this.$refs.rightMenu.style.top = `${e.clientY}px`
 
-    this.removePosition.x = e.clientX;
-    this.removePosition.y = e.clientY;
+    this.removePosition.x = e.clientX
+    this.removePosition.y = e.clientY
 
   }
 
@@ -532,24 +532,24 @@ export default class DesignConsole extends Vue {
   }
 
   hideRightMenu(e) {
-    const type = e.target.getAttribute('type');
-    this.$refs.rightMenu.style.display = 'none';
-    this[type] && this[type]();
+    const type = e.target.getAttribute('type')
+    this.$refs.rightMenu.style.display = 'none'
+    this[type] && this[type]()
   }
 
   //右键菜单项点击
   removeElement(key, options) {
 
     const canvas = this.canvasInstance
-    var obj = canvas.getActiveObject();
+    var obj = canvas.getActiveObject()
 
     //不是占位
     if (obj) {
       const objData = obj.toObject()
 
       if (objData.fun_is_area === false) {
-        canvas.remove(obj);
-        canvas.renderAll();
+        canvas.remove(obj)
+        canvas.renderAll()
       } else {
         fun.error({msg: '占位组件请点击右侧清除'})
       }
@@ -565,10 +565,10 @@ export default class DesignConsole extends Vue {
    * fucntion 转为图片并下载到本地
    */
   canvasToImage() {
-    var MIME_TYPE = "image/png";
+    var MIME_TYPE = "image/png"
     //转换成base64
     let canvasEl: any = document.getElementById('canvas')
-    var imgURL = canvasEl.toDataURL(MIME_TYPE); //创建一个a链接，模拟点击下载
+    var imgURL = canvasEl.toDataURL(MIME_TYPE) //创建一个a链接，模拟点击下载
 
     return imgURL
     // var dlLink = document.createElement("a");
@@ -590,9 +590,9 @@ export default class DesignConsole extends Vue {
   }
 
   del() {
-    var el = this.canvasInstance.getActiveObject();
+    var el = this.canvasInstance.getActiveObject()
     console.log(el)
-    this.canvasInstance.remove(el);
+    this.canvasInstance.remove(el)
   }
 
   /**
@@ -605,17 +605,17 @@ export default class DesignConsole extends Vue {
     switch (tagName) {
       case 'headimg':
         areaInstance = fabric.Image.fromURL(headimgBase64, (oImg) => {
-          oImg.scale(0.6);
+          oImg.scale(0.6)
           oImg.set({
             left: 20,
             top: 20,
-          });
+          })
           this.setCommonAttr(oImg, 'headimg')
-          this.canvasInstance.add(oImg);
+          this.canvasInstance.add(oImg)
           console.log(oImg)
         })
 
-        break;
+        break
       case 'nickname':
         //不可以编辑
         areaInstance = new fabric.Text('用户昵称', {//绘制文本
@@ -627,20 +627,20 @@ export default class DesignConsole extends Vue {
         })
 
         this.setCommonAttr(areaInstance, 'nickname')
-        this.canvasInstance.add(areaInstance);
-        break;
+        this.canvasInstance.add(areaInstance)
+        break
       case 'qrcode':
         areaInstance = fabric.Image.fromURL(qrcodeBase64, (oImg) => {
           this.setCommonAttr(oImg, 'qrcode')
-          oImg.scale(0.6);
+          oImg.scale(0.6)
           oImg.set({
             left: 20,
             top: 20,
-          });
-          this.canvasInstance.add(oImg);
+          })
+          this.canvasInstance.add(oImg)
           console.log(oImg)
         })
-        break;
+        break
       case 'time':
         areaInstance = new fabric.Text(formatTime(null, 'ymd'), {//绘制文本
           fontSize: 16,
@@ -648,8 +648,8 @@ export default class DesignConsole extends Vue {
           top: 20,
         })
         this.setCommonAttr(areaInstance, 'time')
-        this.canvasInstance.add(areaInstance);
-        break;
+        this.canvasInstance.add(areaInstance)
+        break
     }
 
   }
@@ -661,16 +661,16 @@ export default class DesignConsole extends Vue {
     const canvas = this.canvasInstance
 
 
-    var objects = canvas.getObjects();
+    var objects = canvas.getObjects()
 
     let rt = []
     for (let obj of objects) {
       let objData = obj.toObject()
       if (objData.hasOwnProperty('fun_is_area') && objData.fun_is_area === tagName) {
 
-        canvas.remove(obj);
-        canvas.renderAll();
-        break;
+        canvas.remove(obj)
+        canvas.renderAll()
+        break
       }
     }
 
@@ -681,14 +681,14 @@ export default class DesignConsole extends Vue {
 
     switch (tagName) {
       case 'headimg':
-        break;
+        break
       case 'nickname':
-        break;
+        break
       case 'qrcode':
-        break;
+        break
       case 'time':
 
-        break;
+        break
     }
 
   }
@@ -703,7 +703,7 @@ export default class DesignConsole extends Vue {
       // originY: 'center'
     })
     this.setCommonAttr(textInstance)
-    this.canvasInstance.add(textInstance);
+    this.canvasInstance.add(textInstance)
     // textInstance.enterEditing();
     // textInstance.hiddenTextarea.focus();
 
@@ -711,8 +711,8 @@ export default class DesignConsole extends Vue {
 
   dropEv(e) {
 
-    let url = e.dataTransfer.getData('file-url');
-    if (url === '') return; // 在页面内拖动时，无需添加组件
+    let url = e.dataTransfer.getData('file-url')
+    if (url === '') return // 在页面内拖动时，无需添加组件
     //let imgNode = Design.createNode({tag:'img',value:url})
     //this.nodeList.push(imgNode)
     //console.log(url)
@@ -721,12 +721,12 @@ export default class DesignConsole extends Vue {
     //地址都用domain处理一下
     fabric.Image.fromURL(domain(url), (oImg) => {
       this.setCommonAttr(oImg)
-      oImg.scale(0.6);
+      oImg.scale(0.6)
       oImg.set({
         left: 20,
         top: 20,
       })
-      this.canvasInstance.add(oImg);
+      this.canvasInstance.add(oImg)
     })
 
     // setTimeout(()=>{
@@ -787,33 +787,33 @@ export default class DesignConsole extends Vue {
         backgroundColor: colorRgb("#FFFFFF"),
         // width: '600',
         // height: '600'
-      });
+      })
       // canvas.rotationCursor = 'pointer'; //默认光标改成十字
       // canvas.hoverCursor = 'pointer'; //悬浮光标改成手型
 
-      canvas.preserveObjectStacking = true;
-      this.canvasInstance = canvas;
-      window.canvasInstance = canvas;
+      canvas.preserveObjectStacking = true
+      this.canvasInstance = canvas
+      window.canvasInstance = canvas
 
 
       document.onkeydown = (e) => {
-        let key = window.event.keyCode;
+        let key = window.event.keyCode
         switch (key) {
           case 38:
             this.transformFn('up')
-            break;
+            break
           case 40:
             this.transformFn('down')
-            break;
+            break
           case 37:
             this.transformFn('left')
-            break;
+            break
           case 39:
             this.transformFn('right')
-            break;
+            break
 
         }
-      };
+      }
 
     })
 
@@ -825,242 +825,242 @@ export default class DesignConsole extends Vue {
 </script>
 
 <style lang="less" scoped>
-  /*@font-face {*/
-  /*  font-family:'宋体';*/
-  /*  src:url('/static/fonts/simsun.tts'),url('/member/shop/setting/diy/static/fonts/simsun.tts');*/
-  /*}*/
-  /*@font-face {*/
-  /*  font-family:'arial';*/
-  /*  src:url('/static/fonts/arial.ttf'),url('/member/shop/setting/diy/static/fonts/arial.ttf');*/
-  /*}*/
-  /*@font-face {*/
-  /*  font-family:'consola';*/
-  /*  src:url('/static/fonts/consola.ttf'),url('/member/shop/setting/diy/static/fonts/consola.ttf');*/
-  /*}*/
-  /*@font-face {*/
-  /*  font-family:'DENG';*/
-  /*  src:url('/static/fonts/DENG.TTF'),url('/member/shop/setting/diy/static/fonts/DENG.TTF');*/
-  /*}*/
-  /*@font-face {*/
-  /*  font-family:'DENGB';*/
-  /*  src:url('/static/fonts/DENGB.TTF'),url('/member/shop/setting/diy/static/fonts/DENGB.TTF');*/
-  /*}*/
-  /*@font-face {*/
-  /*  font-family:'DENGL';*/
-  /*  src:url('/static/fonts/DENGL.TTF'),url('/member/shop/setting/diy/static/fonts/DENGL.TTF');*/
-  /*}*/
-  /*@font-face {*/
-  /*  font-family:'msyh';*/
-  /*  src:url('/static/fonts/msyh.ttf'),url('/member/shop/setting/diy/static/fonts/msyh.ttf');*/
-  /*}*/
-  /*@font-face {*/
-  /*  font-family:'msyhbd';*/
-  /*  src:url('/static/fonts/msyhbd.ttf'),url('/member/shop/setting/diy/static/fonts/msyhbd.ttf');*/
-  /*}*/
-  /*@font-face {*/
-  /*  font-family:'simkai';*/
-  /*  src:url('/static/fonts/simkai.ttf'),url('/member/shop/setting/diy/static/fonts/simkai.ttf');*/
-  /*}*/
-  /*@font-face {*/
-  /*  font-family:'simsun';*/
-  /*  src:url('/static/fonts/simsun.ttf'),url('/member/shop/setting/diy/static/fonts/simsun.ttf');*/
-  /*}*/
-  /*@font-face {*/
-  /*  font-family:'SIMYOU';*/
-  /*  src:url('/static/fonts/SIMYOU.TTF'),url('/member/shop/setting/diy/static/fonts/SIMYOU.TTF');*/
-  /*}*/
-  /*@font-face {*/
-  /*  font-family:'STXIHEI';*/
-  /*  src:url('/static/fonts/STXIHEI.ttf'),url('/member/shop/setting/diy/static/fonts/STXIHEI.ttf');*/
-  /*}*/
+	/*@font-face {*/
+	/*  font-family:'宋体';*/
+	/*  src:url('/static/fonts/simsun.tts'),url('/member/shop/setting/diy/static/fonts/simsun.tts');*/
+	/*}*/
+	/*@font-face {*/
+	/*  font-family:'arial';*/
+	/*  src:url('/static/fonts/arial.ttf'),url('/member/shop/setting/diy/static/fonts/arial.ttf');*/
+	/*}*/
+	/*@font-face {*/
+	/*  font-family:'consola';*/
+	/*  src:url('/static/fonts/consola.ttf'),url('/member/shop/setting/diy/static/fonts/consola.ttf');*/
+	/*}*/
+	/*@font-face {*/
+	/*  font-family:'DENG';*/
+	/*  src:url('/static/fonts/DENG.TTF'),url('/member/shop/setting/diy/static/fonts/DENG.TTF');*/
+	/*}*/
+	/*@font-face {*/
+	/*  font-family:'DENGB';*/
+	/*  src:url('/static/fonts/DENGB.TTF'),url('/member/shop/setting/diy/static/fonts/DENGB.TTF');*/
+	/*}*/
+	/*@font-face {*/
+	/*  font-family:'DENGL';*/
+	/*  src:url('/static/fonts/DENGL.TTF'),url('/member/shop/setting/diy/static/fonts/DENGL.TTF');*/
+	/*}*/
+	/*@font-face {*/
+	/*  font-family:'msyh';*/
+	/*  src:url('/static/fonts/msyh.ttf'),url('/member/shop/setting/diy/static/fonts/msyh.ttf');*/
+	/*}*/
+	/*@font-face {*/
+	/*  font-family:'msyhbd';*/
+	/*  src:url('/static/fonts/msyhbd.ttf'),url('/member/shop/setting/diy/static/fonts/msyhbd.ttf');*/
+	/*}*/
+	/*@font-face {*/
+	/*  font-family:'simkai';*/
+	/*  src:url('/static/fonts/simkai.ttf'),url('/member/shop/setting/diy/static/fonts/simkai.ttf');*/
+	/*}*/
+	/*@font-face {*/
+	/*  font-family:'simsun';*/
+	/*  src:url('/static/fonts/simsun.ttf'),url('/member/shop/setting/diy/static/fonts/simsun.ttf');*/
+	/*}*/
+	/*@font-face {*/
+	/*  font-family:'SIMYOU';*/
+	/*  src:url('/static/fonts/SIMYOU.TTF'),url('/member/shop/setting/diy/static/fonts/SIMYOU.TTF');*/
+	/*}*/
+	/*@font-face {*/
+	/*  font-family:'STXIHEI';*/
+	/*  src:url('/static/fonts/STXIHEI.ttf'),url('/member/shop/setting/diy/static/fonts/STXIHEI.ttf');*/
+	/*}*/
 
-  .attr-bar {
-    position: absolute;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
-    height: 44px;
-    background: white;
-    width: 100%;
+	.attr-bar {
+		position: absolute;
+		top: 0;
+		display: flex;
+		justify-content: space-between;
+		height: 44px;
+		background: white;
+		width: 100%;
 
-    .left {
-      display: flex;
-      line-height: 44px;
-      padding-right: 20px;
+		.left {
+			display: flex;
+			line-height: 44px;
+			padding-right: 20px;
 
-      .el-dropdown-link {
-        cursor: pointer;
-        margin-left: 10px;
-        padding: 0 15px;
+			.el-dropdown-link {
+				cursor: pointer;
+				margin-left: 10px;
+				padding: 0 15px;
 
-        &:hover {
-          color: #409EFF;
-        }
-      }
+				&:hover {
+					color: #409EFF;
+				}
+			}
 
-      .el-icon-arrow-down {
-        font-size: 12px;
-      }
+			.el-icon-arrow-down {
+				font-size: 12px;
+			}
 
-    }
+		}
 
-    .right {
-      display: flex;
-      justify-content: right;
-      line-height: 44px;
-      padding-right: 20px;
+		.right {
+			display: flex;
+			justify-content: right;
+			line-height: 44px;
+			padding-right: 20px;
 
-      .el-dropdown-link {
-        cursor: pointer;
+			.el-dropdown-link {
+				cursor: pointer;
 
-        margin-left: 10px;
-        padding: 0 15px;
+				margin-left: 10px;
+				padding: 0 15px;
 
-        &:hover {
-          color: #409EFF;
-        }
-      }
+				&:hover {
+					color: #409EFF;
+				}
+			}
 
-      .el-icon-arrow-down {
-        font-size: 12px;
-      }
+			.el-icon-arrow-down {
+				font-size: 12px;
+			}
 
-    }
-  }
+		}
+	}
 
-  .wrap {
-    /*position: absolute;*/
-    /*width: 100%;*/
-    /*height: 100%;*/
-    /*left: 0;*/
-    /*top: 0%;*/
-    //transform: translateY(-50%);
-  }
+	.wrap {
+		/*position: absolute;*/
+		/*width: 100%;*/
+		/*height: 100%;*/
+		/*left: 0;*/
+		/*top: 0%;*/
+		//transform: translateY(-50%);
+	}
 
-  .mobile {
-    /*position: absolute;*/
-    /*left: 50%;*/
-    /*top: 50%;*/
-    /*transform: translate(-50%,-50%);*/
-    /*position: relative;*/
-    /*background: #fff;*/
-    margin: 0 auto;
-    margin-top: 10%;
-    width: 404px;
-    height: 587px;
-    overflow: hidden;
-    box-sizing: border-box;
-    box-shadow: 1px 1px 4px 4px rgba(0, 0, 0, 0.1);
+	.mobile {
+		/*position: absolute;*/
+		/*left: 50%;*/
+		/*top: 50%;*/
+		/*transform: translate(-50%,-50%);*/
+		/*position: relative;*/
+		/*background: #fff;*/
+		margin: 0 auto;
+		margin-top: 10%;
+		width: 404px;
+		height: 587px;
+		overflow: hidden;
+		box-sizing: border-box;
+		box-shadow: 1px 1px 4px 4px rgba(0, 0, 0, 0.1);
 
-    &:hover {
-      /*border:1px dashed #999;*/
-    }
-  }
+		&:hover {
+			/*border:1px dashed #999;*/
+		}
+	}
 
-  .handle {
-    margin: 10px auto;
-    width: 200;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    /*background:white;*/
-    justify-content: center;
+	.handle {
+		margin: 10px auto;
+		width: 200;
+		height: 50px;
+		display: flex;
+		align-items: center;
+		/*background:white;*/
+		justify-content: center;
 
-    .preBox {
-      margin-left: 10px;
-      position: relative;
+		.preBox {
+			margin-left: 10px;
+			position: relative;
 
-      .tooltip {
-        position: absolute;
-        bottom: 50px;
-        left: -80px;
-        transform: translate(0%, 0%);
-        background-color: #d5d5d5;
-        color: #444;
-        text-align: center;
-        font-size: 12px;
-        border-radius: 2px;
+			.tooltip {
+				position: absolute;
+				bottom: 50px;
+				left: -80px;
+				transform: translate(0%, 0%);
+				background-color: #d5d5d5;
+				color: #444;
+				text-align: center;
+				font-size: 12px;
+				border-radius: 2px;
 
-        .qrcode {
-          padding: 6px 6px 0 6px;
-        }
+				.qrcode {
+					padding: 6px 6px 0 6px;
+				}
 
-        &::after {
-          content: " ";
-          position: absolute;
-          top: 100%; /* 提示工具底部 */
-          left: 50%;
-          margin-left: -5px;
-          border-width: 5px;
-          border-style: solid;
-          border-color: #d1d1d1 transparent transparent transparent;
-        }
-      }
-    }
-  }
+				&::after {
+					content: " ";
+					position: absolute;
+					top: 100%; /* 提示工具底部 */
+					left: 50%;
+					margin-left: -5px;
+					border-width: 5px;
+					border-style: solid;
+					border-color: #d1d1d1 transparent transparent transparent;
+				}
+			}
+		}
+	}
 
-  .contextmenuRight {
-    display: none;
-    overflow: hidden; /*隐藏溢出的元素*/
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    position: fixed; /*自定义菜单相对与body元素进行定位*/
-    background-color: white;
-    z-index: 212121;
-    // padding: 10px 0;
-    border: 1px solid #e6e6e6;
-    font-size: 14px;
-  }
+	.contextmenuRight {
+		display: none;
+		overflow: hidden; /*隐藏溢出的元素*/
+		box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+		position: fixed; /*自定义菜单相对与body元素进行定位*/
+		background-color: white;
+		z-index: 212121;
+		// padding: 10px 0;
+		border: 1px solid #e6e6e6;
+		font-size: 14px;
+	}
 
-  .menuList {
-    width: 130px;
-    line-height: 36px;
-    padding: 0 20px;
-    cursor: default;
+	.menuList {
+		width: 130px;
+		line-height: 36px;
+		padding: 0 20px;
+		cursor: default;
 
-    &:hover {
-      background-color: #e6e6e6;
-    }
-  }
+		&:hover {
+			background-color: #e6e6e6;
+		}
+	}
 
-  .removeModal {
-    position: fixed;
-    right: 30px;
-    top: 250px;
-    z-index: 21;
-    background-color: white;
-    padding: 10px;
-    border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    width: 200px;
+	.removeModal {
+		position: fixed;
+		right: 30px;
+		top: 250px;
+		z-index: 21;
+		background-color: white;
+		padding: 10px;
+		border-radius: 2px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+		width: 200px;
 
-    h4 {
-      font-weight: normal;
-      font-size: 14px;
-    }
+		h4 {
+			font-weight: normal;
+			font-size: 14px;
+		}
 
-    p {
-      overflow: hidden;
-      margin-top: 20px;
+		p {
+			overflow: hidden;
+			margin-top: 20px;
 
-      input {
-        float: right;
-        box-sizing: border-box;
-        font-size: 12px;
-        background-color: #f0f0f0;
-        border: none;
-        width: 50px;
-        height: 26px;
-        cursor: pointer;
-      }
+			input {
+				float: right;
+				box-sizing: border-box;
+				font-size: 12px;
+				background-color: #f0f0f0;
+				border: none;
+				width: 50px;
+				height: 26px;
+				cursor: pointer;
+			}
 
-      .ok {
-        background-color: #418ef6;
-        color: white;
-      }
+			.ok {
+				background-color: #418ef6;
+				color: white;
+			}
 
-      .on {
-        margin-right: 10px;
-      }
-    }
-  }
+			.on {
+				margin-right: 10px;
+			}
+		}
+	}
 </style>

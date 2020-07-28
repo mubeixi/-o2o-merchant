@@ -1,214 +1,214 @@
 <template>
-  <div class="home-wrap">
-    <div style="padding: 20px">
-      <!--      get_self_store_prod-->
-      <el-tabs @tab-click="handleClick" v-model="activeName">
-        <el-tab-pane label="出售中" name="1"></el-tab-pane>
-        <el-tab-pane label="已售完" name="2"></el-tab-pane>
-        <!--        <el-tab-pane label="已下架" name="3"></el-tab-pane>-->
-      </el-tabs>
-      <div class="padding10">
-        <el-button :type="cartsDialogInstance.backText=='退货'?'primary':'default'" @click="openBackFn"
-                   class=""
-                   size="mini">{{cartsDialogInstance.backText}}
-        </el-button>
-      </div>
-      <fun-table
-        :_pageSize="dataTableOpt.pageSize"
-        :_totalCount="dataTableOpt.totalCount"
-        :columns="dataTableOpt.columns"
-        :dataList="dataTableOpt.dataList"
-        :formSize="'small'"
-        :isRow="true"
-        :isSelect="false"
-        :is_paginate="dataTableOpt.is_paginate"
-        @currentChange="currentChange"
-        @handleSizeChange="handleSizeChange"
-        @reset="reset"
-        @selectVal="selectVal"
-        @submit="submit"
-      >
-        <template slot="Products_Name-column" slot-scope="props">
-          <div style="display: flex;align-items: center;">
-            <img :class="'item'+props.idx" :src="props.row.img_url" height="100px" width="90px">
-            <span style="margin-left: 10px">{{props.row.Products_Name}}</span>
-          </div>
-        </template>
-        <template slot="Products_Qrcode-column" slot-scope="props">
-          <img :src="props.row.Products_Qrcode" height="70px" width="70px">
-        </template>
-        <template slot="attr-column" slot-scope="props">
-          <div v-for="(item,index) of props.row.oattrs">
-            <el-tag style="width:80px;margin:0 auto;margin-bottom: 5px;display: block;">{{item}}
-            </el-tag>
-          </div>
-        </template>
-        <template slot="Products_Sales-column" slot-scope="props">
-          <span>{{props.row.Products_Sales}}/{{props.row.Products_Count}}</span>
-          <div @click="lookSku(props.row.Products_ID)" class="skuClass"
-               v-if="props.row.Products_Type!=0">规格库存
-          </div>
-        </template>
-        <template slot="operate-column" slot-scope="props">
+	<div class="home-wrap">
+		<div style="padding: 20px">
+			<!--      get_self_store_prod-->
+			<el-tabs @tab-click="handleClick" v-model="activeName">
+				<el-tab-pane label="出售中" name="1"></el-tab-pane>
+				<el-tab-pane label="已售完" name="2"></el-tab-pane>
+				<!--        <el-tab-pane label="已下架" name="3"></el-tab-pane>-->
+			</el-tabs>
+			<div class="padding10">
+				<el-button :type="cartsDialogInstance.backText=='退货'?'primary':'default'" @click="openBackFn"
+				           class=""
+				           size="mini">{{cartsDialogInstance.backText}}
+				</el-button>
+			</div>
+			<fun-table
+			:_pageSize="dataTableOpt.pageSize"
+			:_totalCount="dataTableOpt.totalCount"
+			:columns="dataTableOpt.columns"
+			:dataList="dataTableOpt.dataList"
+			:formSize="'small'"
+			:isRow="true"
+			:isSelect="false"
+			:is_paginate="dataTableOpt.is_paginate"
+			@currentChange="currentChange"
+			@handleSizeChange="handleSizeChange"
+			@reset="reset"
+			@selectVal="selectVal"
+			@submit="submit"
+			>
+				<template slot="Products_Name-column" slot-scope="props">
+					<div style="display: flex;align-items: center;">
+						<img :class="'item'+props.idx" :src="props.row.img_url" height="100px" width="90px">
+						<span style="margin-left: 10px">{{props.row.Products_Name}}</span>
+					</div>
+				</template>
+				<template slot="Products_Qrcode-column" slot-scope="props">
+					<img :src="props.row.Products_Qrcode" height="70px" width="70px">
+				</template>
+				<template slot="attr-column" slot-scope="props">
+					<div v-for="(item,index) of props.row.oattrs">
+						<el-tag style="width:80px;margin:0 auto;margin-bottom: 5px;display: block;">{{item}}
+						</el-tag>
+					</div>
+				</template>
+				<template slot="Products_Sales-column" slot-scope="props">
+					<span>{{props.row.Products_Sales}}/{{props.row.Products_Count}}</span>
+					<div @click="lookSku(props.row.Products_ID)" class="skuClass"
+					     v-if="props.row.Products_Type!=0">规格库存
+					</div>
+				</template>
+				<template slot="operate-column" slot-scope="props">
           <span @click="openDialog(props.row,props.idx)" class="spans"
                 v-if="cartsDialogInstance.footVisible">退货</span>
-        </template>
-      </fun-table>
-    </div>
+				</template>
+			</fun-table>
+		</div>
 
-    <div id="imgs"></div>
+		<div id="imgs"></div>
 
-    <el-dialog :visible.sync="settingShow" title="商品佣金详情">
-      <el-table :data="settingData">
-        <el-table-column align="center" label="序号" type="index" width="150"></el-table-column>
-        <el-table-column align="center" label="级别名称" property="level_name"
-                         width="200"></el-table-column>
-        <el-table-column align="center" label="佣金明细">
-          <template slot-scope="scope">
-            <div v-for="(item,index) of settingData[scope.$index].commisions">
-              {{item.label}}{{item.value}}(佣金比例的百分比)
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
+		<el-dialog :visible.sync="settingShow" title="商品佣金详情">
+			<el-table :data="settingData">
+				<el-table-column align="center" label="序号" type="index" width="150"></el-table-column>
+				<el-table-column align="center" label="级别名称" property="level_name"
+				                 width="200"></el-table-column>
+				<el-table-column align="center" label="佣金明细">
+					<template slot-scope="scope">
+						<div v-for="(item,index) of settingData[scope.$index].commisions">
+							{{item.label}}{{item.value}}(佣金比例的百分比)
+						</div>
+					</template>
+				</el-table-column>
+			</el-table>
+		</el-dialog>
 
-    <div class="foot noselect" v-show="cartsDialogInstance.footVisible">
-      <div @click="cartDialogOpen" class="count" style="cursor: pointer">
-        <!--          /{{paginate.totalCount}}-->
-        <div class="text">
-          <span v-show="!cartsDialogInstance.innerVisible">已选取<span class="danger-color">{{count_num}}</span>个商品</span>
-          <span v-show="cartsDialogInstance.innerVisible">已选取<span class="danger-color">{{count_num}}</span>个商品</span>
-          <i class="el-icon-arrow-up" v-show="!cartsDialogInstance.innerVisible"></i>
-          <i class="el-icon-arrow-down" v-show="cartsDialogInstance.innerVisible"></i>
-        </div>
-      </div>
-      <el-button @click="changeChannel" class="sub-channel">退货渠道<span
-        v-if="channelDialogInstance.channel">:{{channelDialogInstance.channel=='shop'?'平台':'门店'}}</span><i
-        class="el-icon-arrow-up"></i></el-button>
-      <el-button @click="subBackFn" class="sub-btn" v-loading="subLoading">确认退货</el-button>
-    </div>
+		<div class="foot noselect" v-show="cartsDialogInstance.footVisible">
+			<div @click="cartDialogOpen" class="count" style="cursor: pointer">
+				<!--          /{{paginate.totalCount}}-->
+				<div class="text">
+					<span v-show="!cartsDialogInstance.innerVisible">已选取<span class="danger-color">{{count_num}}</span>个商品</span>
+					<span v-show="cartsDialogInstance.innerVisible">已选取<span class="danger-color">{{count_num}}</span>个商品</span>
+					<i class="el-icon-arrow-up" v-show="!cartsDialogInstance.innerVisible"></i>
+					<i class="el-icon-arrow-down" v-show="cartsDialogInstance.innerVisible"></i>
+				</div>
+			</div>
+			<el-button @click="changeChannel" class="sub-channel">退货渠道<span
+			v-if="channelDialogInstance.channel">:{{channelDialogInstance.channel=='shop'?'平台':'门店'}}</span><i
+			class="el-icon-arrow-up"></i></el-button>
+			<el-button @click="subBackFn" class="sub-btn" v-loading="subLoading">确认退货</el-button>
+		</div>
 
-    <div @click="cartDialogCancel" @mousewheel.prevent class="cartsDialogMask"
-         v-show="cartsDialogInstance.innerVisible"></div>
-    <div class="cartsDialog" v-loading="cartsDialogInstance.loading"
-         v-show="cartsDialogInstance.innerVisible">
-      <div class="carts-dialog-container" v-if="carts.lists.length>0">
-        <div :key="idx" class="goods-item" v-for="(goods,idx) of carts.lists">
-          <div :style="{backgroundImage: 'url('+goods.img_url+')'}" class="cover"><i
-            @click="cartRemoveFn(goods)" class="el-icon-error"></i></div>
-          <div class="title">{{goods.Products_Name}}</div>
-          <!--{{formatSpec(goods.spec_key,',')}}-->
-          <div class="attr">{{goods.Productsattrstrval||'无规格'}}</div>
-          <div class="numbox">
-            <span class="label">数量: </span>
-            <input class="input" readonly v-model="goods.num" />
-            <div class="num-btns">
+		<div @click="cartDialogCancel" @mousewheel.prevent class="cartsDialogMask"
+		     v-show="cartsDialogInstance.innerVisible"></div>
+		<div class="cartsDialog" v-loading="cartsDialogInstance.loading"
+		     v-show="cartsDialogInstance.innerVisible">
+			<div class="carts-dialog-container" v-if="carts.lists.length>0">
+				<div :key="idx" class="goods-item" v-for="(goods,idx) of carts.lists">
+					<div :style="{backgroundImage: 'url('+goods.img_url+')'}" class="cover"><i
+					@click="cartRemoveFn(goods)" class="el-icon-error"></i></div>
+					<div class="title">{{goods.Products_Name}}</div>
+					<!--{{formatSpec(goods.spec_key,',')}}-->
+					<div class="attr">{{goods.Productsattrstrval||'无规格'}}</div>
+					<div class="numbox">
+						<span class="label">数量: </span>
+						<input class="input" readonly v-model="goods.num" />
+						<div class="num-btns">
               <span @click="cartPlusFn(goods,goods.num)" class="num-btn plus-btn"><i
-                class="el-icon-arrow-up"></i></span>
-              <span @click="cartMinusFn(goods,goods.num)" class="num-btn minus-btn"><i
-                class="el-icon-arrow-down"></i></span>
-            </div>
-            <!--            <el-input-number @change="cartNumChange" controls-position="right" :min="1" :max="goods.Products_Count" size="mini" v-model="goods.num" :step="1"></el-input-number>-->
-          </div>
-        </div>
-      </div>
-      <div class="carts-dialog-container" style="padding-top: 50px;display: block" v-else>
-        <div class="text-center"><i class="el-icon-shopping-cart-2"
-                                    style="font-size: 100px;color: #999"></i></div>
-        <div class="padding10-r graytext text-center">空空如也</div>
-      </div>
-      <span class="dialog-footer" slot="footer"></span>
-    </div>
+              class="el-icon-arrow-up"></i></span>
+							<span @click="cartMinusFn(goods,goods.num)" class="num-btn minus-btn"><i
+							class="el-icon-arrow-down"></i></span>
+						</div>
+						<!--            <el-input-number @change="cartNumChange" controls-position="right" :min="1" :max="goods.Products_Count" size="mini" v-model="goods.num" :step="1"></el-input-number>-->
+					</div>
+				</div>
+			</div>
+			<div class="carts-dialog-container" style="padding-top: 50px;display: block" v-else>
+				<div class="text-center"><i class="el-icon-shopping-cart-2"
+				                            style="font-size: 100px;color: #999"></i></div>
+				<div class="padding10-r graytext text-center">空空如也</div>
+			</div>
+			<span class="dialog-footer" slot="footer"></span>
+		</div>
 
-    <el-dialog
-      :visible.sync="dialogInstance.innerVisible"
-      @close="dialogCancel"
-      center
-      class="innerDislog"
-      title="选择商品属性"
-      width="500px"
-    >
-      <div class="dialog-container">
-        <div :key="idx1" class="row" v-for="(item,idx1) of dialogInstance.product.skujosn_new">
-          <span class="label">{{item.sku}}:</span>
-          <div class="specs">
-            <div :class="getClassFn(idx1,idx2)" :key="idx2"
-                 @click="selectAttr(item.sku,spec,idx1,idx2)" class="spec-item"
-                 v-for="(spec,idx2) of item.val">
-              {{spec}}
-              <i class="el-icon-check"></i>
-              <div class="fill"></div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <span class="label">数量:</span>
-          <div class="specs">
-            <el-input-number :max="dialogInstance.stock" :min="1" :step="1"
-                             controls-position="right" size="small" v-model="dialogInstance.num"></el-input-number>
-            <span class="font12 graytext2 padding10-c">最多可以选择{{dialogInstance.stock}}件</span>
-          </div>
-        </div>
-      </div>
-      <span class="dialog-footer" slot="footer">
+		<el-dialog
+		:visible.sync="dialogInstance.innerVisible"
+		@close="dialogCancel"
+		center
+		class="innerDislog"
+		title="选择商品属性"
+		width="500px"
+		>
+			<div class="dialog-container">
+				<div :key="idx1" class="row" v-for="(item,idx1) of dialogInstance.product.skujosn_new">
+					<span class="label">{{item.sku}}:</span>
+					<div class="specs">
+						<div :class="getClassFn(idx1,idx2)" :key="idx2"
+						     @click="selectAttr(item.sku,spec,idx1,idx2)" class="spec-item"
+						     v-for="(spec,idx2) of item.val">
+							{{spec}}
+							<i class="el-icon-check"></i>
+							<div class="fill"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<span class="label">数量:</span>
+					<div class="specs">
+						<el-input-number :max="dialogInstance.stock" :min="1" :step="1"
+						                 controls-position="right" size="small" v-model="dialogInstance.num"></el-input-number>
+						<span class="font12 graytext2 padding10-c">最多可以选择{{dialogInstance.stock}}件</span>
+					</div>
+				</div>
+			</div>
+			<span class="dialog-footer" slot="footer">
                 <el-button @click="dialogCancel">取 消</el-button>
                 <el-button @click="dialogSub"
                            style="background: #F43131;color:white">确 定</el-button>
             </span>
-    </el-dialog>
+		</el-dialog>
 
-    <el-dialog
-      :visible.sync="channelDialogInstance.innerVisible"
-      @close="channelDialogCancel"
-      center
-      class="channel-container-wrap"
-      title="切换渠道"
+		<el-dialog
+		:visible.sync="channelDialogInstance.innerVisible"
+		@close="channelDialogCancel"
+		center
+		class="channel-container-wrap"
+		title="切换渠道"
 
-      width="848px"
-    >
-      <div class="">
-        <el-form class="form" label-width="100px">
-          <el-form-item label="退货渠道:" prop="channel">
-            <el-select placeholder="请选择类型" style="width: 100%"
-                       v-model="channelDialogInstance.channel">
-              <template v-for="(item,idx) of channelDialogInstance.channels">
-                <el-option :key="item.val" :label="item.name" :value="item.val"></el-option>
-              </template>
-            </el-select>
-          </el-form-item>
-          <el-form-item label=" " prop="store_no" v-show="channelDialogInstance.channel!='shop'">
-            <div class="flex">
-              <el-input placeholder="请输入门店编码" v-model="channelDialogInstance.store_no"></el-input>
-              <div class="w10"></div>
-              <el-button @click="dialogStoreShow=true">筛选门店</el-button>
-            </div>
-          </el-form-item>
-        </el-form>
-        <div @click="changeBackChannel" class="btn">确定</div>
-      </div>
+		width="848px"
+		>
+			<div class="">
+				<el-form class="form" label-width="100px">
+					<el-form-item label="退货渠道:" prop="channel">
+						<el-select placeholder="请选择类型" style="width: 100%"
+						           v-model="channelDialogInstance.channel">
+							<template v-for="(item,idx) of channelDialogInstance.channels">
+								<el-option :key="item.val" :label="item.name" :value="item.val"></el-option>
+							</template>
+						</el-select>
+					</el-form-item>
+					<el-form-item label=" " prop="store_no" v-show="channelDialogInstance.channel!='shop'">
+						<div class="flex">
+							<el-input placeholder="请输入门店编码" v-model="channelDialogInstance.store_no"></el-input>
+							<div class="w10"></div>
+							<el-button @click="dialogStoreShow=true">筛选门店</el-button>
+						</div>
+					</el-form-item>
+				</el-form>
+				<div @click="changeBackChannel" class="btn">确定</div>
+			</div>
 
-    </el-dialog>
+		</el-dialog>
 
-    <bind-store-component
-      :get_top="1"
-      :self_store_id="self_store_id"
-      :show="dialogStoreShow"
-      :single="true"
-      @cancel="bindStoreCancel"
-      @success="bindStoreSuccessCall"
-      top="15vh"
-    />
+		<bind-store-component
+		:get_top="1"
+		:self_store_id="self_store_id"
+		:show="dialogStoreShow"
+		:single="true"
+		@cancel="bindStoreCancel"
+		@success="bindStoreSuccessCall"
+		top="15vh"
+		/>
 
 
-    <el-dialog :visible.sync="skuShow" title="规格库存" top="300px" width="40%">
-      <el-table :data="skuList">
-        <el-table-column label="规格" property="attr_txt"></el-table-column>
-        <el-table-column label="库存" property="count"></el-table-column>
-        <el-table-column label="价格" property="price"></el-table-column>
-      </el-table>
-    </el-dialog>
-  </div>
+		<el-dialog :visible.sync="skuShow" title="规格库存" top="300px" width="40%">
+			<el-table :data="skuList">
+				<el-table-column label="规格" property="attr_txt"></el-table-column>
+				<el-table-column label="库存" property="count"></el-table-column>
+				<el-table-column label="价格" property="price"></el-table-column>
+			</el-table>
+		</el-dialog>
+	</div>
 </template>
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
@@ -220,13 +220,13 @@ import {
   getShippingTemplate,
   getStoreDetail,
   storeProductBack
-} from '@/common/fetch';
-import {compare_obj, createTmplArray, findArrayIdx, objTranslate, plainArray} from '@/common/utils';
-import {Cart} from '../common/cart';
-import {fun} from '../common';
-import {Fly} from '../common/UnitBezier';
+} from '@/common/fetch'
+import {compare_obj, createTmplArray, findArrayIdx, objTranslate, plainArray} from '@/common/utils'
+import {Cart} from '../common/cart'
+import {fun} from '../common'
+import {Fly} from '../common/UnitBezier'
 
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
 
 const getParentsCount = (arr, key, pkey, val, tempArr) => {
   var idx = false
@@ -234,7 +234,7 @@ const getParentsCount = (arr, key, pkey, val, tempArr) => {
     let item = arr[i]
     if (item[key] == val[pkey]) {
       idx = i
-      break;
+      break
     }
   }
   if (idx !== false) {
@@ -248,7 +248,7 @@ const restArr = (arr, key) => {
   plainArray(arr, key, plainArr)
   for (var i in plainArr) {
     let item = plainArr[i]
-    item.parent_count = 0;
+    item.parent_count = 0
     let tempArr = []
     if (item['Category_ParentID']) {
       getParentsCount(plainArr, 'Category_ID', 'Category_ParentID', item, tempArr)
@@ -471,12 +471,12 @@ export default class StoreProductList extends Vue {
   changeBackChannel() {
 
     if (!this.channelDialogInstance.channel) {
-      fun.error({msg: '渠道必选'});
-      return;
+      fun.error({msg: '渠道必选'})
+      return
     }
     if (this.channelDialogInstance.channel === 'store' && !this.channelDialogInstance.store_no) {
-      fun.error({msg: '门店编码必填'});
-      return;
+      fun.error({msg: '门店编码必填'})
+      return
     }
 
     this.channelDialogCancel()
@@ -513,7 +513,7 @@ export default class StoreProductList extends Vue {
     for (var goods of this.carts.lists) {
       if (goods.num < 1) {
         fun.error({msg: '产品至少选择1个'})
-        return;
+        return
       }
       console.log(goods, prod_attr.hasOwnProperty(goods.Products_ID))
       if (!prod_attr.hasOwnProperty(goods.Products_ID) || typeof prod_attr[goods.Products_ID] != 'object') {
@@ -536,7 +536,7 @@ export default class StoreProductList extends Vue {
 
     if (!this.channelDialogInstance.channel) {
       fun.error({msg: '退货渠道必填'})
-      return;
+      return
     }
 
 
@@ -544,7 +544,7 @@ export default class StoreProductList extends Vue {
     if (this.channelDialogInstance.channel === 'store') {
       if (!this.channelDialogInstance.store_no) {
         fun.error({msg: '选择门店退货，门店编号必填'})
-        return;
+        return
       }
       postData.purchase_type = 'store'
       postData.purchase_store_sn = this.channelDialogInstance.store_no
@@ -576,12 +576,12 @@ export default class StoreProductList extends Vue {
 
     //是否禁用
     let classObj = this.getClassFn(idx1, idx2)
-    if (classObj.disabled) return;
+    if (classObj.disabled) return
 
 
     this.$set(this.dialogInstance.skuval, val1, val2)
 
-    let count = 0;
+    let count = 0
     for (var key in this.dialogInstance.product.skuvaljosn) {
       //看是不是已经选中的属性在数组二中存在,只要存在一个，就不会是禁用的
       //而且要有库存
@@ -607,11 +607,11 @@ export default class StoreProductList extends Vue {
 
   getClassFn(idx1, idx2) {
 
-    if (JSON.stringify(this.dialogInstance.product) == '{}') return {};
+    if (JSON.stringify(this.dialogInstance.product) == '{}') return {}
 
 
-    let disabled = true;
-    let count = 0;
+    let disabled = true
+    let count = 0
 
     //没有这个属性，也就是还没有选中这一行
     // console.log(this.dialogInstance.product.skujosn_new[idx1].sku)
@@ -622,7 +622,7 @@ export default class StoreProductList extends Vue {
     //     disabled = false;
     // }
 
-    let spec_info = {[this.dialogInstance.product.skujosn_new[idx1].sku]: this.dialogInstance.product.skujosn_new[idx1].val[idx2]};
+    let spec_info = {[this.dialogInstance.product.skujosn_new[idx1].sku]: this.dialogInstance.product.skujosn_new[idx1].val[idx2]}
     // console.log(spec_info)
 
     //模拟一下，如果现有的规格加上现在这个，还能有数量。那么就可以被选中
@@ -633,7 +633,7 @@ export default class StoreProductList extends Vue {
       //看是不是已经选中的属性在数组二中存在,只要存在一个，就不会是禁用的
       //而且要有库存
       if (compare_obj(tempSkuVal, this.dialogInstance.product.skuvaljosn[key].Attr_Value) && this.dialogInstance.product.skuvaljosn[key].Property_count > 0) {
-        disabled = false;
+        disabled = false
         //累计可用库存
         count += this.dialogInstance.product.skuvaljosn[key].Property_count
       }
@@ -654,12 +654,12 @@ export default class StoreProductList extends Vue {
 
     if (this.dialogInstance.product.skujosn_new.length > 0 && Object.keys(this.dialogInstance.skuval).length != Object.keys(this.dialogInstance.product.skujosn).length) {
       fun.error({msg: '请选择所有规格'})
-      return;
+      return
     }
 
     if (this.dialogInstance.product.skujosn_new.length > 0 && !this.dialogInstance.prd_attr_id) {
       fun.error({msg: '商品规格数据错误'})
-      return;
+      return
     }
 
     //也要把prd_attr_id写进去
@@ -724,10 +724,10 @@ export default class StoreProductList extends Vue {
 
     if (this.isMove) {
       fun.error({msg: '操作太快'})
-      return;
+      return
     }
     //添加
-    if (!cartInstance.add(goods)) return;
+    if (!cartInstance.add(goods)) return
 
     console.log(goods)
     this.fly_img_url = goods.img_url
@@ -738,7 +738,7 @@ export default class StoreProductList extends Vue {
     let eleStr = `<img src="${goods.img_url}" class="fly-pic" id="${randId}" style="{left:${this.curPosX}px,top:${this.curPosY}px}" />`
 
     let imgs = document.getElementById('imgs')
-    imgs.innerHTML += eleStr;
+    imgs.innerHTML += eleStr
 
     let itemDom = document.querySelector('.item' + idx)
     var rect = itemDom.getBoundingClientRect()
@@ -771,13 +771,13 @@ export default class StoreProductList extends Vue {
     this.setCartCurrentItem(goods)
     if (goods.prd_attr_id) {
       if (num + 1 > this.cartCurrentItem.sku_stock[goods.prd_attr_id]) {
-        fun.error({msg: '库存已达最大值'});
-        return;
+        fun.error({msg: '库存已达最大值'})
+        return
       }
     } else {
       if (num + 1 > this.cartCurrentItem.Products_Count) {
-        fun.error({msg: '库存已达最大值'});
-        return;
+        fun.error({msg: '库存已达最大值'})
+        return
       }
     }
 
@@ -879,19 +879,19 @@ export default class StoreProductList extends Vue {
     let product = {}
     this.dialogInstance.loading = true
 
-    product = goods;
+    product = goods
     if (goods.skujosn) {
-      let skujosn = goods.skujosn;
-      let skujosn_new = [];
+      let skujosn = goods.skujosn
+      let skujosn_new = []
       for (let i in goods.skujosn) {
         skujosn_new.push({
           sku: i,
           val: skujosn[i]
-        });
+        })
       }
 
-      product.skujosn_new = skujosn_new;
-      product.skuvaljosn = goods.skuvaljosn;
+      product.skujosn_new = skujosn_new
+      product.skuvaljosn = goods.skuvaljosn
     } else {
       product.skujosn_new = []
       product.skuvaljosn = ''
@@ -945,14 +945,14 @@ export default class StoreProductList extends Vue {
 
     if (this.carts.lists.length < 1) {
       fun.error({msg: '购物车中无产品'})
-      return;
+      return
     }
     let postData = {cart_key: 'CartList'}
     let prod_attr = {}
     for (var goods of this.carts.lists) {
       if (goods.num < 1) {
         fun.error({msg: '产品至少选择1个'})
-        return;
+        return
       }
       if (goods.prd_attr_id) {
         prod_attr[goods.Products_ID] = [goods.prd_attr_id]
@@ -1082,609 +1082,609 @@ export default class StoreProductList extends Vue {
 }
 </script>
 <style lang="stylus" scoped>
-  .channel-container-wrap
-    box-shadow 0 0 49px 14px rgba(0, 37, 157, 0.15)
+	.channel-container-wrap
+		box-shadow 0 0 49px 14px rgba(0, 37, 157, 0.15)
 
-    .container-wrap
-      padding-bottom 20px
+		.container-wrap
+			padding-bottom 20px
 
-    .form
-      margin 30px 245px 100px 147px
+		.form
+			margin 30px 245px 100px 147px
 
-    .btn
-      margin 0 auto
-      width 420px
-      height 50px
-      line-height 50px
-      background #F43131
-      border-radius 6px
-      color white
-      text-align center
-      font-size 18px
-      cursor pointer
+		.btn
+			margin 0 auto
+			width 420px
+			height 50px
+			line-height 50px
+			background #F43131
+			border-radius 6px
+			color white
+			text-align center
+			font-size 18px
+			cursor pointer
 
-  .spans
-    color: #428CF7
-    margin-right: 4px
-    cursor: pointer
+	.spans
+		color: #428CF7
+		margin-right: 4px
+		cursor: pointer
 </style>
 
 
 <style lang="less" scoped>
-  .cartsDialogMask {
-    background: rgba(0, 0, 0, .5);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 999;
-  }
-
-  .cartsDialog {
-    position: fixed;
-    z-index: 1000;
-    bottom: 50px;
-    height: 650px;
-    background: #f8f8f8;
-    overflow-y: scroll;
-    left: 50%;
-    transform: translate(-50%);
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    .carts-dialog-container {
-      display: flex;
-      flex-wrap: wrap;
-      margin: 30px auto;
-
-      .goods-item {
-        margin-right: 15px;
-        background: white;
-        margin-bottom: 15px;
-        padding-bottom: 6px;
-
-        .cover {
-          background-size: contain;
-          background-repeat: no-repeat;
-          background-position: center;
-          background-color: #fff;
-          cursor: pointer;
-          position: relative;
-
-          &:hover {
-            .el-icon-error {
-              visibility: visible;
-              color: #F43131;
-            }
-          }
-
-          .el-icon-error {
-            visibility: hidden;
-            position: absolute;
-            right: -16px;
-            top: -16px;
-            font-size: 32px;
-            color: rgba(0, 0, 0, .5);
-          }
-        }
-
-        .title {
-          font-size: 14px;
-          line-height: 20px;
-          height: 40px;
-          overflow: hidden;
-          margin: 6px 0;
-          color: #333;
-          padding: 0 6px;
-        }
-
-        .attr {
-          font-size: 12px;
-          color: #888;
-          margin-bottom: 6px;
-          padding: 0 6px;
-        }
-
-        .numbox {
-          padding: 0 6px;
-          display: flex;
-          align-items: center;
-
-          .label {
-            font-size: 12px;
-            padding-right: 4px;
-          }
-
-          .input {
-            width: 40px;
-            margin: 0 6px 0 0px;
-            height: 26px;
-            line-height: 26px;
-            padding: 0 4px;
-            border: 1px solid #C0C0C0;
-            text-align: center;
-          }
-
-          .num-btns {
-
-            .num-btn {
-              display: block;
-              height: 12px;
-              width: 16px;
-              border: 1px solid #C0C0C0;
-              position: relative;
-              font-size: 14px;
-              text-align: center;
-              cursor: pointer;
-
-              &.plus-btn {
-                /*position: absolute;*/
-                /*bottom: 0;*/
-                /*vertical-align: middle;*/
-
-                .el-icon-arrow-up {
-                  position: absolute;
-                  bottom: -2px;
-                  left: 50%;
-                  transform: translateX(-50%);
-                }
-
-              }
-
-              &.minus-btn {
-                margin-top: 2px;
-
-                .el-icon-arrow-down {
-                  position: absolute;
-                  top: -1px;
-                  left: 50%;
-                  transform: translateX(-50%);
-                }
-
-                /*position: absolute;*/
-                /*top: 0;*/
-              }
-            }
-          }
-        }
-      }
-
-    }
-  }
-
-  .page-wrap {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    overflow-y: scroll;
-    background: #f8f8f8;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    /*background-position:center bottom;*/
-    /*background-size:100% auto;*/
-    /*background-repeat:no-repeat;*/
-    /*background-image:url("~@/assets/img/store/join_bg.png");*/
-  }
-
-  .dialog-container {
-    .row {
-      display: flex;
-      margin-bottom: 10px;
-
-      * {
-        user-select: none;
-      }
-
-      .label {
-        display: inline-block;
-        padding-right: 10px;
-        width: 60px;
-        height: 30px;
-        line-height: 30px;
-        text-align: right;
-
-      }
-
-      .specs {
-        flex: 1;
-
-        .spec-item {
-          position: relative;
-          display: inline-block;
-          margin: 0 10px 5px 0;
-          height: 30px;
-          min-width: 50px;
-          padding: 0 2px;
-          line-height: 30px;
-          text-align: center;
-          border: 1px solid #e7e7e7;
-          overflow: hidden;
-          cursor: pointer;
-
-          .el-icon-check {
-            display: none;
-          }
-
-          &.use:hover {
-            background: #f2f2f2;
-          }
-
-          &.disabled {
-            background: #f8f8f8 !important;
-            cursor: not-allowed !important;
-            color: #ccc;
-          }
-
-          &.choose {
-            .fill {
-              background: #F43131;
-              position: absolute;
-              right: -13px;
-              bottom: -12px;
-              width: 26px;
-              height: 26px;
-              transform: rotate(45deg);
-            }
-
-            .el-icon-check {
-              font-size: 12px;
-              position: absolute;
-              z-index: 2;
-              right: 0;
-              bottom: 0;
-              color: white;
-              display: inline-block;
-            }
-          }
-
-        }
-      }
-    }
-  }
-
-
-  @media screen and (max-width: 1200px) {
-    .container-wrap {
-      width: 1000px;
-    }
-
-    .main {
-      width: 905px;
-
-      .item:nth-child(4n+4) {
-        margin-right: 0px !important;
-      }
-    }
-
-    .foot {
-      width: 1000px;
-    }
-
-    .cartsDialog {
-      width: 1000px;
-
-      .carts-dialog-container {
-        width: 960px;
-
-        .goods-item {
-          width: 225px;
-
-          .cover {
-            width: 225px;
-            height: 196px;
-          }
-        }
-
-        .goods-item:nth-child(4n+4) {
-          margin-right: 0px !important;
-        }
-      }
-
-    }
-  }
-
-  @media screen and (min-width: 1200px) and (max-width: 1660px) {
-    .container-wrap {
-      width: 1200px;
-    }
-
-    .main {
-      width: 1135px;
-
-      .item:nth-child(5n+5) {
-        margin-right: 0px !important;
-      }
-    }
-
-    .foot {
-      width: 1200px;
-    }
-
-    .cartsDialog {
-      width: 1200px;
-
-      .carts-dialog-container {
-        width: 1160px;
-
-        .goods-item {
-          width: 220px;
-
-          .cover {
-            width: 220px;
-            height: 194px;
-          }
-        }
-
-        .goods-item:nth-child(5n+5) {
-          margin-right: 0px !important;
-        }
-      }
-    }
-  }
-
-  @media screen and (min-width: 1660px) {
-    .container-wrap {
-      width: 1634px;
-    }
-
-    .main {
-      width: 1365px;
-
-      .item:nth-child(6n+6) {
-        margin-right: 0px !important;
-      }
-    }
-
-    .foot {
-      width: 1634px;
-    }
-
-    .cartsDialog {
-      width: 1634px;
-
-      .carts-dialog-container {
-        width: 1595px;
-
-        .goods-item {
-          width: 215px;
-
-          .cover {
-            width: 215px;
-            height: 188px;
-          }
-        }
-
-        .goods-item:nth-child(7n+7) {
-          margin-right: 0px !important;
-        }
-      }
-    }
-  }
-
-  .container-wrap {
-
-    height: 100%;
-    margin: 0 auto 50px;
-    background: white;
-
-  }
-
-  .main {
-
-    margin: 0 auto 50px;
-    padding-bottom: 30px;
-
-    .lists {
-      display: flex;
-      flex-wrap: wrap;
-
-      .item {
-        margin-right: 15px;
-        width: 215px;
-        cursor: pointer;
-        padding-bottom: 10px;
-        border: 1px solid #e7e7e7;
-        box-sizing: border-box;
-        margin-bottom: 15px;
-
-        &:hover {
-          .cover {
-            .mask {
-              visibility: visible;
-            }
-
-            .tip {
-              visibility: visible;
-            }
-          }
-
-        }
-
-        .cover {
-          margin: 5px;
-          width: 205px;
-          height: 205px;
-          position: relative;
-          border-radius: 2px;
-          overflow: hidden;
-
-          .thumb {
-            width: 100%;
-            height: 100%;
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-color: #f2f2f2;
-            background-position: center;
-          }
-
-          /*.mask{*/
-          /*  position: absolute;*/
-          /*  left: 0;*/
-          /*  right: 0;*/
-          /*  bottom: 0;*/
-          /*  top: 0;*/
-          /*  background: linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.6));*/
-          /*  z-index: 2;*/
-          /*  visibility: hidden;*/
-          /*}*/
-
-          .tip {
-            position: absolute;
-            z-index: 3;
-            background: rgba(244, 49, 49, .7);
-            color: white;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 20px;
-            font-size: 12px;
-            line-height: 20px;
-            text-align: center;
-            visibility: hidden;
-          }
-        }
-
-        .title {
-          height: 42px;
-          font-size: 14px;
-          line-height: 21px;
-          overflow: hidden;
-          padding-left: 10px;
-          padding-right: 10px;
-        }
-
-        .price-box {
-          padding-left: 10px;
-          padding-right: 10px;
-        }
-
-        .sales {
-          padding-left: 10px;
-          padding-right: 10px;
-          color: #999;
-          font-size: 12px;
-        }
-      }
-    }
-  }
-
-  .foot {
-    position: fixed;
-    z-index: 1001;
-    box-shadow: 0 0 16px 0px rgba(0, 0, 0, .3);
-    bottom: 0;
-    height: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-
-    .count {
-      margin: 0 auto;
-      text-align: center;
-      line-height: 50px;
-      color: #333;
-
-      .text {
-        height: 50px;
-        line-height: 50px;
-      }
-
-    }
-
-    .sub-channel {
-      position: absolute;
-      right: 150px;
-      bottom: 0;
-      color: white;
-      background: #909399;
-      line-height: 50px;
-      height: 50px;
-      width: 150px;
-      text-align: center;
-      border-radius: 0;
-      border: none;
-      padding: 0;
-    }
-
-    .sub-btn {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      color: white;
-      background: #F43131;
-      line-height: 50px;
-      height: 50px;
-      width: 150px;
-      text-align: center;
-      border-radius: 0;
-      border: none;
-      padding: 0;
-
-
-    }
-  }
-
-  .head {
-    padding: 44px 0 40px;
-    margin: 0 auto;
-
-    .search {
-      width: 600px;
-      height: 36px;
-      line-height: 36px;
-      margin: 0 auto;
-      border-radius: 2px;
-      overflow: hidden;
-      display: flex;
-      border: 1px solid #F43131;
-      align-items: center;
-    }
-
-    .search-input {
-      flex: 1;
-      height: 36px;
-      padding: 8px 20px;
-      outline: none;
-      border: none;
-      box-sizing: border-box;
-      font-size: 14px;
-      line-height: 20px;
-      color: #444;
-
-      &::placeholder {
-        color: #C1C1C1;
-      }
-    }
-
-    .el-icon-close {
-      margin-right: 6px;
-      cursor: pointer;
-      color: #999;
-      /*position: absolute;*/
-      /*right: 76px;*/
-    }
-
-    .search-btn {
-      height: 36px;
-      width: 74px;
-      color: white;
-      background: #F43131;
-      border: none;
-      padding: 0;
-      margin: 0;
-      cursor: pointer;
-    }
-  }
-
-  .skuClass {
-    color: #409EFF;
-    cursor: pointer;
-  }
+	.cartsDialogMask {
+		background: rgba(0, 0, 0, .5);
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 999;
+	}
+
+	.cartsDialog {
+		position: fixed;
+		z-index: 1000;
+		bottom: 50px;
+		height: 650px;
+		background: #f8f8f8;
+		overflow-y: scroll;
+		left: 50%;
+		transform: translate(-50%);
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		.carts-dialog-container {
+			display: flex;
+			flex-wrap: wrap;
+			margin: 30px auto;
+
+			.goods-item {
+				margin-right: 15px;
+				background: white;
+				margin-bottom: 15px;
+				padding-bottom: 6px;
+
+				.cover {
+					background-size: contain;
+					background-repeat: no-repeat;
+					background-position: center;
+					background-color: #fff;
+					cursor: pointer;
+					position: relative;
+
+					&:hover {
+						.el-icon-error {
+							visibility: visible;
+							color: #F43131;
+						}
+					}
+
+					.el-icon-error {
+						visibility: hidden;
+						position: absolute;
+						right: -16px;
+						top: -16px;
+						font-size: 32px;
+						color: rgba(0, 0, 0, .5);
+					}
+				}
+
+				.title {
+					font-size: 14px;
+					line-height: 20px;
+					height: 40px;
+					overflow: hidden;
+					margin: 6px 0;
+					color: #333;
+					padding: 0 6px;
+				}
+
+				.attr {
+					font-size: 12px;
+					color: #888;
+					margin-bottom: 6px;
+					padding: 0 6px;
+				}
+
+				.numbox {
+					padding: 0 6px;
+					display: flex;
+					align-items: center;
+
+					.label {
+						font-size: 12px;
+						padding-right: 4px;
+					}
+
+					.input {
+						width: 40px;
+						margin: 0 6px 0 0px;
+						height: 26px;
+						line-height: 26px;
+						padding: 0 4px;
+						border: 1px solid #C0C0C0;
+						text-align: center;
+					}
+
+					.num-btns {
+
+						.num-btn {
+							display: block;
+							height: 12px;
+							width: 16px;
+							border: 1px solid #C0C0C0;
+							position: relative;
+							font-size: 14px;
+							text-align: center;
+							cursor: pointer;
+
+							&.plus-btn {
+								/*position: absolute;*/
+								/*bottom: 0;*/
+								/*vertical-align: middle;*/
+
+								.el-icon-arrow-up {
+									position: absolute;
+									bottom: -2px;
+									left: 50%;
+									transform: translateX(-50%);
+								}
+
+							}
+
+							&.minus-btn {
+								margin-top: 2px;
+
+								.el-icon-arrow-down {
+									position: absolute;
+									top: -1px;
+									left: 50%;
+									transform: translateX(-50%);
+								}
+
+								/*position: absolute;*/
+								/*top: 0;*/
+							}
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+	.page-wrap {
+		position: relative;
+		width: 100%;
+		height: 100vh;
+		overflow: hidden;
+		overflow-y: scroll;
+		background: #f8f8f8;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		/*background-position:center bottom;*/
+		/*background-size:100% auto;*/
+		/*background-repeat:no-repeat;*/
+		/*background-image:url("~@/assets/img/store/join_bg.png");*/
+	}
+
+	.dialog-container {
+		.row {
+			display: flex;
+			margin-bottom: 10px;
+
+			* {
+				user-select: none;
+			}
+
+			.label {
+				display: inline-block;
+				padding-right: 10px;
+				width: 60px;
+				height: 30px;
+				line-height: 30px;
+				text-align: right;
+
+			}
+
+			.specs {
+				flex: 1;
+
+				.spec-item {
+					position: relative;
+					display: inline-block;
+					margin: 0 10px 5px 0;
+					height: 30px;
+					min-width: 50px;
+					padding: 0 2px;
+					line-height: 30px;
+					text-align: center;
+					border: 1px solid #e7e7e7;
+					overflow: hidden;
+					cursor: pointer;
+
+					.el-icon-check {
+						display: none;
+					}
+
+					&.use:hover {
+						background: #f2f2f2;
+					}
+
+					&.disabled {
+						background: #f8f8f8 !important;
+						cursor: not-allowed !important;
+						color: #ccc;
+					}
+
+					&.choose {
+						.fill {
+							background: #F43131;
+							position: absolute;
+							right: -13px;
+							bottom: -12px;
+							width: 26px;
+							height: 26px;
+							transform: rotate(45deg);
+						}
+
+						.el-icon-check {
+							font-size: 12px;
+							position: absolute;
+							z-index: 2;
+							right: 0;
+							bottom: 0;
+							color: white;
+							display: inline-block;
+						}
+					}
+
+				}
+			}
+		}
+	}
+
+
+	@media screen and (max-width: 1200px) {
+		.container-wrap {
+			width: 1000px;
+		}
+
+		.main {
+			width: 905px;
+
+			.item:nth-child(4n+4) {
+				margin-right: 0px !important;
+			}
+		}
+
+		.foot {
+			width: 1000px;
+		}
+
+		.cartsDialog {
+			width: 1000px;
+
+			.carts-dialog-container {
+				width: 960px;
+
+				.goods-item {
+					width: 225px;
+
+					.cover {
+						width: 225px;
+						height: 196px;
+					}
+				}
+
+				.goods-item:nth-child(4n+4) {
+					margin-right: 0px !important;
+				}
+			}
+
+		}
+	}
+
+	@media screen and (min-width: 1200px) and (max-width: 1660px) {
+		.container-wrap {
+			width: 1200px;
+		}
+
+		.main {
+			width: 1135px;
+
+			.item:nth-child(5n+5) {
+				margin-right: 0px !important;
+			}
+		}
+
+		.foot {
+			width: 1200px;
+		}
+
+		.cartsDialog {
+			width: 1200px;
+
+			.carts-dialog-container {
+				width: 1160px;
+
+				.goods-item {
+					width: 220px;
+
+					.cover {
+						width: 220px;
+						height: 194px;
+					}
+				}
+
+				.goods-item:nth-child(5n+5) {
+					margin-right: 0px !important;
+				}
+			}
+		}
+	}
+
+	@media screen and (min-width: 1660px) {
+		.container-wrap {
+			width: 1634px;
+		}
+
+		.main {
+			width: 1365px;
+
+			.item:nth-child(6n+6) {
+				margin-right: 0px !important;
+			}
+		}
+
+		.foot {
+			width: 1634px;
+		}
+
+		.cartsDialog {
+			width: 1634px;
+
+			.carts-dialog-container {
+				width: 1595px;
+
+				.goods-item {
+					width: 215px;
+
+					.cover {
+						width: 215px;
+						height: 188px;
+					}
+				}
+
+				.goods-item:nth-child(7n+7) {
+					margin-right: 0px !important;
+				}
+			}
+		}
+	}
+
+	.container-wrap {
+
+		height: 100%;
+		margin: 0 auto 50px;
+		background: white;
+
+	}
+
+	.main {
+
+		margin: 0 auto 50px;
+		padding-bottom: 30px;
+
+		.lists {
+			display: flex;
+			flex-wrap: wrap;
+
+			.item {
+				margin-right: 15px;
+				width: 215px;
+				cursor: pointer;
+				padding-bottom: 10px;
+				border: 1px solid #e7e7e7;
+				box-sizing: border-box;
+				margin-bottom: 15px;
+
+				&:hover {
+					.cover {
+						.mask {
+							visibility: visible;
+						}
+
+						.tip {
+							visibility: visible;
+						}
+					}
+
+				}
+
+				.cover {
+					margin: 5px;
+					width: 205px;
+					height: 205px;
+					position: relative;
+					border-radius: 2px;
+					overflow: hidden;
+
+					.thumb {
+						width: 100%;
+						height: 100%;
+						background-repeat: no-repeat;
+						background-size: contain;
+						background-color: #f2f2f2;
+						background-position: center;
+					}
+
+					/*.mask{*/
+					/*  position: absolute;*/
+					/*  left: 0;*/
+					/*  right: 0;*/
+					/*  bottom: 0;*/
+					/*  top: 0;*/
+					/*  background: linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.6));*/
+					/*  z-index: 2;*/
+					/*  visibility: hidden;*/
+					/*}*/
+
+					.tip {
+						position: absolute;
+						z-index: 3;
+						background: rgba(244, 49, 49, .7);
+						color: white;
+						bottom: 0;
+						left: 0;
+						right: 0;
+						height: 20px;
+						font-size: 12px;
+						line-height: 20px;
+						text-align: center;
+						visibility: hidden;
+					}
+				}
+
+				.title {
+					height: 42px;
+					font-size: 14px;
+					line-height: 21px;
+					overflow: hidden;
+					padding-left: 10px;
+					padding-right: 10px;
+				}
+
+				.price-box {
+					padding-left: 10px;
+					padding-right: 10px;
+				}
+
+				.sales {
+					padding-left: 10px;
+					padding-right: 10px;
+					color: #999;
+					font-size: 12px;
+				}
+			}
+		}
+	}
+
+	.foot {
+		position: fixed;
+		z-index: 1001;
+		box-shadow: 0 0 16px 0px rgba(0, 0, 0, .3);
+		bottom: 0;
+		height: 50px;
+		left: 50%;
+		transform: translateX(-50%);
+		background: white;
+
+		.count {
+			margin: 0 auto;
+			text-align: center;
+			line-height: 50px;
+			color: #333;
+
+			.text {
+				height: 50px;
+				line-height: 50px;
+			}
+
+		}
+
+		.sub-channel {
+			position: absolute;
+			right: 150px;
+			bottom: 0;
+			color: white;
+			background: #909399;
+			line-height: 50px;
+			height: 50px;
+			width: 150px;
+			text-align: center;
+			border-radius: 0;
+			border: none;
+			padding: 0;
+		}
+
+		.sub-btn {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			color: white;
+			background: #F43131;
+			line-height: 50px;
+			height: 50px;
+			width: 150px;
+			text-align: center;
+			border-radius: 0;
+			border: none;
+			padding: 0;
+
+
+		}
+	}
+
+	.head {
+		padding: 44px 0 40px;
+		margin: 0 auto;
+
+		.search {
+			width: 600px;
+			height: 36px;
+			line-height: 36px;
+			margin: 0 auto;
+			border-radius: 2px;
+			overflow: hidden;
+			display: flex;
+			border: 1px solid #F43131;
+			align-items: center;
+		}
+
+		.search-input {
+			flex: 1;
+			height: 36px;
+			padding: 8px 20px;
+			outline: none;
+			border: none;
+			box-sizing: border-box;
+			font-size: 14px;
+			line-height: 20px;
+			color: #444;
+
+			&::placeholder {
+				color: #C1C1C1;
+			}
+		}
+
+		.el-icon-close {
+			margin-right: 6px;
+			cursor: pointer;
+			color: #999;
+			/*position: absolute;*/
+			/*right: 76px;*/
+		}
+
+		.search-btn {
+			height: 36px;
+			width: 74px;
+			color: white;
+			background: #F43131;
+			border: none;
+			padding: 0;
+			margin: 0;
+			cursor: pointer;
+		}
+	}
+
+	.skuClass {
+		color: #409EFF;
+		cursor: pointer;
+	}
 </style>

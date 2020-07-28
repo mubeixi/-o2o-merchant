@@ -1,80 +1,80 @@
 <template>
-  <div class="labelManagement">
-    <div class="labelMain">
-      <el-form size="small">
-        <el-form-item label="标签名称:">
-          <el-input :disabled="!isEdit" style="width: 350px" v-model="allData.name"></el-input>
-        </el-form-item>
-        <el-form-item label="标签类型:">
-          <el-radio-group v-model="allData.type">
-            <el-radio label="1">手动标签</el-radio>
-            <el-radio label="2">自动标签</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <template v-if="allData.type==2">
-          <div class="labelManual">
-            <el-form-item label="满足条件:">
-              <el-radio-group v-model="allData.rule_type">
-                <el-radio label="0">满足任意一个被选中的条件即可</el-radio>
-                <el-radio label="1">必须满足所有被选中的条件</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <div class="conditionClass">
-              <div style="font-size: 14px;color: #666666;margin-right: 16px;">
-                交易条件:
-              </div>
-              <div>
-                <el-checkbox-group v-model="allData.conditions.time.checked">
-                  <el-checkbox label="lastTime" name="lastTime">最后消费时间</el-checkbox>
-                </el-checkbox-group>
+	<div class="labelManagement">
+		<div class="labelMain">
+			<el-form size="small">
+				<el-form-item label="标签名称:">
+					<el-input :disabled="!isEdit" style="width: 350px" v-model="allData.name"></el-input>
+				</el-form-item>
+				<el-form-item label="标签类型:">
+					<el-radio-group v-model="allData.type">
+						<el-radio label="1">手动标签</el-radio>
+						<el-radio label="2">自动标签</el-radio>
+					</el-radio-group>
+				</el-form-item>
+				<template v-if="allData.type==2">
+					<div class="labelManual">
+						<el-form-item label="满足条件:">
+							<el-radio-group v-model="allData.rule_type">
+								<el-radio label="0">满足任意一个被选中的条件即可</el-radio>
+								<el-radio label="1">必须满足所有被选中的条件</el-radio>
+							</el-radio-group>
+						</el-form-item>
+						<div class="conditionClass">
+							<div style="font-size: 14px;color: #666666;margin-right: 16px;">
+								交易条件:
+							</div>
+							<div>
+								<el-checkbox-group v-model="allData.conditions.time.checked">
+									<el-checkbox label="lastTime" name="lastTime">最后消费时间</el-checkbox>
+								</el-checkbox-group>
 
-                <el-form-item label="最近:"
-                              style="margin-left: 30px;margin-top: 25px;margin-bottom: 16px;">
-                  <el-input class="marginLR" v-model="allData.conditions.time.value"></el-input>
-                  天
-                </el-form-item>
+								<el-form-item label="最近:"
+								              style="margin-left: 30px;margin-top: 25px;margin-bottom: 16px;">
+									<el-input class="marginLR" v-model="allData.conditions.time.value"></el-input>
+									天
+								</el-form-item>
 
-                <el-form-item>
-                  <el-checkbox-group v-model="allData.conditions.count.checked">
-                    <el-checkbox label="lastTime" name="consumptionTimes">
-                      累计消费次数
-                      <el-input class="marginLR" style="width: 70px"
-                                v-model="allData.conditions.count.min"></el-input>
-                      次<span style="margin-left: 10px">一</span>
-                      <el-input class="marginLR" style="width: 70px"
-                                v-model="allData.conditions.count.max"></el-input>
-                      次
-                    </el-checkbox>
-                  </el-checkbox-group>
-                </el-form-item>
+								<el-form-item>
+									<el-checkbox-group v-model="allData.conditions.count.checked">
+										<el-checkbox label="lastTime" name="consumptionTimes">
+											累计消费次数
+											<el-input class="marginLR" style="width: 70px"
+											          v-model="allData.conditions.count.min"></el-input>
+											次<span style="margin-left: 10px">一</span>
+											<el-input class="marginLR" style="width: 70px"
+											          v-model="allData.conditions.count.max"></el-input>
+											次
+										</el-checkbox>
+									</el-checkbox-group>
+								</el-form-item>
 
-                <el-form-item>
-                  <el-checkbox-group v-model="allData.conditions.money.checked">
-                    <el-checkbox label="lastTime" name="consumptionMoney">
-                      累计消费金额
-                      <el-input class="marginLR" style="width: 70px"
-                                v-model="allData.conditions.money.min"></el-input>
-                      元<span style="margin-left: 10px">一</span>
-                      <el-input class="marginLR" style="width: 70px"
-                                v-model="allData.conditions.money.max"></el-input>
-                      元
-                    </el-checkbox>
-                  </el-checkbox-group>
-                </el-form-item>
-              </div>
+								<el-form-item>
+									<el-checkbox-group v-model="allData.conditions.money.checked">
+										<el-checkbox label="lastTime" name="consumptionMoney">
+											累计消费金额
+											<el-input class="marginLR" style="width: 70px"
+											          v-model="allData.conditions.money.min"></el-input>
+											元<span style="margin-left: 10px">一</span>
+											<el-input class="marginLR" style="width: 70px"
+											          v-model="allData.conditions.money.max"></el-input>
+											元
+										</el-checkbox>
+									</el-checkbox-group>
+								</el-form-item>
+							</div>
 
-            </div>
-          </div>
-        </template>
-        <el-button :loading="loading" @click="saveData" class="submit" type="primary">保存</el-button>
-        <el-button @click="goLabel" class="submits">返回</el-button>
-      </el-form>
-    </div>
-  </div>
+						</div>
+					</div>
+				</template>
+				<el-button :loading="loading" @click="saveData" class="submit" type="primary">保存</el-button>
+				<el-button @click="goLabel" class="submits">返回</el-button>
+			</el-form>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator'
 import {addTag, getTag} from '@/common/fetch'
 
 @Component({
@@ -109,7 +109,7 @@ export default class AddProduct extends Vue {
   }
 
   saveData() {
-    if (this.loading) return;
+    if (this.loading) return
     this.loading = true
     // if(this.allData.name==''){
     //     this.$message({
@@ -127,7 +127,7 @@ export default class AddProduct extends Vue {
     }
     let id = this.$route.params.id
     if (id) {
-      data.id = id;
+      data.id = id
     }
     addTag(data).then(res => {
       if (res.errorCode == 0) {
@@ -163,7 +163,7 @@ export default class AddProduct extends Vue {
           this.allData.name = res.data.name
           this.allData.type = String(res.data.type)
           if (res.data.type != 1) {
-            this.allData.rule_type = String(res.data.rule_type);
+            this.allData.rule_type = String(res.data.rule_type)
             this.allData.conditions = res.data.conditions
           }
         }
@@ -177,55 +177,55 @@ export default class AddProduct extends Vue {
 </script>
 
 <style lang="less" scoped>
-  @bgColor: #428CF7;
-  .labelManagement {
-    background-color: #f6f6f6;
-    padding-top: 18px;
-    padding-left: 19px;
-    width: 100%;
-    box-sizing: border-box;
+	@bgColor: #428CF7;
+	.labelManagement {
+		background-color: #f6f6f6;
+		padding-top: 18px;
+		padding-left: 19px;
+		width: 100%;
+		box-sizing: border-box;
 
-    .labelMain {
-      background-color: #FFFFFF;
-      width: 100%;
-      box-sizing: border-box;
-      padding-top: 30px;
-      padding-left: 24px;
-    }
-  }
+		.labelMain {
+			background-color: #FFFFFF;
+			width: 100%;
+			box-sizing: border-box;
+			padding-top: 30px;
+			padding-left: 24px;
+		}
+	}
 
-  .labelManual {
-    width: 80%;
-    background-color: #F8F8F8;
-    padding-top: 24px;
-    padding-left: 84px;
-    padding-bottom: 40px;
-  }
+	.labelManual {
+		width: 80%;
+		background-color: #F8F8F8;
+		padding-top: 24px;
+		padding-left: 84px;
+		padding-bottom: 40px;
+	}
 
-  .conditionClass {
-    margin: 28px 50px 0px 84px;
-    background-color: #FFFFFF;
-    padding-top: 20px;
-    padding-left: 24px;
-    display: flex;
-  }
+	.conditionClass {
+		margin: 28px 50px 0px 84px;
+		background-color: #FFFFFF;
+		padding-top: 20px;
+		padding-left: 24px;
+		display: flex;
+	}
 
-  .marginLR {
-    width: 75px;
-    margin-left: 9px;
-    margin-right: 9px;
-  }
+	.marginLR {
+		width: 75px;
+		margin-left: 9px;
+		margin-right: 9px;
+	}
 
-  .submit {
-    margin-top: 42px;
-    margin-left: 24%;
+	.submit {
+		margin-top: 42px;
+		margin-left: 24%;
 
-  }
+	}
 
-  .submits {
-    margin-top: 42px;
-    margin-left: 40px;
-  }
+	.submits {
+		margin-top: 42px;
+		margin-left: 40px;
+	}
 
 
 </style>

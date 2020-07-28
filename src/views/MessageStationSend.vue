@@ -1,60 +1,60 @@
 <template>
-  <div class="labelManagement">
-    <div class="labelMain flex">
-      <div class="floatRight">
-        <el-form size="small">
-          <el-form-item class="flexCenter" label="群发对象：">
-            <el-select placeholder="请选择" style="width: 200px" v-model="crowdId">
-              <template v-for="(shop,shopIn) in crowdList">
-                <el-option :label="shop.name" :value="shop.id"></el-option>
-              </template>
-            </el-select>
-          </el-form-item>
+	<div class="labelManagement">
+		<div class="labelMain flex">
+			<div class="floatRight">
+				<el-form size="small">
+					<el-form-item class="flexCenter" label="群发对象：">
+						<el-select placeholder="请选择" style="width: 200px" v-model="crowdId">
+							<template v-for="(shop,shopIn) in crowdList">
+								<el-option :label="shop.name" :value="shop.id"></el-option>
+							</template>
+						</el-select>
+					</el-form-item>
 
-          <el-form-item class="flex" label="短信内容：">
-            <el-input
-              :autosize="{ minRows: 4}"
-              class="haihong"
-              placeholder="此处为短信模板内容"
-              resize="none"
-              type="textarea"
-              v-model="content">
-            </el-input>
+					<el-form-item class="flex" label="短信内容：">
+						<el-input
+						:autosize="{ minRows: 4}"
+						class="haihong"
+						placeholder="此处为短信模板内容"
+						resize="none"
+						type="textarea"
+						v-model="content">
+						</el-input>
 
 
-          </el-form-item>
+					</el-form-item>
 
-          <el-form-item class="flex" label="发送时间：">
-            <el-radio-group v-model="times">
-              <el-radio class="radioTop" label="0">
-                立即发送
-              </el-radio>
-              <el-radio class="radioBottom" label="1">
-                定时发送
-                <el-date-picker
-                  class="dateTime"
-                  placeholder="选择日期时间"
-                  type="datetime"
-                  v-model="send_time"
-                  value-format="yyyy-MM-dd HH:mm:ss">
-                </el-date-picker>
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <div class="all">
-            <el-button @click="cancelPro" style="margin-left: 60px">取消</el-button>
-            <el-button :loading="loading" @click="saveData" style="margin-left: 100px"
-                       type="primary">保存
-            </el-button>
-          </div>
-        </el-form>
-      </div>
-    </div>
-  </div>
+					<el-form-item class="flex" label="发送时间：">
+						<el-radio-group v-model="times">
+							<el-radio class="radioTop" label="0">
+								立即发送
+							</el-radio>
+							<el-radio class="radioBottom" label="1">
+								定时发送
+								<el-date-picker
+								class="dateTime"
+								placeholder="选择日期时间"
+								type="datetime"
+								v-model="send_time"
+								value-format="yyyy-MM-dd HH:mm:ss">
+								</el-date-picker>
+							</el-radio>
+						</el-radio-group>
+					</el-form-item>
+					<div class="all">
+						<el-button @click="cancelPro" style="margin-left: 60px">取消</el-button>
+						<el-button :loading="loading" @click="saveData" style="margin-left: 100px"
+						           type="primary">保存
+						</el-button>
+					</div>
+				</el-form>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator'
 import {addBatch, getCrowds} from '@/common/fetch'
 
 @Component({
@@ -96,7 +96,7 @@ export default class AddProduct extends Vue {
         this.$message({
           type: 'success',
           message: res.msg
-        });
+        })
         let that = this
         setTimeout(function () {
           that.$router.push({
@@ -129,82 +129,82 @@ export default class AddProduct extends Vue {
 </script>
 
 <style lang="less" scoped>
-  @bgColor: #428CF7;
-  .labelManagement {
-    background-color: #f6f6f6;
-    padding-top: 18px;
-    padding-left: 19px;
-    width: 100%;
-    box-sizing: border-box;
+	@bgColor: #428CF7;
+	.labelManagement {
+		background-color: #f6f6f6;
+		padding-top: 18px;
+		padding-left: 19px;
+		width: 100%;
+		box-sizing: border-box;
 
-    .labelMain {
-      background-color: #FFFFFF;
-      width: 100%;
-      box-sizing: border-box;
-      padding-top: 70px;
-      padding-left: 24px;
-    }
-  }
+		.labelMain {
+			background-color: #FFFFFF;
+			width: 100%;
+			box-sizing: border-box;
+			padding-top: 70px;
+			padding-left: 24px;
+		}
+	}
 
-  .flex {
-    display: flex;
-  }
+	.flex {
+		display: flex;
+	}
 
-  .flexCenter {
-    display: flex;
-    align-items: center
-  }
+	.flexCenter {
+		display: flex;
+		align-items: center
+	}
 
-  .floatRight {
-    margin-left: 200px;
-  }
+	.floatRight {
+		margin-left: 200px;
+	}
 
-  .error {
-    color: #F43131;
-    font-size: 12px;
-  }
+	.error {
+		color: #F43131;
+		font-size: 12px;
+	}
 
-  .haihong {
-    min-height: 85px;
-    border: 0px;
-    width: 280px;
-    margin-top: 8px;
-  }
+	.haihong {
+		min-height: 85px;
+		border: 0px;
+		width: 280px;
+		margin-top: 8px;
+	}
 
-  .radioTop {
-    display: block;
-    margin-bottom: 15px;
-    padding-top: 8px
-  }
+	.radioTop {
+		display: block;
+		margin-bottom: 15px;
+		padding-top: 8px
+	}
 
-  .radioBottom {
-    display: block;
-    margin-bottom: 15px;
-  }
+	.radioBottom {
+		display: block;
+		margin-bottom: 15px;
+	}
 
-  .submit {
-    background-color: #428CF7;
-    color: #FFFFFF;
-    width: 90px;
-    text-align: center;
-    height: 44px;
-    line-height: 44px;
-    font-size: 16px;
-    margin-left: 120px;
-    margin-top: 20px;
-  }
+	.submit {
+		background-color: #428CF7;
+		color: #FFFFFF;
+		width: 90px;
+		text-align: center;
+		height: 44px;
+		line-height: 44px;
+		font-size: 16px;
+		margin-left: 120px;
+		margin-top: 20px;
+	}
 
-  .dateTime {
-    margin-left: 18px;
-    width: 180px;
+	.dateTime {
+		margin-left: 18px;
+		width: 180px;
 
-  }
+	}
 
-  .dateTime /deep/ input {
-    padding-right: 0px
-  }
+	.dateTime /deep/ input {
+		padding-right: 0px
+	}
 
-  .textarea /deep/ textarea {
-    border: 0px !important;
-  }
+	.textarea /deep/ textarea {
+		border: 0px !important;
+	}
 </style>

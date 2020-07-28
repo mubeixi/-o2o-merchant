@@ -1,47 +1,47 @@
 <template>
-  <div class="page-wrap">
-    <div class="container-wrap">
-      <el-form class="form" label-width="100px">
-        <el-form-item label="进货渠道:" prop="channel">
-          <el-select placeholder="请选择类型" style="width: 100%" v-model="formData.channel">
-            <template v-for="(item,idx) of channels">
-              <el-option :label="item.name" :value="item.id"></el-option>
-            </template>
-          </el-select>
-        </el-form-item>
+	<div class="page-wrap">
+		<div class="container-wrap">
+			<el-form class="form" label-width="100px">
+				<el-form-item label="进货渠道:" prop="channel">
+					<el-select placeholder="请选择类型" style="width: 100%" v-model="formData.channel">
+						<template v-for="(item,idx) of channels">
+							<el-option :label="item.name" :value="item.id"></el-option>
+						</template>
+					</el-select>
+				</el-form-item>
 
-        <el-form-item label=" " prop="store_no" v-show="formData.channel==1">
-          <div class="flex">
-            <el-input placeholder="请输入门店编码" v-model="formData.store_no"></el-input>
-            <div class="space"></div>
-            <el-button @click="dialogStoreShow=true">筛选门店</el-button>
-          </div>
-        </el-form-item>
-      </el-form>
-      <el-button :loading="loading" @click="subSearch" class="btn">搜索</el-button>
-    </div>
+				<el-form-item label=" " prop="store_no" v-show="formData.channel==1">
+					<div class="flex">
+						<el-input placeholder="请输入门店编码" v-model="formData.store_no"></el-input>
+						<div class="space"></div>
+						<el-button @click="dialogStoreShow=true">筛选门店</el-button>
+					</div>
+				</el-form-item>
+			</el-form>
+			<el-button :loading="loading" @click="subSearch" class="btn">搜索</el-button>
+		</div>
 
-    <bind-store-component
-      :get_top="1"
-      :self_store_id="self_store_id"
-      :show="dialogStoreShow"
-      :single="true"
-      @cancel="bindStoreCancel"
-      @success="bindStoreSuccessCall"
-      top="12vh"
-    />
+		<bind-store-component
+		:get_top="1"
+		:self_store_id="self_store_id"
+		:show="dialogStoreShow"
+		:single="true"
+		@cancel="bindStoreCancel"
+		@success="bindStoreSuccessCall"
+		top="12vh"
+		/>
 
-  </div>
+	</div>
 </template>
 
 <script lang="ts">
 
-import {Component, Vue} from 'vue-property-decorator';
-import {fun} from '../common';
-import {getStoreDetail} from '@/common/fetch';
+import {Component, Vue} from 'vue-property-decorator'
+import {fun} from '../common'
+import {getStoreDetail} from '@/common/fetch'
 // import {City} from '../common/city';
 import BindStoreComponent from '../components/comm/BindStoreComponent'
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
 
 
 @Component({
@@ -85,8 +85,8 @@ export default class StoreChannel extends Vue {
   async subSearch() {
 
     if (!this.formData.channel) {
-      fun.error({msg: '渠道必选'});
-      return;
+      fun.error({msg: '渠道必选'})
+      return
     }
 
     if (this.formData.channel === 2) {
@@ -101,7 +101,7 @@ export default class StoreChannel extends Vue {
       if (!this.formData.store_no) {
         this.dialogStoreShow = true
         //fun.error({msg:'门店编码必填'});
-        return;
+        return
       }
 
       this.loading = true
@@ -142,42 +142,42 @@ export default class StoreChannel extends Vue {
 </script>
 <style lang="stylus" scoped>
 
-  .space
-    width 10px
+	.space
+		width 10px
 
-  .page-wrap
-    width 100%
-    height 100vh
-    background-position center bottom
-    background-size 100% auto
-    background-repeat no-repeat
-    background-image url("~@/assets/img/store/join_bg.png")
+	.page-wrap
+		width 100%
+		height 100vh
+		background-position center bottom
+		background-size 100% auto
+		background-repeat no-repeat
+		background-image url("~@/assets/img/store/join_bg.png")
 
-  .container-wrap
-    position fixed
-    left 50%
-    top 12%
-    transform translateX(-50%)
-    width 848px
-    height 602px
-    box-shadow 0 0 49px 14px rgba(0, 37, 157, 0.15)
+	.container-wrap
+		position fixed
+		left 50%
+		top 12%
+		transform translateX(-50%)
+		width 848px
+		height 602px
+		box-shadow 0 0 49px 14px rgba(0, 37, 157, 0.15)
 
-    .form
-      margin 129px 186px 100px 147px
+		.form
+			margin 129px 186px 100px 147px
 
-    .btn
-      margin 0 auto
-      display block
-      padding 0
-      width 420px
-      height 50px
-      line-height 50px
-      background #F43131
-      border-radius 6px
-      color white
-      text-align center
-      font-size 18px
-      cursor pointer
+		.btn
+			margin 0 auto
+			display block
+			padding 0
+			width 420px
+			height 50px
+			line-height 50px
+			background #F43131
+			border-radius 6px
+			color white
+			text-align center
+			font-size 18px
+			cursor pointer
 </style>
 
 

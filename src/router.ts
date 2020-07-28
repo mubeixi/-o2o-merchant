@@ -1,6 +1,7 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-Vue.use(Router);
+import Vue from 'vue'
+import Router from 'vue-router'
+
+Vue.use(Router)
 
 const Page = () => import('@/views/PageTmpl.vue')
 const Home = () => import('@/views/Home.vue')
@@ -44,7 +45,10 @@ const RightCard = () => import('@/views/RightCard.vue')
 const FreeSetting = () => import('@/views/FreeSetting.vue')
 const RightCardDetail = () => import('@/views/RightCardDetail.vue')
 const SystemConf = () => import('@/views/SystemConf.vue')
-const Demo = ()=>import('@/views/Demo.vue')
+const Demo = () => import('@/views/Demo.vue')
+const MessageList = () => import('@/views/MessageList.vue')
+const MessageForm = () => import('@/views/MessageForm.vue')
+
 const routerInstance = new Router({
   routes: [
     {
@@ -53,75 +57,91 @@ const routerInstance = new Router({
       component: Tmpl,
     },
     {
-      path:'/demo',
-      name:'Demo',
+      path: '/demo',
+      name: 'Demo',
       component: Demo,
-      meta:{
-        title:'demo'
+      meta: {
+        title: 'demo'
       }
     },
     {
-      path:'/StorePurchaseApply',
-      name:'StorePurchaseApply',
+      path: '/message/list',
+      name: 'MessageList',
+      component: MessageList,
+      meta: {
+        title: '公告列表'
+      }
+    },
+    {
+      path: '/message/form',
+      name: 'MessageForm',
+      component: MessageForm,
+      meta: {
+        title: '编辑公告'
+      }
+    },
+    {
+      path: '/StorePurchaseApply',
+      name: 'StorePurchaseApply',
       component: StorePurchaseApply,
-      meta:{
-        title:'进货记录'
+      meta: {
+        title: '进货记录'
       }
     },
     {
-      path:'/SystemConf',
-      name:'SystemConf',
+      path: '/SystemConf',
+      name: 'SystemConf',
       component: SystemConf,
-      meta:{
-        title:'系统设置'
+      meta: {
+        title: '系统设置'
       }
     },
     {
-      path:'/JoinCate',
-      name:'JoinCate',
+      path: '/JoinCate',
+      name: 'JoinCate',
       component: JoinCate,
-      meta:{
-        title:'行业分类'
+      meta: {
+        title: '行业分类'
       }
     },
     {
-      path:'/JoinMaterial',
-      name:'JoinMaterial',
+      path: '/JoinMaterial',
+      name: 'JoinMaterial',
       component: JoinMaterial,
-      meta:{
-        title:'入驻资料'
+      meta: {
+        title: '入驻资料'
       }
     },
     {
-      path:'/StorePurchaseBack',
-      name:'StorePurchaseBack',
+      path: '/StorePurchaseBack',
+      name: 'StorePurchaseBack',
       component: StorePurchaseBack,
-      meta:{
-        title:'退货记录'
+      meta: {
+        title: '退货记录'
       }
     },
     {
-      path:'/StoreChannel',
-      name:'StoreChannel',
+      path: '/StoreChannel',
+      name: 'StoreChannel',
       component: StoreChannel,
-      meta:{
-        title:'选择进货渠道'
+      meta: {
+        title: '选择进货渠道'
       }
     },
     {
-      path:'/SystemNotice/:id',
-      name:'SystemNotice',
+      path: '/SystemNotice/:id',
+      name: 'SystemNotice',
       component: SystemNotice,
-      meta:{
-        title:'系统公告'
+      meta: {
+        title: '系统公告'
       }
     },
     {
-      path:'/StorePurchase',
-      name:'StorePurchase',
+      path: '/StorePurchase',
+      name: 'StorePurchase',
       component: StorePurchase,
-      meta:{
-        title:'进货'
+      meta: {
+        title: '进货'
       }
     },
     {
@@ -138,8 +158,8 @@ const routerInstance = new Router({
       path: '/ProductForm',
       name: 'product',
       component: ProductForm,
-      meta:{
-        title:'发布商品'
+      meta: {
+        title: '发布商品'
       }
     }
     ,
@@ -162,8 +182,8 @@ const routerInstance = new Router({
       path: '/LabelManagement',
       name: 'LabelManagement',
       component: LabelManagement,
-      meta:{
-        title:'标签列表'
+      meta: {
+        title: '标签列表'
       }
 
     },
@@ -171,24 +191,24 @@ const routerInstance = new Router({
       path: '/LabelAdd',
       name: 'LabelAdd',
       component: LabelAdd,
-      meta:{
-        title:'添加标签'
+      meta: {
+        title: '添加标签'
       }
     },
     {
       path: '/CrowdName',
       name: 'CrowdName',
       component: CrowdName,
-      meta:{
-        title:'添加人群'
+      meta: {
+        title: '添加人群'
       }
     },
     {
       path: '/CrowdClient',
       name: 'CrowdClient',
       component: CrowdClient,
-      meta:{
-        title:'人群列表'
+      meta: {
+        title: '人群列表'
       }
     },
     {
@@ -200,86 +220,86 @@ const routerInstance = new Router({
       path: '/MessageSend',
       name: 'MessageSend',
       component: MessageSend,
-      meta:{
-        title:'群发短信'
+      meta: {
+        title: '群发短信'
       }
     },
     {
       path: '/MessageStationSend',
       name: 'MessageStationSend',
       component: MessageStationSend,
-      meta:{
-        title:'群发站内信'
+      meta: {
+        title: '群发站内信'
       }
     },
     {
       path: '/CouponGift',
       name: 'CouponGift',
       component: CouponGift,
-      meta:{
-        title:'赠送优惠券'
+      meta: {
+        title: '赠送优惠券'
       }
     },
     {
       path: '/GiftsGift',
       name: 'GiftsGift',
       component: GiftsGift,
-      meta:{
-        title:'赠送赠品'
+      meta: {
+        title: '赠送赠品'
       }
     },
     {
       path: '/design',
       name: 'DesignPanel',
       component: DesignPanel,
-      meta:{
-        title:'海报编辑'
+      meta: {
+        title: '海报编辑'
       }
     },
     {
       path: '/NotFound',
       name: 'NotFound',
       component: NotFound,
-      meta:{
-        title:'NotFound'
+      meta: {
+        title: 'NotFound'
       }
     },
     {
       path: '/ProductList',
       name: 'ProductList',
       component: ProductList,
-      meta:{
-        title:'商品列表'
+      meta: {
+        title: '商品列表'
       }
     },
     {
       path: '/StoreProductList',
       name: 'StoreProductList',
       component: StoreProductList,
-      meta:{
-        title:'门店商品列表'
+      meta: {
+        title: '门店商品列表'
       }
     },
     {
-      path:'/distributor',
-      component:Page,
-      meta:{
-        title:'分销'
+      path: '/distributor',
+      component: Page,
+      meta: {
+        title: '分销'
       },
-      children:[
+      children: [
         {
-          path:'contributeList',
-          component:Contribute,
-          meta:{
-            title:'分销贡献'
+          path: 'contributeList',
+          component: Contribute,
+          meta: {
+            title: '分销贡献'
           }
         },
         {
-          path:'contributeDeatil',
-          name:'DistributorContribute',
-          component:ContributeDetail,
-          meta:{
-            title:'分销贡献详情'
+          path: 'contributeDeatil',
+          name: 'DistributorContribute',
+          component: ContributeDetail,
+          meta: {
+            title: '分销贡献详情'
           }
         }
       ]
@@ -288,94 +308,94 @@ const routerInstance = new Router({
       path: '/DistributorLevel',
       name: 'DistributorLevel',
       component: DistributorLevel,
-      meta:{
-        title:'分销商级别设置'
+      meta: {
+        title: '分销商级别设置'
       }
     },
     {
       path: '/Rotate',
       name: 'Rotate',
       component: Rotate,
-      meta:{
-        title:'幸运大抽奖'
+      meta: {
+        title: '幸运大抽奖'
       }
     },
     {
       path: '/RotateList',
       name: 'RotateList',
       component: RotateList,
-      meta:{
-        title:'幸运大抽奖列表'
+      meta: {
+        title: '幸运大抽奖列表'
       }
     },
     {
       path: '/ProductStatistics',
       name: 'ProductStatistics',
       component: ProductStatistics,
-      meta:{
-        title:'商品统计'
+      meta: {
+        title: '商品统计'
       }
     },
     {
       path: '/VipStatistics',
       name: 'VipStatistics',
       component: VipStatistics,
-      meta:{
-        title:'会员统计'
+      meta: {
+        title: '会员统计'
       }
     },
     {
       path: '/TransactionStatistics',
       name: 'TransactionStatistics',
       component: TransactionStatistics,
-      meta:{
-        title:'交易统计'
+      meta: {
+        title: '交易统计'
       }
     },
     {
       path: '/SameCityDelivery',
       name: 'SameCityDelivery',
       component: SameCityDelivery,
-      meta:{
-        title:'同城配送'
+      meta: {
+        title: '同城配送'
       }
     },
     {
       path: '/RightCard',
       name: 'RightCard',
       component: RightCard,
-      meta:{
-        title:'权益卡'
+      meta: {
+        title: '权益卡'
       }
     },
     {
       path: '/RightCardDetail',
       name: 'RightCardDetail',
       component: RightCardDetail,
-      meta:{
-        title:'权益卡'
+      meta: {
+        title: '权益卡'
       }
     },
     {
       path: '/FreeSetting',
       name: 'FreeSetting',
       component: FreeSetting,
-      meta:{
-        title:'免单设置'
+      meta: {
+        title: '免单设置'
       }
     },
     {
       path: '*',
-      redirect:'/NotFound'
+      redirect: '/NotFound'
     }
   ],
-});
+})
 routerInstance.beforeEach((to, from, next) => {
-  const title = to.meta && to.meta.title;
+  const title = to.meta && to.meta.title
   if (title) {
-    document.title = title;
+    document.title = title
   }
-  next();
-});
+  next()
+})
 
 export default routerInstance

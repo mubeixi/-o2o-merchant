@@ -1,10 +1,10 @@
-import Vue from 'vue';
-import interceptorsConfig from './interceptors';
-import './filter';
-
+import Vue from 'vue'
+import interceptorsConfig from './interceptors'
+import './filter'
 // const i18n = require('i18n');
 import {
   Alert,
+  Autocomplete,
   Breadcrumb,
   BreadcrumbItem,
   Button,
@@ -16,18 +16,27 @@ import {
   ColorPicker,
   DatePicker,
   Dialog,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
   Form,
   FormItem,
+  Image,
+  InfiniteScroll,
   Input,
+  InputNumber,
   Loading,
   Message,
   MessageBox,
   Notification,
   Option,
   Pagination,
+  Popover,
+  Progress,
   Radio,
   RadioButton,
   RadioGroup,
+  Row,
   Select,
   Slider,
   Switch,
@@ -35,24 +44,14 @@ import {
   TableColumn,
   TabPane,
   Tabs,
+  Tag,
+  Timeline,
+  TimelineItem,
   TimePicker,
   Tooltip,
   Tree,
-  Upload,
-  Autocomplete,
-  Progress,
-  InfiniteScroll,
-  InputNumber,
-  Timeline,
-  TimelineItem,
-  Row,
-  Tag,
-  Image,
-  Popover,
-  DropdownMenu,
-  DropdownItem,
-  Dropdown
-} from 'element-ui';
+  Upload
+} from 'element-ui'
 
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
@@ -127,23 +126,23 @@ export const fun = {
   // },
   // close:()=>{window.funLoading.close()}
 
-};
+}
 // console.log(filter)
 
-require('./directive');
+require('./directive')
 
 export default {
   install() {
     // Vue.prototype.$i18n = i18n
-    Vue.prototype.$loading = Loading.service;
-    Vue.prototype.$notify = Notification;
-    Vue.prototype.$message = Message;
-    Vue.prototype.$alert = MessageBox.alert;
-    Vue.prototype.$confirm = MessageBox.confirm;
-    Vue.prototype.$fun = fun;
-    Vue.http.interceptors.push(interceptorsConfig);
+    Vue.prototype.$loading = Loading.service
+    Vue.prototype.$notify = Notification
+    Vue.prototype.$message = Message
+    Vue.prototype.$alert = MessageBox.alert
+    Vue.prototype.$confirm = MessageBox.confirm
+    Vue.prototype.$fun = fun
+    Vue.http.interceptors.push(interceptorsConfig)
     // filter.map((value) => {
     //   Vue.filter(value.name, value.methods);
     // });
   },
-};
+}

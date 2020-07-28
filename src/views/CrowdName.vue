@@ -1,188 +1,188 @@
 <template>
-  <div class="labelManagement">
-    <div class="labelMain">
-      <div class="crowdName">
-        人群名称
-      </div>
-      <el-input class="inputs" placeholder="请输入人群名称" size="small" v-model="nameCrowd"></el-input>
-      <div class="crowdName" style="margin-bottom: 22px;">
-        行为关系
-      </div>
-      <el-form size="small">
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.last_pay.checked">
-            最近有消费
-            <el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"
-                      v-model="crowdData.last_pay.value"></el-input>
-            <span style="color: #B3B3B3">天内</span>
-          </el-checkbox>
-        </el-form-item>
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.last_no_pay.checked">
-            最近无消费
-            <el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"
-                      v-model="crowdData.last_no_pay.value"></el-input>
-            <span style="color: #B3B3B3">天内</span>
-          </el-checkbox>
-        </el-form-item>
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.last_create_order.checked">
-            最近有下单
-            <el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"
-                      v-model="crowdData.last_create_order.value"></el-input>
-            <span style="color: #B3B3B3">天内</span>
-          </el-checkbox>
-        </el-form-item>
+	<div class="labelManagement">
+		<div class="labelMain">
+			<div class="crowdName">
+				人群名称
+			</div>
+			<el-input class="inputs" placeholder="请输入人群名称" size="small" v-model="nameCrowd"></el-input>
+			<div class="crowdName" style="margin-bottom: 22px;">
+				行为关系
+			</div>
+			<el-form size="small">
+				<el-form-item>
+					<el-checkbox label="lastTime" name="consumptionTimes"
+					             v-model="crowdData.last_pay.checked">
+						最近有消费
+						<el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"
+						          v-model="crowdData.last_pay.value"></el-input>
+						<span style="color: #B3B3B3">天内</span>
+					</el-checkbox>
+				</el-form-item>
+				<el-form-item>
+					<el-checkbox label="lastTime" name="consumptionTimes"
+					             v-model="crowdData.last_no_pay.checked">
+						最近无消费
+						<el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"
+						          v-model="crowdData.last_no_pay.value"></el-input>
+						<span style="color: #B3B3B3">天内</span>
+					</el-checkbox>
+				</el-form-item>
+				<el-form-item>
+					<el-checkbox label="lastTime" name="consumptionTimes"
+					             v-model="crowdData.last_create_order.checked">
+						最近有下单
+						<el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"
+						          v-model="crowdData.last_create_order.value"></el-input>
+						<span style="color: #B3B3B3">天内</span>
+					</el-checkbox>
+				</el-form-item>
 
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.total_pay_times.checked">
-            最近消费次数
-            <el-input class="marginLR" v-model="crowdData.total_pay_times.start"></el-input>
-            <span style="color: #B3B3B3">次</span>
-            <span style="margin-left: 10px">一</span>
-            <el-input class="marginLR" v-model="crowdData.total_pay_times.end"></el-input>
-            <span style="color: #B3B3B3">次</span>
-          </el-checkbox>
-        </el-form-item>
+				<el-form-item>
+					<el-checkbox label="lastTime" name="consumptionTimes"
+					             v-model="crowdData.total_pay_times.checked">
+						最近消费次数
+						<el-input class="marginLR" v-model="crowdData.total_pay_times.start"></el-input>
+						<span style="color: #B3B3B3">次</span>
+						<span style="margin-left: 10px">一</span>
+						<el-input class="marginLR" v-model="crowdData.total_pay_times.end"></el-input>
+						<span style="color: #B3B3B3">次</span>
+					</el-checkbox>
+				</el-form-item>
 
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.total_pay_money.checked">
-            最近消费金额
-            <el-input class="marginLR" v-model="crowdData.total_pay_money.start"></el-input>
-            <span style="color: #B3B3B3">元</span>
-            <span style="margin-left: 10px">一</span>
-            <el-input class="marginLR" v-model="crowdData.total_pay_money.end"></el-input>
-            <span style="color: #B3B3B3">元</span>
-          </el-checkbox>
-        </el-form-item>
+				<el-form-item>
+					<el-checkbox label="lastTime" name="consumptionTimes"
+					             v-model="crowdData.total_pay_money.checked">
+						最近消费金额
+						<el-input class="marginLR" v-model="crowdData.total_pay_money.start"></el-input>
+						<span style="color: #B3B3B3">元</span>
+						<span style="margin-left: 10px">一</span>
+						<el-input class="marginLR" v-model="crowdData.total_pay_money.end"></el-input>
+						<span style="color: #B3B3B3">元</span>
+					</el-checkbox>
+				</el-form-item>
 
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.total_get_integral.checked">
-            累计获得积分
-            <el-input class="marginLR" v-model="crowdData.total_get_integral.start"></el-input>
-            <span style="color: #B3B3B3">分</span>
-            <span style="margin-left: 10px">一</span>
-            <el-input class="marginLR" v-model="crowdData.total_get_integral.end"></el-input>
-            <span style="color: #B3B3B3">分</span>
-          </el-checkbox>
-        </el-form-item>
-
-
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.order_avg.checked">
-            订单均价
-            <el-input class="marginLR" v-model="crowdData.order_avg.start"></el-input>
-            <span style="color: #B3B3B3">元</span>
-            <span style="margin-left: 10px">一</span>
-            <el-input class="marginLR" v-model="crowdData.order_avg.end"></el-input>
-            <span style="color: #B3B3B3">元</span>
-          </el-checkbox>
-        </el-form-item>
-
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.user_level.checked">
-            会员分销等级
-          </el-checkbox>
-          <el-select multiple placeholder="请选择" style="margin-left: 10px;"
-                     v-model="crowdData.user_level.value">
-            <el-option
-              :label="item.level_name"
-              :value="item.level"
-              v-for="item in levels">
-            </el-option>
-          </el-select>
-        </el-form-item>
+				<el-form-item>
+					<el-checkbox label="lastTime" name="consumptionTimes"
+					             v-model="crowdData.total_get_integral.checked">
+						累计获得积分
+						<el-input class="marginLR" v-model="crowdData.total_get_integral.start"></el-input>
+						<span style="color: #B3B3B3">分</span>
+						<span style="margin-left: 10px">一</span>
+						<el-input class="marginLR" v-model="crowdData.total_get_integral.end"></el-input>
+						<span style="color: #B3B3B3">分</span>
+					</el-checkbox>
+				</el-form-item>
 
 
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.mp_follow.checked">
-            关注公众号时间
-            <el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"
-                      v-model="crowdData.mp_follow.value"></el-input>
-            <span style="color: #B3B3B3">天内</span>
-          </el-checkbox>
-        </el-form-item>
+				<el-form-item>
+					<el-checkbox label="lastTime" name="consumptionTimes"
+					             v-model="crowdData.order_avg.checked">
+						订单均价
+						<el-input class="marginLR" v-model="crowdData.order_avg.start"></el-input>
+						<span style="color: #B3B3B3">元</span>
+						<span style="margin-left: 10px">一</span>
+						<el-input class="marginLR" v-model="crowdData.order_avg.end"></el-input>
+						<span style="color: #B3B3B3">元</span>
+					</el-checkbox>
+				</el-form-item>
 
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.last_login.checked">
-            最近有访问
-            <el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"
-                      v-model="crowdData.last_login.value"></el-input>
-            <span style="color: #B3B3B3">天内</span>
-          </el-checkbox>
-        </el-form-item>
+				<el-form-item>
+					<el-checkbox label="lastTime" name="consumptionTimes"
+					             v-model="crowdData.user_level.checked">
+						会员分销等级
+					</el-checkbox>
+					<el-select multiple placeholder="请选择" style="margin-left: 10px;"
+					           v-model="crowdData.user_level.value">
+						<el-option
+						:label="item.level_name"
+						:value="item.level"
+						v-for="item in levels">
+						</el-option>
+					</el-select>
+				</el-form-item>
 
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.last_nologin.checked">
-            最近无访问
-            <el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"
-                      v-model="crowdData.last_nologin.value"></el-input>
-            <span style="color: #B3B3B3">天内</span>
-          </el-checkbox>
-        </el-form-item>
 
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.refund_order_num.checked">
-            退款订单数
-            <el-input class="marginLR" v-model="crowdData.refund_order_num.start"></el-input>
-            <span style="color: #B3B3B3">笔</span>
-            <span style="margin-left: 10px">一</span>
-            <el-input class="marginLR" v-model="crowdData.refund_order_num.end"></el-input>
-            <span style="color: #B3B3B3">笔</span>
-          </el-checkbox>
-        </el-form-item>
+				<!--        <el-form-item>-->
+				<!--          <el-checkbox label="lastTime" name="consumptionTimes"-->
+				<!--                       v-model="crowdData.mp_follow.checked">-->
+				<!--            关注公众号时间-->
+				<!--            <el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"-->
+				<!--                      v-model="crowdData.mp_follow.value"></el-input>-->
+				<!--            <span style="color: #B3B3B3">天内</span>-->
+				<!--          </el-checkbox>-->
+				<!--        </el-form-item>-->
 
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.norefund_order_num.checked">
-            无退款订单数
-            <el-input class="marginLR" v-model="crowdData.norefund_order_num.start"></el-input>
-            <span style="color: #B3B3B3">笔</span>
-            <span style="margin-left: 10px">一</span>
-            <el-input class="marginLR" v-model="crowdData.norefund_order_num.end"></el-input>
-            <span style="color: #B3B3B3">笔</span>
-          </el-checkbox>
-        </el-form-item>
+				<el-form-item>
+					<el-checkbox label="lastTime" name="consumptionTimes"
+					             v-model="crowdData.last_login.checked">
+						最近有访问
+						<el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"
+						          v-model="crowdData.last_login.value"></el-input>
+						<span style="color: #B3B3B3">天内</span>
+					</el-checkbox>
+				</el-form-item>
 
-        <el-form-item>
-          <el-checkbox label="lastTime" name="consumptionTimes"
-                       v-model="crowdData.user_tag.checked">
-            客户标签
-          </el-checkbox>
-          <el-select multiple placeholder="请选择" style="margin-left: 10px"
-                     v-model="crowdData.user_tag.value">
-            <el-option
-              :label="item.tag_name"
-              :value="item.id"
-              v-for="item in tags">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <div style="height: 80px;width: 100%;background-color: #ffffff"></div>
-      </el-form>
+				<el-form-item>
+					<el-checkbox label="lastTime" name="consumptionTimes"
+					             v-model="crowdData.last_nologin.checked">
+						最近无访问
+						<el-input class="marginLR" style="width: 70px;margin-left: 26px;margin-right: 8px;"
+						          v-model="crowdData.last_nologin.value"></el-input>
+						<span style="color: #B3B3B3">天内</span>
+					</el-checkbox>
+				</el-form-item>
 
-      <div class="bottomFixed">
-        <el-button :loading="loading" @click="saveData" size="small" type="primary">保存提交</el-button>
-        <el-button @click="goCrowd" size="small">返回</el-button>
-      </div>
-    </div>
-  </div>
+				<el-form-item>
+					<el-checkbox label="lastTime" name="consumptionTimes"
+					             v-model="crowdData.refund_order_num.checked">
+						退款订单数
+						<el-input class="marginLR" v-model="crowdData.refund_order_num.start"></el-input>
+						<span style="color: #B3B3B3">笔</span>
+						<span style="margin-left: 10px">一</span>
+						<el-input class="marginLR" v-model="crowdData.refund_order_num.end"></el-input>
+						<span style="color: #B3B3B3">笔</span>
+					</el-checkbox>
+				</el-form-item>
+
+				<el-form-item>
+					<el-checkbox label="lastTime" name="consumptionTimes"
+					             v-model="crowdData.norefund_order_num.checked">
+						无退款订单数
+						<el-input class="marginLR" v-model="crowdData.norefund_order_num.start"></el-input>
+						<span style="color: #B3B3B3">笔</span>
+						<span style="margin-left: 10px">一</span>
+						<el-input class="marginLR" v-model="crowdData.norefund_order_num.end"></el-input>
+						<span style="color: #B3B3B3">笔</span>
+					</el-checkbox>
+				</el-form-item>
+
+				<el-form-item>
+					<el-checkbox label="lastTime" name="consumptionTimes"
+					             v-model="crowdData.user_tag.checked">
+						客户标签
+					</el-checkbox>
+					<el-select multiple placeholder="请选择" style="margin-left: 10px"
+					           v-model="crowdData.user_tag.value">
+						<el-option
+						:label="item.tag_name"
+						:value="item.id"
+						v-for="item in tags">
+						</el-option>
+					</el-select>
+				</el-form-item>
+				<div style="height: 80px;width: 100%;background-color: #ffffff"></div>
+			</el-form>
+
+			<div class="bottomFixed">
+				<el-button :loading="loading" @click="saveData" size="small" type="primary">保存提交</el-button>
+				<el-button @click="goCrowd" size="small">返回</el-button>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator'
 
 import {addCrowd, getCrowd, initCrowd} from '@/common/fetch'
 
@@ -206,7 +206,7 @@ export default class AddProduct extends Vue {
     total_get_integral: {start: '', end: '', checked: false},
     order_avg: {start: '', end: '', checked: false},
     user_level: {value: '', checked: false},
-    mp_follow: {value: '', checked: false},
+    // mp_follow: {value: '', checked: false},
     last_login: {value: '', checked: false},
     last_nologin: {value: '', checked: false},
     refund_order_num: {start: '', end: '', checked: false},
@@ -229,7 +229,7 @@ export default class AddProduct extends Vue {
       return
     }
     let id = this.$route.query.id
-    if (this.loading) return;
+    if (this.loading) return
     this.loading = true
     let data = {
       name: this.nameCrowd,
@@ -280,92 +280,92 @@ export default class AddProduct extends Vue {
 </script>
 
 <style lang="less" scoped>
-  @bgColor: #428CF7;
-  .labelManagement {
-    background-color: #f6f6f6;
-    padding-top: 18px;
-    padding-left: 19px;
-    width: 100%;
-    box-sizing: border-box;
+	@bgColor: #428CF7;
+	.labelManagement {
+		background-color: #f6f6f6;
+		padding-top: 18px;
+		padding-left: 19px;
+		width: 100%;
+		box-sizing: border-box;
 
-    .labelMain {
-      background-color: #FFFFFF;
-      width: 100%;
-      box-sizing: border-box;
-      padding-top: 30px;
-      padding-left: 24px;
-      padding-bottom: 100px;
-    }
-  }
+		.labelMain {
+			background-color: #FFFFFF;
+			width: 100%;
+			box-sizing: border-box;
+			padding-top: 30px;
+			padding-left: 24px;
+			padding-bottom: 100px;
+		}
+	}
 
-  .crowdName {
-    font-size: 16px;
-    color: #333333;
-    height: 50px;
-    line-height: 50px;
-    padding-left: 20px;
-    background-color: #F8F8F8;
-    margin-right: 100px;
-  }
+	.crowdName {
+		font-size: 16px;
+		color: #333333;
+		height: 50px;
+		line-height: 50px;
+		padding-left: 20px;
+		background-color: #F8F8F8;
+		margin-right: 100px;
+	}
 
-  .inputs {
-    width: 280px;
-    margin-top: 30px;
-    margin-bottom: 30px;
-  }
+	.inputs {
+		width: 280px;
+		margin-top: 30px;
+		margin-bottom: 30px;
+	}
 
-  .marginLR {
-    width: 70px;
-    margin-left: 8px;
-    margin-right: 8px;
-  }
+	.marginLR {
+		width: 70px;
+		margin-left: 8px;
+		margin-right: 8px;
+	}
 
-  .submit {
-    width: 92px;
-    height: 38px;
-    background: rgba(66, 140, 247, 1);
-    font-size: 14px;
-    color: #F3F3F3;
-    text-align: center;
-    line-height: 38px;
-    margin-top: 42px;
-    margin-left: 5%;
-    display: inline-block;
-  }
+	.submit {
+		width: 92px;
+		height: 38px;
+		background: rgba(66, 140, 247, 1);
+		font-size: 14px;
+		color: #F3F3F3;
+		text-align: center;
+		line-height: 38px;
+		margin-top: 42px;
+		margin-left: 5%;
+		display: inline-block;
+	}
 
-  .submits {
-    display: inline-block;
-    width: 92px;
-    height: 38px;
-    font-size: 14px;
-    text-align: center;
-    line-height: 38px;
-    margin-top: 42px;
-    margin-left: 40px;
-    background-color: #FFFFFF;
-    border: 1px solid #dcdfe6;
-    color: #606266;
-  }
+	.submits {
+		display: inline-block;
+		width: 92px;
+		height: 38px;
+		font-size: 14px;
+		text-align: center;
+		line-height: 38px;
+		margin-top: 42px;
+		margin-left: 40px;
+		background-color: #FFFFFF;
+		border: 1px solid #dcdfe6;
+		color: #606266;
+	}
 
-  .all {
-    margin-top: 42px;
-  }
+	.all {
+		margin-top: 42px;
+	}
 
-  .bottomFixed {
-    position: fixed;
-    padding: 10px 0;
-    box-sizing: border-box;
-    bottom: 0;
-    width: 100%;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    background-color: #fff;
-    box-shadow: 0 -3px 5px #eee;
-    z-index: 1;
-    transition: right .2s ease;
-  }
+	.bottomFixed {
+		position: fixed;
+		padding: 10px 0;
+		box-sizing: border-box;
+		bottom: 0;
+		width: 100%;
+		display: -ms-flexbox;
+		display: flex;
+		-ms-flex-align: center;
+		align-items: center;
+		-ms-flex-pack: center;
+		justify-content: center;
+		background-color: #fff;
+		box-shadow: 0 -3px 5px #eee;
+		z-index: 1;
+		transition: right .2s ease;
+	}
 </style>
