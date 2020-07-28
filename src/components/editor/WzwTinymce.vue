@@ -261,6 +261,9 @@ export default {
           // { title: '预置图片1', value: 'https://www.tiny.cloud/images/glyph-tinymce@2x.png' },
           // { title: '预置图片2', value: 'https://www.baidu.com/img/bd_logo1.png' }
         ],
+	      //这两个配置，让编辑器不会试图去把图片地址转换成相对路径 http://tinymce.ax-z.cn/configure/url-handling.php
+        relative_urls: false,
+        remove_script_host: false,
         image_class_list: [
           {
             title: 'None',
