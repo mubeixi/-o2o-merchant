@@ -675,14 +675,15 @@ export default class FreeSetting extends Vue {
         } else {
           this.selectCouponIds = [Number(initData.miss_free.value)]
         }
-        this.productData = []
-        for (let item of this.dataTableOpt.dataList) {
-          for (let it of this.selectCouponIds) {
-            if (item.Coupon_ID == it) {
-              this.productData.push(item)
-            }
-          }
-        }
+        this.productData=initData.miss_free.coupons
+        // this.productData = []
+        // for (let item of this.dataTableOpt.dataList) {
+        //   for (let it of this.selectCouponIds) {
+        //     if (item.Coupon_ID == it) {
+        //       this.productData.push(item)
+        //     }
+        //   }
+        // }
 
       } else if (initData.miss_free.act == 0) {
         this.miss_free1 = ['0']
@@ -707,15 +708,16 @@ export default class FreeSetting extends Vue {
 	  this.selectGoodsIds = prod_id.map(id=>Number(id))
 
 
-    this.productDatas = []
-    for (let item of this.productTableOpts.dataList) {
-      for (let it of prod_id) {
-        if (item.Products_ID == it) {
-          item.checked = false
-          this.productDatas.push(item)
-        }
-      }
-    }
+    this.productDatas=this.activeData.active_info.prod_list
+    // this.productDatas = []
+    // for (let item of this.productTableOpts.dataList) {
+    //   for (let it of prod_id) {
+    //     if (item.Products_ID == it) {
+    //       item.checked = false
+    //       this.productDatas.push(item)
+    //     }
+    //   }
+    // }
 
     for (let item of this.productDatas) {
       for (let it of checkId) {
