@@ -43,9 +43,18 @@
 							<el-select :disabled="!editCan" @change="changeSelect(index)" placeholder="请选择奖品"
 							           style="width: 130px" v-model="item.type">
 								<!--                    <el-option label="赠品" value="gift"></el-option>-->
-								<el-option label="优惠券" value="coupon"></el-option>
-								<el-option label="积分" value="score"></el-option>
+								<template v-if="active_for=='user'">
+                  <el-option label="优惠券" value="coupon"></el-option>
+                  <el-option label="积分" value="score"></el-option>
+                </template>
+                <template v-else>
+                  <el-option label="激活码" value="active_code"></el-option>
+                </template>
 							</el-select>
+              <template v-if="item.type==='active_code'">
+                <el-input :disabled="!editCan" placeholder="请输入激活码天数" style="width: 140px;margin-left: 15px"
+                          v-model="item.value"></el-input>
+              </template>
 							<template v-if="item.type==='score'">
 								<el-input :disabled="!editCan" placeholder="请输入积分数量" style="width: 130px;margin-left: 15px"
 								          v-model="item.value"></el-input>
@@ -380,12 +389,24 @@ export default class Rotate extends Vue {
     if (!this.editCan) return
 
     if (this.rotateList.length < 8) {
-      this.rotateList.push({
-        type: 'score',
-        value: '',
-        count: '',
-        rate: ''
-      })
+
+
+      if(this.active_for=='biz'){
+        this.rotateList.push({
+          type: 'active_code',
+          value: '',
+          count: '',
+          rate: ''
+        })
+      }else{
+        this.rotateList.push({
+          type: 'score',
+          value: '',
+          count: '',
+          rate: ''
+        })
+      }
+
     } else {
       this.$message({
         message: '最多设置8个活动',
@@ -407,7 +428,8 @@ export default class Rotate extends Vue {
       describe: this.describe,
       total_count: this.total_count,
       day_count: this.day_count,
-      prize_rule: JSON.stringify(this.rotateList)
+      prize_rule: JSON.stringify(this.rotateList),
+      active_for:this.$route.query.active_for
     }
     if (this.dateValue.length == 2) {
       info.start_time = this.dateValue[0]
@@ -426,7 +448,10 @@ export default class Rotate extends Vue {
         })
         setTimeout(function () {
           that.$router.push({
-            name: 'RotateList'
+            name: 'RotateList',
+            query: {
+              active_for:this.$route.query.active_for
+            }
           })
         }, 1000)
       }
@@ -439,11 +464,24 @@ export default class Rotate extends Vue {
 
   goBack() {
     this.$router.push({
-      name: 'RotateList'
+      name: 'RotateList',
+      query: {
+        active_for:this.$route.query.active_for
+      }
     })
   }
-
+  active_for=''
   created() {
+    this.active_for=this.$route.query.active_for
+    if(this.active_for=='biz'){
+      this.rotateList = [{
+        type: 'active_code',
+        value: '',
+        count: '',
+        rate: ''
+      }]
+    }
+
     let id = this.$route.query.id
     if (id) {
       getTurn({id: id}).then(res => {
