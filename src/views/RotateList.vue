@@ -114,7 +114,10 @@ export default class RotateList extends Vue {
 
   goRotate() {
     this.$router.push({
-      name: 'Rotate'
+      name: 'Rotate',
+      query:{
+        active_for:this.$route.query.active_for
+      }
     })
   }
 
@@ -129,7 +132,8 @@ export default class RotateList extends Vue {
     this.$router.push({
       name: 'Rotate',
       query: {
-        id: id
+        id: id,
+        active_for:this.$route.query.active_for
       }
     })
   }
@@ -170,6 +174,10 @@ export default class RotateList extends Vue {
       pageSize: this.pageSize,
       title: this.active_name,
       status: this.state
+    }
+    const active_for=this.$route.query.active_for
+    if(active_for=='biz'){
+      data.active_for='biz'
     }
     getTurns(data).then(res => {
       this.scenesList = res.data
