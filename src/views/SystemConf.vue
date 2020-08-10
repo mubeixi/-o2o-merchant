@@ -33,7 +33,7 @@ import {Component, Vue} from 'vue-property-decorator'
 import DiyFormFormat from "../components/diy-form-format/diy-form-format.vue"
 import {checkValue, findArrayIdx, objTranslate} from "../common/utils"
 import {fun} from "../common"
-import {operateShopConfig} from "../common/fetch"
+import {getCommonConfig, operateShopConfig} from "../common/fetch"
 import store from "@/store"
 
 /**
@@ -230,7 +230,7 @@ const infoTmplByOrder = [
 ]
 
 
-const infoTmplByFeature = [
+var infoTmplByFeature = [
   {
     label: '分销总开关',
     name: 'DisSwitch',
@@ -261,6 +261,30 @@ const infoTmplByFeature = [
     desc: '开启该功能，商家发布商品时，需要填写拼团人数和拼团价格，关闭该功能，发布商品不再需要填写，商家可在推广营销处针对某个商品开启拼团',
     autoDesc: true,
     options: [{label: '开启', val: 1}, {label: '关闭', val: 0}]
+  },
+  {
+    label: '定位切换',
+    name: 'switch_location',
+    required: false,
+    type: 'radio',
+    value: '',
+    desc: '开启该功能，客户端会默认显示用户当前城市的商家和商品,用户可自行切换位置',
+    autoDesc: true,
+    options: [{label: '开启', val: 1}, {label: '关闭', val: 0}],
+    with: [
+      {val: 0, showRow: [''], hideRow: ['location_precision']},
+      {val: 1, showRow: ['location_precision'], hideRow: ['']}
+    ]
+  },
+  {
+    label: '定位精确到',
+    name: 'location_precision',
+    required: false,
+    type: 'radio',
+    value: '',
+    desc: '开启该功能，客户端会默认显示用户当前城市的商家和商品,用户可自行切换位置',
+    autoDesc: true,
+    options: []//[{label: '省', val: 'prov'}, {label: '市', val: 'city'}, {label: '县(区)', val: 'area'}, {label: '镇(街道)', val: 'town'}]
   }
 ]
 
@@ -412,8 +436,30 @@ export default class SystemConf extends Vue {
     }
   }
 
+
+  initData = null
+
   async created() {
 
+    var initData = await getCommonConfig().then(res => res.data).catch(err=>{
+      console.log(err)
+    })
+
+	  this.initData = initData
+
+	  if(initData.is_jb != 0){
+      const idx = findArrayIdx(infoTmplByFeature,{name:'location_precision'})
+      if(idx!==false){
+        infoTmplByFeature.splice(Number(idx),1)
+      }
+
+      const idx2 = findArrayIdx(infoTmplByFeature,{name:'switch_location'})
+      if(idx2!==false){
+        infoTmplByFeature.splice(Number(idx2),1)
+      }
+
+
+	  }
     this.$set(this, 'forms', [].concat(infoTmplByBase))
 
     // 自动加desc
@@ -427,9 +473,27 @@ export default class SystemConf extends Vue {
       if (row.type === 'input' && !row.desc && row.autoDesc) row.desc = `请设置${row.label}`
     }
 
-    const {shop_config: vo} = await operateShopConfig().then(res => res.data).catch(e => {
+    const {location_precision,shop_config: vo} = await operateShopConfig().then(res => res.data).catch(e => {
       throw Error(e.msg || '数据初始化失败')
     })
+
+	  if(JSON.stringify(location_precision)!=='{}'){
+	    const idx = findArrayIdx(infoTmplByFeature,{name:'location_precision'})
+		  if(idx!==false){
+
+        // area: "县（区）"
+        // city: "市"
+        // prov: "省"
+        // town: "镇（街道）"
+			  var options = []
+		    for(var key in location_precision){
+          options.push({label:location_precision[key],val:key})
+		    }
+        infoTmplByFeature[idx].options = options
+		  }
+	  }
+
+    console.log(infoTmplByFeature)
 
     if (vo) {
       console.log(vo)

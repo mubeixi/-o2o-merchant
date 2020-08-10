@@ -872,6 +872,20 @@ import WzwTinymce from "../components/editor/WzwTinymce.vue"
         }
       }
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    next()
+  },
+  beforeRouteLeave(to, form, next) {
+
+    // var self = window.document.querySelector('.tox-tinymce-aux')
+    // // 拿到父节点:
+    // var parent = self.parentElement;
+    // // 删除:
+    // parent.removeChild(self);
+
+    this.$refs.richtext && this.$refs.richtext.destroyTinymce()
+    next()
   }
 })
 export default class AddProduct extends Vue {
