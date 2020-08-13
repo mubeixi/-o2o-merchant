@@ -80,13 +80,13 @@
 				<el-table-column align="center" label="序号" type="index" width="150"></el-table-column>
 				<el-table-column align="center" label="级别名称" property="level_name"
 				                 width="200"></el-table-column>
-				<el-table-column align="center" label="佣金明细">
-					<template slot-scope="scope">
-						<div v-for="(item,index) of settingData[scope.$index].commisions">
-							{{item.label}}{{item.value}}(佣金比例的百分比)
-						</div>
-					</template>
-				</el-table-column>
+				<el-table-column align="center" label="首购佣金明细">
+          <template  slot-scope="scope" >
+            <div v-for="(item,index) of settingData[scope.$index].commisions">
+              {{item.label}} {{item.value}} ({{item.desc}})
+            </div>
+          </template>
+        </el-table-column>
 			</el-table>
 		</el-dialog>
 
