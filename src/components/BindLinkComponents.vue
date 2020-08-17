@@ -448,7 +448,7 @@ export default {
               this.innerDialog.product.isHasData = true
               let data = res.data.map(v => {
                 v.text = `[商品] ${v.Products_Name}`
-                v.path = `/pages/detail/detail?Products_ID=${v.Products_ID}`
+                v.path = `/pages/product/detail?prod_id=${v.Products_ID}`
                 v.type = 'default'
                 return v
               })
