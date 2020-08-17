@@ -107,7 +107,7 @@
 			</el-form>
 		</div>
 
-		<div class="submit-div" v-if="status">
+		<div class="submit-div" >
 			<div @click="saveActive" class="submit">保存</div>
 		</div>
 
