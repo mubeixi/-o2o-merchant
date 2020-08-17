@@ -313,6 +313,7 @@ export default class Rotate extends Vue {
     getGivingGifts(data).then(res => {
       if (res.errorCode == 0) {
         this.GivingGifts = res.data
+        this.totalCount=res.totalCount
       }
     })
   }
@@ -359,6 +360,7 @@ export default class Rotate extends Vue {
     }
     getCouponLists(data).then(res => {
       this.GivingGiftss = res.data
+      this.totalCounts=res.totalCount
     })
   }
 
