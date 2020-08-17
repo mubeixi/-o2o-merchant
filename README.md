@@ -2,9 +2,9 @@
 
 ### 项目运行方式
 1.安装node和npm  
-2.2.安装请使用[yarn](https://yarn.bootcss.com/)  
-3.yarn install 
-4.yarn run dev 
+2.安装请使用[yarn](https://yarn.bootcss.com/)  
+3.yarn install  
+4.yarn run dev  
 
 ### 常见问题
 

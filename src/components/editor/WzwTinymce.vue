@@ -194,6 +194,7 @@ export default {
       this.$emit('change', content)
     },
     destroyTinymce () {
+      console.log('destroyTinymce')
       if (window.tinymce.get(this.tinymceId)) {
         window.tinymce.get(this.tinymceId).destroy()
       }
