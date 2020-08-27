@@ -235,6 +235,7 @@ export default class JoinCate extends Vue {
 
     action(postData).then(res => {
       fun.success({ msg: '操作成功' })
+      window.location.href = window.parent.location.origin + '/member/biz/biz_industry.php'
     }).catch(() => {
 
     })
