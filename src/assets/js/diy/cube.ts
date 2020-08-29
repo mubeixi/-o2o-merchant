@@ -474,17 +474,31 @@ function setAttrData() {
         },
         bindCB: (dataType, type, path, tooltip, dataItem, pageEl, idx2) => {
 
-          console.log(dataType, type, path, tooltip, dataItem, pageEl, idx2)
+          //console.log(dataType, type, path, tooltip, dataItem, pageEl, idx2)
           pageEl.bindLinkDialogShow = false;
 
           // console.log(dataType, type, path, tooltip, dataItem,pageEl,idx2)
-          Vue.set(this.value.list[idx2], 'link', path);
-          Vue.set(this.value.list[idx2], 'ext', dataItem);
-          Vue.set(this.value.list[idx2], 'linkType', type);
-          Vue.set(this.value.list[idx2], 'tooltip', tooltip);
+          // Vue.set(this.value.list[idx2], 'link', path);
+          // Vue.set(this.value.list[idx2], 'ext', dataItem);
+          // Vue.set(this.value.list[idx2], 'linkType', type);
+          // Vue.set(this.value.list[idx2], 'tooltip', tooltip);
+
+          let objData=this.value.list[idx2]
+          objData['link']=path
+          objData['ext']=dataItem
+          objData['linkType']=type
+          objData['tooltip']=tooltip
+
+          //Vue.set(this.value.list, idx2, objData);
+          console.log(objData,"objDataobjDataobjData")
+          this.value.list[idx2]=objData
+          console.log(this.value.list[idx2],"sssssssssssssssssssssssssss",objData)
+          console.log(this,"qqqqq")
 
           //这里重新生成的attrData应该会在组件中直接显示。 也就是说我只需要直接把this给activeAttr即可
           this.setIndex(0, {value:false,config:false});
+
+
           this.vm.$store.commit('activeAttr', this);// 传出去
 
         },
