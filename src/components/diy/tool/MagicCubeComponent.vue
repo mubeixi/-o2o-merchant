@@ -19,8 +19,8 @@
 			<div class="active" :data-idx="area.IDX" @click.stop="activeArea(aidx,area)"
 			     :class="areaActiveIndex===aidx?'act':''"
 			     :style="[getAreaStyle(area)]" v-for="(area,aidx) in CTX.selects">
-				<div class="mask" :style="{backgroundImage:'url('+area.bgimg||''+')'}"></div>
-				<span class="tip" v-show="!area.bgimg">{{getTip(area)}}</span>
+				<div class="mask" :style="{backgroundImage:'url('+selecteds[aidx].bgimg||''+')'}"></div>
+				<span class="tip" v-show="!selecteds[aidx].bgimg">{{getTip(area)}}</span>
 				<!--        <img src="@/assets/img/icon-del.png" class="delicon" />-->
 				<i v-if="type==='diy'" class="el-icon-error delicon" @click.stop="delArea(area)" />
 			</div>
@@ -159,7 +159,9 @@ export default {
         // console.log('333333333333333selecteds发生修改',val);
         //更细提示文本
         for (var key in val) {
-          if (val[key].tooltip) this.$set(this.CTX.selects[key], 'tooltip', val[key].tooltip)
+          // if (val[key].tooltip) this.$set(this.CTX.selects[key], 'tooltip', val[key].tooltip)
+
+          if (val[key].tooltip) this.$set(this.selects[key], 'tooltip', val[key].tooltip)
         }
       },
     },
@@ -276,10 +278,11 @@ export default {
     },
     activeArea (idx, area) {
 
-      //console.log('4444444444444',area)
+      console.log('4444444444444',area)
       this.areaActiveIndex = idx
       // this.currentArea = area;
-      this.$set(this, 'currentArea', area)
+      //this.$set(this, 'currentArea', area)
+      this.$set(this, 'currentArea', this.selecteds[this.areaActiveIndex])
     },
     dragSelect () {
 
@@ -315,7 +318,7 @@ export default {
       return styleObj
     },
     colClick (idx1, idx2) {
-      // console.log(idx1, idx2);
+      console.log(idx1, idx2,"ssssssssss");
       if (!this.isDrag) {
         // console.log('赋值给第1个');
         this.row_idx = idx1
@@ -365,7 +368,8 @@ export default {
 
         createRT && this.dragSelect(x, y, x1, y1)
 
-        this.currentArea = this.CTX.selects[this.CTX.selects.length - 1]//新增的话，就把最新的给他
+        //this.currentArea = this.CTX.selects[this.CTX.selects.length - 1]//新增的话，就把最新的给他
+        this.currentArea = this.selects[this.selects.length - 1]
 
       }
 
@@ -399,7 +403,10 @@ export default {
     },
     INIT () {
       this.CTX = new MagicCube(this.row, this.col, this.width, this.width * this.row / this.col)//还有label。。真牛
+
       this.CTX.selects = this.CTX.selects.concat(this.selecteds)
+
+
       //window.CTX = this.CTX;
     },
   },
