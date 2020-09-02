@@ -178,55 +178,55 @@ const infoTmplByOrder = [
     autoDesc: true,
     hide: true
   },
-  {
-    label: '退款手续费',
-    name: 'Factorage',
-    required: false,
-    type: 'radio',
-    value: '',
-    desc: '开启该配置，消费者订单退款时，会扣除相应的手续费，为了客户体验，请慎重开启该功能',
-    autoDesc: true,
-    options: [{label: '开启', val: 1}, {label: '关闭', val: 0}],
-    with: [
-      {val: 0, showRow: [''], hideRow: ['Factorage_type', 'Factorage_fixprice', 'Factorage_percent']},
-      {val: 1, showRow: ['Factorage_type'], hideRow: ['']}
-    ]
-  },
-  {
-    label: '退款手续费收取方式',
-    name: 'Factorage_type',
-    required: false,
-    type: 'radio',
-    value: '',
-    desc: '请慎重开启该功能',
-    autoDesc: true,
-    options: [{label: '固定金额', val: 0}, {label: '按订单百分比', val: 1}],
-    hide: true,
-    with: [
-      {val: 0, showRow: ['Factorage_fixprice'], hideRow: ['Factorage_percent']},
-      {val: 1, showRow: ['Factorage_percent'], hideRow: ['Factorage_fixprice']}
-    ]
-  },
-  {
-    label: '退款手续费固定金额',
-    name: 'Factorage_fixprice',
-    required: false,
-    type: 'input',
-    value: '',
-    desc: '请慎重开启该功能',
-    autoDesc: true,
-    hide: true
-  },
-  {
-    label: '退款手续费百分比',
-    name: 'Factorage_percent',
-    required: false,
-    type: 'input',
-    value: '',
-    desc: '请慎重开启该功能',
-    autoDesc: true,
-    hide: true
-  },
+  // {
+  //   label: '退款手续费',
+  //   name: 'Factorage',
+  //   required: false,
+  //   type: 'radio',
+  //   value: '',
+  //   desc: '开启该配置，消费者订单退款时，会扣除相应的手续费，为了客户体验，请慎重开启该功能',
+  //   autoDesc: true,
+  //   options: [{label: '开启', val: 1}, {label: '关闭', val: 0}],
+  //   with: [
+  //     {val: 0, showRow: [''], hideRow: ['Factorage_type', 'Factorage_fixprice', 'Factorage_percent']},
+  //     {val: 1, showRow: ['Factorage_type'], hideRow: ['']}
+  //   ]
+  // },
+  // {
+  //   label: '退款手续费收取方式',
+  //   name: 'Factorage_type',
+  //   required: false,
+  //   type: 'radio',
+  //   value: '',
+  //   desc: '请慎重开启该功能',
+  //   autoDesc: true,
+  //   options: [{label: '固定金额', val: 0}, {label: '按订单百分比', val: 1}],
+  //   hide: true,
+  //   with: [
+  //     {val: 0, showRow: ['Factorage_fixprice'], hideRow: ['Factorage_percent']},
+  //     {val: 1, showRow: ['Factorage_percent'], hideRow: ['Factorage_fixprice']}
+  //   ]
+  // },
+  // {
+  //   label: '退款手续费固定金额',
+  //   name: 'Factorage_fixprice',
+  //   required: false,
+  //   type: 'input',
+  //   value: '',
+  //   desc: '请慎重开启该功能',
+  //   autoDesc: true,
+  //   hide: true
+  // },
+  // {
+  //   label: '退款手续费百分比',
+  //   name: 'Factorage_percent',
+  //   required: false,
+  //   type: 'input',
+  //   value: '',
+  //   desc: '请慎重开启该功能',
+  //   autoDesc: true,
+  //   hide: true
+  // },
 ]
 
 
@@ -424,6 +424,9 @@ export default class SystemConf extends Vue {
         formatFormData[row.name] = row.value
       }
       console.log(formatFormData)
+
+      //为了hack手续费直接关闭所以注释数组中的内容 并且   直接关闭
+      formatFormData.Factorage=0
       await operateShopConfig(formatFormData).catch(e => {
         throw Error(e.msg || '保存失败')
       })
